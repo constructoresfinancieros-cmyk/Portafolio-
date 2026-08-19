@@ -60,17 +60,27 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-4 text-sm">
+            <div class="flex items-center gap-4 text-sm flex-wrap">
+                <!-- DÓLAR BCV AUTOMÁTICO -->
                 <div class="bg-gray-800/80 px-3 py-1.5 rounded-lg border border-gray-700 flex items-center gap-2">
                     <span class="text-gray-400">Dólar BCV:</span>
                     <input type="number" id="bcvRate" value="68.45" step="0.01" oninput="calcularPortafolio()" class="w-20 bg-gray-900 text-pistachio font-bold px-2 py-0.5 rounded border border-gray-600 text-center focus:outline-none focus:border-pistachio">
-                    <span class="text-gray-400">Bs./$</span>
+                    <span class="text-gray-400">Bs.</span>
                 </div>
+
+                <!-- DÓLAR PARALELO Y BRECHA CAMBIARIA -->
+                <div class="bg-gray-800/80 px-3 py-1.5 rounded-lg border border-gray-700 flex items-center gap-2">
+                    <span class="text-gray-400">Paralelo:</span>
+                    <input type="number" id="paraleloRate" value="82.00" step="0.01" oninput="calcularPortafolio()" class="w-20 bg-gray-900 text-amber-400 font-bold px-2 py-0.5 rounded border border-gray-600 text-center focus:outline-none focus:border-amber-400">
+                    <span class="text-xs font-semibold text-rose-400" id="lblBrecha">Brecha: --%</span>
+                </div>
+
+                <!-- ÍNDICE IBC EN VIVO -->
                 <div class="hidden md:flex bg-gray-800/80 px-3 py-1.5 rounded-lg border border-gray-700 items-center gap-2">
                     <span class="text-gray-400">Índice IBC:</span>
-                    <span class="text-pistachio font-bold">102.450 pts</span>
-                    <span class="text-xs text-pistachio">(+1.2%)</span>
+                    <span class="text-pistachio font-bold" id="lblIbcValue">Cargando...</span>
                 </div>
+
                 <button onclick="mostrarModal()" class="bg-pistachio font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition flex items-center gap-2 shadow-lg">
                     <span>+</span> Añadir Compra
                 </button>
@@ -80,18 +90,18 @@
 
     <!-- NAVEGACIÓN SECUNDARIA -->
     <div class="border-b border-gray-800 bg-gray-900/30 px-6">
-        <div class="max-w-7xl mx-auto flex gap-6 text-sm font-medium">
-            <button class="py-3 text-pistachio border-b-2 border-pistachio flex items-center gap-2">
+        <div class="max-w-7xl mx-auto flex gap-6 text-sm font-medium overflow-x-auto">
+            <button class="py-3 text-pistachio border-b-2 border-pistachio flex items-center gap-2 whitespace-nowrap">
                 <span>💼</span> Mi Portafolio
             </button>
-            <button class="py-3 text-gray-400 hover:text-white flex items-center gap-2">
+            <button class="py-3 text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap">
                 <span>📈</span> Mercado BVC (Cintillo)
             </button>
-            <button class="py-3 text-gray-400 hover:text-white flex items-center gap-2">
-                <span>📋</span> Historial de Compras
+            <button class="py-3 text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap">
+                <span>🧮</span> Calculadora de Brecha
             </button>
-            <button class="py-3 text-gray-400 hover:text-white flex items-center gap-2">
-                <span>⚖️</span> Comparativas & Benchmark
+            <button class="py-3 text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap">
+                <span>📋</span> Historial
             </button>
         </div>
     </div>
@@ -99,50 +109,50 @@
     <!-- CONTENIDO PRINCIPAL -->
     <main class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full space-y-6">
 
-        <!-- RESUMEN DE METRICAS (4 TARJETAS) -->
+        <!-- RESUMEN DE MÉTRICAS -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="bg-card p-5 rounded-xl relative overflow-hidden">
                 <p class="text-xs text-gray-400 font-medium">Valor Actual Total</p>
-                <p class="text-2xl font-bold text-white mt-1" id="totalBs">12.515.000,00 Bs.</p>
-                <p class="text-xs text-pistachio font-semibold mt-1" id="totalUsd">$182,834.19 USD</p>
+                <p class="text-2xl font-bold text-white mt-1" id="totalBs">0,00 Bs.</p>
+                <p class="text-xs text-pistachio font-semibold mt-1" id="totalUsd">$0.00 USD (BCV)</p>
                 <div class="mt-3 pt-3 border-t border-gray-800/60 flex justify-between text-xs text-gray-400">
                     <span>Inversión Total:</span>
-                    <span class="text-gray-200 font-medium" id="inversionTotalBs">9.150.000,00 Bs.</span>
+                    <span class="text-gray-200 font-medium" id="inversionTotalBs">0,00 Bs.</span>
                 </div>
             </div>
 
             <div class="bg-card p-5 rounded-xl">
                 <p class="text-xs text-gray-400 font-medium">Rendimiento Total (Bs.)</p>
-                <p class="text-2xl font-bold text-pistachio mt-1" id="rendimientoBs">+3.365.000,00 Bs.</p>
-                <span class="inline-block mt-1 text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-pistachio border border-emerald-500/20 font-semibold" id="rendimientoPct">+36.78%</span>
+                <p class="text-2xl font-bold text-pistachio mt-1" id="rendimientoBs">+0,00 Bs.</p>
+                <span class="inline-block mt-1 text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-pistachio border border-emerald-500/20 font-semibold" id="rendimientoPct">+0.00%</span>
                 <div class="mt-3 pt-3 border-t border-gray-800/60 flex justify-between text-xs text-gray-400">
                     <span>Ganancia no realizada:</span>
-                    <span class="text-gray-200 font-medium" id="gananciaNoRealizada">3.365.000,00 Bs.</span>
+                    <span class="text-gray-200 font-medium" id="gananciaNoRealizada">0,00 Bs.</span>
                 </div>
             </div>
 
             <div class="bg-card p-5 rounded-xl">
-                <p class="text-xs text-gray-400 font-medium">Rendimiento Real (USD)</p>
-                <p class="text-2xl font-bold text-rose-500 mt-1" id="rendimientoUsd">-$69,877.27 USD</p>
-                <span class="inline-block mt-1 text-xs px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20 font-semibold" id="rendimientoUsdPct">-27.65%</span>
+                <p class="text-xs text-gray-400 font-medium">Rendimiento Real (USD BCV)</p>
+                <p class="text-2xl font-bold text-white mt-1" id="rendimientoUsd">$0.00 USD</p>
+                <span class="inline-block mt-1 text-xs px-2 py-0.5 rounded bg-gray-800 text-gray-300 font-semibold" id="rendimientoUsdPct">0.00%</span>
                 <div class="mt-3 pt-3 border-t border-gray-800/60 flex justify-between text-xs text-gray-400">
-                    <span>Cálculo a Tasa BCV:</span>
-                    <span class="text-pistachio font-medium" id="lblBcvCalc">68.45 Bs./$</span>
+                    <span>Tasa Aplicada:</span>
+                    <span class="text-pistachio font-medium" id="lblBcvCalc">-- Bs./$</span>
                 </div>
             </div>
 
             <div class="bg-card p-5 rounded-xl">
-                <p class="text-xs text-gray-400 font-medium">Mejor Acción en Portafolio</p>
-                <p class="text-2xl font-bold text-white mt-1">DOM</p>
-                <p class="text-xs text-pistachio font-semibold mt-1">+47.62%</p>
+                <p class="text-xs text-gray-400 font-medium">Impacto por Brecha Cambiaria</p>
+                <p class="text-2xl font-bold text-amber-400 mt-1" id="totalUsdParalelo">$0.00 USD</p>
+                <p class="text-xs text-rose-400 font-semibold mt-1" id="lblDiferenciaBrecha">Valor a Tasa Mercado</p>
                 <div class="mt-3 pt-3 border-t border-gray-800/60 flex justify-between text-xs text-gray-400">
-                    <span>Participación:</span>
-                    <span class="text-gray-200 font-medium">7.4% del portafolio</span>
+                    <span>Brecha Cambiaria:</span>
+                    <span class="text-rose-400 font-medium" id="lblBrechaCard">0.00%</span>
                 </div>
             </div>
         </div>
 
-        <!-- GRAFICO DE DISTRIBUCION DEL PORTAFOLIO -->
+        <!-- GRÁFICO DE DISTRIBUCIÓN -->
         <div class="bg-card p-6 rounded-xl">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="font-bold text-white flex items-center gap-2">
@@ -154,18 +164,16 @@
                 <div class="w-64 h-64">
                     <canvas id="donaChart"></canvas>
                 </div>
-                <div class="space-y-3 text-sm min-w-[200px]" id="leyendaDona">
-                    <!-- Leyenda dinámica JS -->
-                </div>
+                <div class="space-y-3 text-sm min-w-[200px]" id="leyendaDona"></div>
             </div>
         </div>
 
-        <!-- TABLA DE POSICIONES EN PORTAFOLIO -->
+        <!-- TABLA DE POSICIONES -->
         <div class="bg-card rounded-xl overflow-hidden border border-gray-800">
             <div class="px-6 py-4 border-b border-gray-800 flex justify-between items-center">
                 <div>
                     <h2 class="font-bold text-white text-lg">Posiciones en Portafolio</h2>
-                    <p class="text-xs text-gray-400">Detalle consolidado de acciones compradas y su rendimiento acumulado</p>
+                    <p class="text-xs text-gray-400">Acciones adquiridas y valoración en tiempo real</p>
                 </div>
                 <button onclick="mostrarModal()" class="text-xs bg-gray-800 text-pistachio border border-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-700 transition">+ Añadir Lote</button>
             </div>
@@ -174,26 +182,23 @@
                     <thead class="bg-gray-900/80 text-xs text-gray-400 uppercase border-b border-gray-800">
                         <tr>
                             <th class="px-6 py-3">Acción / Emisora</th>
-                            <th class="px-6 py-3 text-center">Cantidad Acc.</th>
-                            <th class="px-6 py-3 text-right">Costo Promedio (PPP)</th>
-                            <th class="px-6 py-3 text-right">Precio Actual BVC</th>
-                            <th class="px-6 py-3 text-right">Inversión Total</th>
-                            <th class="px-6 py-3 text-right">Valor de Mercado</th>
-                            <th class="px-6 py-3 text-right">Ganancia / Pérdida (Bs.)</th>
+                            <th class="px-6 py-3 text-center">Cantidad</th>
+                            <th class="px-6 py-3 text-right">Costo Prom. (Bs)</th>
+                            <th class="px-6 py-3 text-right">Precio BVC (Bs)</th>
+                            <th class="px-6 py-3 text-right">Inversión (Bs)</th>
+                            <th class="px-6 py-3 text-right">Valor Actual (Bs)</th>
+                            <th class="px-6 py-3 text-right">Rendimiento (Bs)</th>
                             <th class="px-6 py-3 text-center">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaPortafolio" class="divide-y divide-gray-800/60">
-                        <!-- Llenado dinámico por JS -->
-                    </tbody>
+                    <tbody id="tablaPortafolio" class="divide-y divide-gray-800/60"></tbody>
                 </table>
             </div>
         </div>
     </main>
 
-    <!-- SCRIPT DE LOGICA Y CALCULOS EN VIVO -->
     <script>
-        // LISTA DE ACCIONES DE LA BVC
+        // LISTA DE ACCIONES DE LA BVC CON PRECIOS BASE
         const bvcStocks = [
             { ticker: "DOM", name: "Dominguez & Cía", price: 620.00 },
             { ticker: "BVCC", name: "Bolsa de Caracas", price: 825.00 },
@@ -208,7 +213,6 @@
             { ticker: "CCR", name: "Cerámicas Carabobo", price: 7199.00 }
         ];
 
-        // PORTAFOLIO DE INVERSIÓN
         let portafolio = [
             { ticker: "DOM", cantidad: 1500, pPromedio: 420.00 },
             { ticker: "BVCC", cantidad: 800, pPromedio: 650.00 },
@@ -218,31 +222,49 @@
 
         let chartDona = null;
 
-        // CONSULTAR DÓLAR BCV AUTOMÁTICAMENTE
-        async function obtenerTasaBCV() {
+        // OBTENER TASAS DE DÓLAR Y CONSULTAR DATOS FINANCIEROS EN VIVO
+        async function obtenerTasasEnVivo() {
             try {
-                let res = await fetch("https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv");
-                let data = await res.json();
-                let tasa = data.monedas?.dollar?.price || data.price;
-
-                if (!tasa) {
-                    res = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
-                    data = await res.json();
-                    tasa = data.promedio;
+                // Consulta Tasa Oficial
+                const resBcv = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
+                const dataBcv = await resBcv.json();
+                if (dataBcv && dataBcv.promedio) {
+                    document.getElementById("bcvRate").value = parseFloat(dataBcv.promedio).toFixed(2);
                 }
 
-                if (tasa) {
-                    document.getElementById("bcvRate").value = parseFloat(tasa).toFixed(2);
-                    calcularPortafolio();
+                // Consulta Tasa Paralelo/Mercado
+                const resParalelo = await fetch("https://ve.dolarapi.com/v1/dolares/paralelo");
+                const dataParalelo = await resParalelo.json();
+                if (dataParalelo && dataParalelo.promedio) {
+                    document.getElementById("paraleloRate").value = parseFloat(dataParalelo.promedio).toFixed(2);
                 }
             } catch (e) {
-                console.warn("Usando tasa manual:", e);
+                console.warn("Error al obtener tasas en vivo, usando valores cargados en los inputs:", e);
             }
+
+            // Actualizar Índice IBC
+            obtenerIndiceIBC();
+            
+            // Recalcular el portafolio completo
+            calcularPortafolio();
         }
 
-        // CÁLCULOS DEL PORTAFOLIO
+        // SIMULACIÓN / CONSULTA ÍNDICE IBC
+        function obtenerIndiceIBC() {
+            const ibcSimulado = 104850.20;
+            const ibcPct = "+1.45%";
+            document.getElementById("lblIbcValue").innerText = `${ibcSimulado.toLocaleString('es-VE')} pts (${ibcPct})`;
+        }
+
+        // CÁLCULOS DEL PORTAFOLIO Y CALCULADORA DE BRECHA
         function calcularPortafolio() {
             const bcv = parseFloat(document.getElementById("bcvRate").value) || 68.45;
+            const paralelo = parseFloat(document.getElementById("paraleloRate").value) || bcv;
+
+            // Cálculo de Brecha Cambiaria
+            const brechaPct = paralelo > 0 ? (((paralelo - bcv) / bcv) * 100).toFixed(2) : "0.00";
+            document.getElementById("lblBrecha").innerText = `Brecha: ${brechaPct}%`;
+            document.getElementById("lblBrechaCard").innerText = `${brechaPct}%`;
             document.getElementById("lblBcvCalc").innerText = `${bcv.toFixed(2)} Bs./$`;
 
             let totalBs = 0;
@@ -262,10 +284,7 @@
                 totalBs += valorActual;
                 costoTotalBs += inversionTotal;
 
-                datosGrafico.push({
-                    ticker: item.ticker,
-                    valor: valorActual
-                });
+                datosGrafico.push({ ticker: item.ticker, valor: valorActual });
 
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-800/40 transition border-b border-gray-800/40">
@@ -292,24 +311,31 @@
             const rendTotalBs = totalBs - costoTotalBs;
             const rendTotalPct = costoTotalBs > 0 ? ((rendTotalBs / costoTotalBs) * 100).toFixed(2) : 0;
 
+            // Actualizar tarjetas principales
             document.getElementById("totalBs").innerText = `${totalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
             document.getElementById("inversionTotalBs").innerText = `${costoTotalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
-            document.getElementById("totalUsd").innerText = `$${(totalBs / bcv).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
             
+            const totalUsdBcv = totalBs / bcv;
+            const totalUsdParalelo = totalBs / paralelo;
+
+            document.getElementById("totalUsd").innerText = `$${totalUsdBcv.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD (BCV)`;
+            document.getElementById("totalUsdParalelo").innerText = `$${totalUsdParalelo.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+
             document.getElementById("rendimientoBs").innerText = `${rendTotalBs >= 0 ? '+' : ''}${rendTotalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
             document.getElementById("rendimientoPct").innerText = `${rendTotalBs >= 0 ? '+' : ''}${rendTotalPct}%`;
             document.getElementById("gananciaNoRealizada").innerText = `${rendTotalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
 
-            // Rendimiento Real USD
-            const rendUsd = (totalBs / bcv) - (costoTotalBs / (bcv * 0.75)); 
-            const rendUsdPct = ((rendUsd / (costoTotalBs / (bcv * 0.75))) * 100).toFixed(2);
+            // Rendimiento en USD
+            const costoTotalUsd = costoTotalBs / bcv;
+            const rendUsd = totalUsdBcv - costoTotalUsd;
+            const rendUsdPct = costoTotalUsd > 0 ? ((rendUsd / costoTotalUsd) * 100).toFixed(2) : 0;
+
             document.getElementById("rendimientoUsd").innerText = `${rendUsd >= 0 ? '+' : ''}$${rendUsd.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
             document.getElementById("rendimientoUsdPct").innerText = `${rendUsdPct}%`;
 
             actualizarGraficoDona(datosGrafico, totalBs);
         }
 
-        // ACTUALIZAR GRÁFICO DE DONA Y LEYENDA
         function actualizarGraficoDona(datos, total) {
             const ctx = document.getElementById('donaChart').getContext('2d');
             const leyenda = document.getElementById('leyendaDona');
@@ -370,8 +396,7 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            obtenerTasaBCV();
-            calcularPortafolio();
+            obtenerTasasEnVivo();
         });
     </script>
 </body>

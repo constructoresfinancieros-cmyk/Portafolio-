@@ -16,7 +16,7 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- CINTILLO EN VIVO BVC (TRADINGVIEW WIDGET - INTRACTO) -->
+    <!-- CINTILLO EN VIVO BVC (TRADINGVIEW WIDGET) -->
     <div class="w-full bg-gray-950 border-b border-gray-800">
         <div class="tradingview-widget-container">
             <div class="tradingview-widget-container__widget"></div>
@@ -91,7 +91,7 @@
     <!-- NAVEGACIÓN SECUNDARIA (PESTAÑAS FUNCIONALES) -->
     <div class="border-b border-gray-800 bg-gray-900/30 px-6">
         <div class="max-w-7xl mx-auto flex gap-6 text-sm font-medium overflow-x-auto">
-            <button id="btnTabPortafolio" onclick="cambiarPestana('portafolio')" class="py-3 text-pistachio border-b-2 border-pistachio flex items-center gap-2 whitespace-nowrap">
+            <button id="btnTabPortafolio" onclick="cambiarPestana('portafolio')" class="py-3 text-pistachio border-b-2 border-pistachio flex items-center gap-2 whitespace-nowrap font-semibold">
                 💼 Mi Portafolio
             </button>
             <button id="btnTabMercado" onclick="cambiarPestana('mercado')" class="py-3 text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap">
@@ -301,18 +301,18 @@
     </div>
 
     <script>
-        // LISTA OFICIAL Y ACTUALIZADA DE ACCIONES BVC (PRECIOS REALES DE MERCADO)
+        // LISTA BVC SINCRONIZADA CON VALORES DEL CINTILLO EN VIVO
         const bvcStocks = [
             { ticker: "ABC.A", name: "Banco del Caribe C.A. Clase A", price: 1621.00 },
             { ticker: "ALZ.B", name: "Alalza Inversiones Clase B", price: 44.40 },
             { ticker: "ARC.A", name: "Arca Inm. y Valores Clase A", price: 2000.00 },
             { ticker: "ARC.B", name: "Arca Inm. y Valores Clase B", price: 1284.00 },
-            { ticker: "BNC", name: "Banco Nacional de Crédito", price: 552.01 },
-            { ticker: "BPV", name: "Banco Provincial S.A.", price: 63.81 },
+            { ticker: "BNC", name: "Banco Nacional de Crédito", price: 689.00 },
+            { ticker: "BPV", name: "Banco Provincial S.A.", price: 61.47 },
             { ticker: "BVCC", name: "Bolsa de Valores de Caracas", price: 774.80 },
             { ticker: "BVL", name: "Banco de Venezuela S.A.", price: 1649.01 },
             { ticker: "CCP.B", name: "Clabe Capital C.A. Clase B", price: 400.00 },
-            { ticker: "CCR", name: "Cerámica Carabobo SACA", price: 6300.00 },
+            { ticker: "CCR", name: "Cerámica Carabobo SACA", price: 7199.00 },
             { ticker: "CGQ", name: "Corporación Grupo Químico", price: 2450.00 },
             { ticker: "CRM.A", name: "Corimón C.A.", price: 548.00 },
             { ticker: "DOM", name: "Domínguez & Cía S.A.", price: 593.00 },
@@ -345,7 +345,7 @@
             { ticker: "ABC.A", cantidad: 500, pPromedio: 1500.00 },
             { ticker: "BVCC", cantidad: 800, pPromedio: 700.00 },
             { ticker: "BNC", cantidad: 10000, pPromedio: 500.00 },
-            { ticker: "BVL", cantidad: 2500, pPromedio: 1500.00 }
+            { ticker: "CCR", cantidad: 200, pPromedio: 6500.00 }
         ];
 
         let historial = [

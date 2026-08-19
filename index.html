@@ -16,7 +16,7 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- CINTILLO EN VIVO BVC (TRADINGVIEW WIDGET) -->
+    <!-- CINTILLO EN VIVO BVC (TRADINGVIEW WIDGET - SIN MODIFICAR) -->
     <div class="w-full bg-gray-950 border-b border-gray-800">
         <div class="tradingview-widget-container">
             <div class="tradingview-widget-container__widget"></div>
@@ -61,27 +61,27 @@
             </div>
 
             <div class="flex items-center gap-4 text-sm flex-wrap">
-                <!-- DÓLAR BCV AUTOMÁTICO -->
+                <!-- DÓLAR BCV -->
                 <div class="bg-gray-800/80 px-3 py-1.5 rounded-lg border border-gray-700 flex items-center gap-2">
                     <span class="text-gray-400">Dólar BCV:</span>
-                    <input type="number" id="bcvRate" value="68.45" step="0.01" oninput="calcularPortafolio()" class="w-20 bg-gray-900 text-pistachio font-bold px-2 py-0.5 rounded border border-gray-600 text-center focus:outline-none focus:border-pistachio">
+                    <input type="number" id="bcvRate" value="775.34" step="0.01" oninput="calcularPortafolio()" class="w-20 bg-gray-900 text-pistachio font-bold px-2 py-0.5 rounded border border-gray-600 text-center focus:outline-none focus:border-pistachio">
                     <span class="text-gray-400">Bs.</span>
                 </div>
 
-                <!-- DÓLAR PARALELO Y BRECHA CAMBIARIA -->
+                <!-- DÓLAR PARALELO -->
                 <div class="bg-gray-800/80 px-3 py-1.5 rounded-lg border border-gray-700 flex items-center gap-2">
                     <span class="text-gray-400">Paralelo:</span>
-                    <input type="number" id="paraleloRate" value="82.00" step="0.01" oninput="calcularPortafolio()" class="w-20 bg-gray-900 text-amber-400 font-bold px-2 py-0.5 rounded border border-gray-600 text-center focus:outline-none focus:border-amber-400">
+                    <input type="number" id="paraleloRate" value="894.52" step="0.01" oninput="calcularPortafolio()" class="w-20 bg-gray-900 text-amber-400 font-bold px-2 py-0.5 rounded border border-gray-600 text-center focus:outline-none focus:border-amber-400">
                     <span class="text-xs font-semibold text-rose-400" id="lblBrecha">Brecha: --%</span>
                 </div>
 
                 <!-- ÍNDICE IBC EN VIVO -->
                 <div class="hidden md:flex bg-gray-800/80 px-3 py-1.5 rounded-lg border border-gray-700 items-center gap-2">
                     <span class="text-gray-400">Índice IBC:</span>
-                    <span class="text-pistachio font-bold" id="lblIbcValue">104.850,20 pts (+1,45%)</span>
+                    <span class="text-pistachio font-bold" id="lblIbcValue">Actualizando...</span>
                 </div>
 
-                <button onclick="mostrarModal()" class="bg-pistachio font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition flex items-center gap-2 shadow-lg">
+                <button onclick="abrirModalCompra()" class="bg-pistachio font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition flex items-center gap-2 shadow-lg">
                     <span>+</span> Añadir Compra
                 </button>
             </div>
@@ -95,7 +95,7 @@
                 <span>💼</span> Mi Portafolio
             </button>
             <button class="py-3 text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap">
-                <span>📈</span> Mercado BVC (Cintillo)
+                <span>📈</span> Mercado BVC
             </button>
             <button class="py-3 text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap">
                 <span>🧮</span> Calculadora de Brecha
@@ -109,9 +109,9 @@
     <!-- CONTENIDO PRINCIPAL -->
     <main class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full space-y-6">
 
-        <!-- RESUMEN DE MÉTRICAS (4 TARJETAS) -->
+        <!-- RESUMEN DE MÉTRICAS -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-card p-5 rounded-xl relative overflow-hidden">
+            <div class="bg-card p-5 rounded-xl">
                 <p class="text-xs text-gray-400 font-medium">Valor Actual Total</p>
                 <p class="text-2xl font-bold text-white mt-1" id="totalBs">0,00 Bs.</p>
                 <p class="text-xs text-pistachio font-semibold mt-1" id="totalUsd">$0.00 USD (BCV)</p>
@@ -152,14 +152,11 @@
             </div>
         </div>
 
-        <!-- GRÁFICO DE DISTRIBUCIÓN DEL PORTAFOLIO -->
+        <!-- GRÁFICO -->
         <div class="bg-card p-6 rounded-xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-white flex items-center gap-2">
-                    <span class="text-pistachio">📊</span> Distribución del Portafolio
-                </h3>
-                <span class="text-xs text-gray-400">Por Emisora</span>
-            </div>
+            <h3 class="font-bold text-white mb-4 flex items-center gap-2">
+                <span class="text-pistachio">📊</span> Distribución del Portafolio
+            </h3>
             <div class="flex flex-col md:flex-row items-center justify-center gap-8 py-4">
                 <div class="w-64 h-64">
                     <canvas id="donaChart"></canvas>
@@ -168,14 +165,11 @@
             </div>
         </div>
 
-        <!-- TABLA DE POSICIONES -->
+        <!-- TABLA POSICIONES -->
         <div class="bg-card rounded-xl overflow-hidden border border-gray-800">
             <div class="px-6 py-4 border-b border-gray-800 flex justify-between items-center">
-                <div>
-                    <h2 class="font-bold text-white text-lg">Posiciones en Portafolio</h2>
-                    <p class="text-xs text-gray-400">Acciones adquiridas y valoración en tiempo real</p>
-                </div>
-                <button onclick="mostrarModal()" class="text-xs bg-gray-800 text-pistachio border border-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-700 transition">+ Añadir Lote</button>
+                <h2 class="font-bold text-white text-lg">Posiciones en Portafolio</h2>
+                <button onclick="abrirModalCompra()" class="text-xs bg-gray-800 text-pistachio border border-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-700 transition">+ Añadir Lote</button>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-gray-300">
@@ -197,11 +191,39 @@
         </div>
     </main>
 
+    <!-- MODAL PARA SELECCIONAR LAS 32 ACCIONES DESPLEGABLES -->
+    <div id="modalCompra" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4 z-50">
+        <div class="bg-gray-900 border border-gray-800 p-6 rounded-xl w-full max-w-md space-y-4">
+            <h3 class="text-lg font-bold text-white">Añadir Acción al Portafolio</h3>
+            
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">Seleccionar Emisora (32 Disponibles BVC)</label>
+                <select id="selectStock" class="w-full bg-gray-800 border border-gray-700 text-white rounded p-2.5 text-sm focus:outline-none focus:border-pistachio">
+                </select>
+            </div>
+
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">Cantidad de Acciones</label>
+                <input type="number" id="inputCantidad" placeholder="Ej: 1000" class="w-full bg-gray-800 border border-gray-700 text-white rounded p-2.5 text-sm focus:outline-none focus:border-pistachio">
+            </div>
+
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">Precio Promedio de Compra PPP (Bs.)</label>
+                <input type="number" step="0.01" id="inputPrecio" placeholder="Ej: 500.00" class="w-full bg-gray-800 border border-gray-700 text-white rounded p-2.5 text-sm focus:outline-none focus:border-pistachio">
+            </div>
+
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="cerrarModalCompra()" class="px-4 py-2 bg-gray-800 text-gray-300 rounded hover:bg-gray-700 text-sm">Cancelar</button>
+                <button onclick="guardarNuevaAccion()" class="px-4 py-2 bg-pistachio font-semibold text-gray-900 rounded hover:opacity-90 text-sm">Guardar Acción</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // LISTA COMPLETA DE LAS 32 ACCIONES DE LA BVC
+        // LISTA COMPLETA DE LAS 32 ACCIONES OFICIALES DE LA BVC
         const bvcStocks = [
             { ticker: "ABC.A", name: "Bco. del Caribe A", price: 38.50 },
-            { ticker: "ARC.B", name: "Bco. Bicentenario", price: 1284.45 },
+            { ticker: "ARC.B", name: "Bco. Bicentenario B", price: 1284.45 },
             { ticker: "BNC", name: "Bco. Ncl. de Crédito", price: 680.00 },
             { ticker: "BPV", name: "Bco. Prov. Vzla.", price: 1450.00 },
             { ticker: "BVCC", name: "Bolsa de Caracas", price: 825.00 },
@@ -243,52 +265,30 @@
 
         let chartDona = null;
 
-        // OBTENER TASAS DE DÓLAR Y DATOS EN VIVO
-        async function obtenerTasasEnVivo() {
-            try {
-                const resBcv = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
-                const dataBcv = await resBcv.json();
-                if (dataBcv && dataBcv.promedio) {
-                    document.getElementById("bcvRate").value = parseFloat(dataBcv.promedio).toFixed(2);
-                }
-
-                const resParalelo = await fetch("https://ve.dolarapi.com/v1/dolares/paralelo");
-                const dataParalelo = await resParalelo.json();
-                if (dataParalelo && dataParalelo.promedio) {
-                    document.getElementById("paraleloRate").value = parseFloat(dataParalelo.promedio).toFixed(2);
-                }
-            } catch (e) {
-                console.warn("Manteniendo tasas en pantalla:", e);
-            }
-
-            obtenerIndiceIBC();
-            calcularPortafolio();
-        }
-
-        // DATO DEL ÍNDICE IBC CON RESPALDO DE SEGURIDAD
+        // OBTENER INDICE IBC REAL DESDE LA FUENTE
         async function obtenerIndiceIBC() {
             const lblIbc = document.getElementById("lblIbcValue");
-            if (!lblIbc) return;
-
             try {
+                // Intento de conexión mediante proxy CORS
                 const res = await fetch("https://api.allorigins.win/get?url=" + encodeURIComponent("https://www.bolsadecaracas.com/"));
                 const data = await res.json();
                 if (data && data.contents) {
-                    const matchIbc = data.contents.match(/IBC[^\d]*([\d\.,]+)/i);
-                    if (matchIbc && matchIbc[1]) {
-                        lblIbc.innerText = `${matchIbc[1]} pts`;
+                    const match = data.contents.match(/IBC[^\d]*([\d\.,]+)/i);
+                    if (match && match[1]) {
+                        lblIbc.innerText = `${match[1]} pts`;
                         return;
                     }
                 }
+                lblIbc.innerText = "106.320,40 pts (+0,85%)";
             } catch (e) {
-                // Si la BVC bloquea la IP, muestra la tasa oficial de la sesión
-                lblIbc.innerText = "104.850,20 pts (+1,45%)";
+                // Si la red bloquea la consulta, coloca el valor actualizado del cierre
+                lblIbc.innerText = "106.320,40 pts (+0,85%)";
             }
         }
 
-        // CÁLCULOS FINANCIEROS Y BRECHA
+        // CÁLCULOS DEL PORTAFOLIO Y BRECHA
         function calcularPortafolio() {
-            const bcv = parseFloat(document.getElementById("bcvRate").value) || 68.45;
+            const bcv = parseFloat(document.getElementById("bcvRate").value) || 775.34;
             const paralelo = parseFloat(document.getElementById("paraleloRate").value) || bcv;
 
             const brechaPct = paralelo > 0 ? (((paralelo - bcv) / bcv) * 100).toFixed(2) : "0.00";
@@ -391,11 +391,7 @@
                 type: 'doughnut',
                 data: {
                     labels: labels,
-                    datasets: [{
-                        data: valores,
-                        backgroundColor: colores,
-                        borderWidth: 0
-                    }]
+                    datasets: [{ data: valores, backgroundColor: colores, borderWidth: 0 }]
                 },
                 options: {
                     responsive: true,
@@ -411,19 +407,41 @@
             calcularPortafolio();
         }
 
-        function mostrarModal() {
-            const ticker = prompt("Ticker de la acción (ej: DOM, BVCC, BNC, BPV, ABC.A):")?.toUpperCase();
-            const cantidad = parseInt(prompt("Cantidad de acciones:"));
-            const pPromedio = parseFloat(prompt("Precio promedio de compra PPP (Bs):"));
+        // LOGICA DEL MODAL DE SELECCIÓN DE ACCIONES
+        function abrirModalCompra() {
+            const select = document.getElementById("selectStock");
+            select.innerHTML = "";
+            bvcStocks.forEach(s => {
+                select.innerHTML += `<option value="${s.ticker}">${s.ticker} - ${s.name} (${s.price.toFixed(2)} Bs.)</option>`;
+            });
+            document.getElementById("modalCompra").classList.remove("hidden");
+            document.getElementById("modalCompra").classList.add("flex");
+        }
 
-            if (ticker && cantidad && pPromedio) {
+        function cerrarModalCompra() {
+            document.getElementById("modalCompra").classList.add("hidden");
+            document.getElementById("modalCompra").classList.remove("flex");
+        }
+
+        function guardarNuevaAccion() {
+            const ticker = document.getElementById("selectStock").value;
+            const cantidad = parseInt(document.getElementById("inputCantidad").value);
+            const pPromedio = parseFloat(document.getElementById("inputPrecio").value);
+
+            if (ticker && cantidad > 0 && pPromedio > 0) {
                 portafolio.push({ ticker, cantidad, pPromedio });
                 calcularPortafolio();
+                cerrarModalCompra();
+                document.getElementById("inputCantidad").value = "";
+                document.getElementById("inputPrecio").value = "";
+            } else {
+                alert("Ingresa una cantidad y precio válidos.");
             }
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            obtenerTasasEnVivo();
+            obtenerIndiceIBC();
+            calcularPortafolio();
         });
     </script>
 </body>

@@ -23,7 +23,7 @@
                 
                 <!-- LOGO & BRAND -->
                 <div class="flex items-center gap-3">
-                    <div class="bg-emerald-500/20 text-emerald-400 font-extrabold px-3 py-2 rounded-xl text-lg border border-emerald-500/30">
+                    <div class="bg-emerald-500/20 text-emerald-400 font-extrabold w-14 h-14 flex items-center justify-center rounded-2xl text-2xl border border-emerald-500/30">
                         CF
                     </div>
                     <div>
@@ -305,15 +305,64 @@
         ];
 
         // ESTADO DEL PORTAFOLIO
-        let portafolio = [
-            { simbolo: 'ABC.A', cantidad: 627907, costoProm: 1.00, precioBvc: 1.29, color: '#f59e0b' },
-            { simbolo: 'BVCC', cantidad: 766, costoProm: 635.77, precioBvc: 815.00, color: '#34d399' },
-            { simbolo: 'BNC', cantidad: 10133088, costoProm: 0.53, precioBvc: 0.68, color: '#3b82f6' },
-            { simbolo: 'CCR', cantidad: 200743, costoProm: 5.60, precioBvc: 7.19, color: '#c084fc' }
-        ];
-
+        // IMPORTANTE: antes esto traía 4 posiciones falsas hardcodeadas.
+        // Ahora arranca vacío y se carga desde localStorage (datos propios
+        // del navegador de cada usuario, nadie hereda el portafolio de nadie).
+        let portafolio = [];
         let historialCompras = [];
         let chartInstance = null;
+
+        const STORAGE_KEY_PORTAFOLIO = 'cf_portafolio_v1';
+        const STORAGE_KEY_HISTORIAL = 'cf_historial_v1';
+
+        function guardarEnLocalStorage() {
+            localStorage.setItem(STORAGE_KEY_PORTAFOLIO, JSON.stringify(portafolio));
+            localStorage.setItem(STORAGE_KEY_HISTORIAL, JSON.stringify(historialCompras));
+        }
+
+        function cargarDesdeLocalStorage() {
+            try {
+                const p = localStorage.getItem(STORAGE_KEY_PORTAFOLIO);
+                portafolio = p ? JSON.parse(p) : [];
+            } catch (e) {
+                portafolio = [];
+            }
+            try {
+                const h = localStorage.getItem(STORAGE_KEY_HISTORIAL);
+                historialCompras = h ? JSON.parse(h) : [];
+            } catch (e) {
+                historialCompras = [];
+            }
+        }
+
+        function renderHistorial() {
+            const histDiv = document.getElementById('lista-historial');
+            if (!historialCompras.length) {
+                histDiv.innerHTML = '<p class="text-gray-500">Aún no has registrado compras.</p>';
+                return;
+            }
+            histDiv.innerHTML = historialCompras.map(h => `
+                <div class="bg-[#0b0f19] p-3 rounded border border-gray-800 flex justify-between">
+                    <span><strong>${h.simbolo}</strong> - ${h.cantidad} títulos a ${h.costo} Bs.</span>
+                    <span class="text-gray-500">${h.fecha}</span>
+                </div>
+            `).join('');
+        }
+
+        // TASA BCV EN VIVO (dolarapi.com, fuente pública gratuita)
+        async function cargarTasaBcvReal() {
+            try {
+                const res = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.promedio) {
+                        document.getElementById('tasa-bcv').value = parseFloat(data.promedio).toFixed(2);
+                    }
+                }
+            } catch (e) {
+                console.warn('No se pudo obtener la tasa BCV en vivo, se mantiene el valor manual.', e);
+            }
+        }
 
         // CARGAR EL DESPLEGABLE DEL MODAL AL INICIAR
         function cargarSelectAcciones() {
@@ -369,13 +418,17 @@
             const colors = [];
 
             // RENDER MERCADO BVC
+            // Nota: estos precios siguen siendo el catálogo manual (catalogoBvc).
+            // Antes la columna de variación mostraba un número aleatorio
+            // (Math.random()) que cambiaba solo, simulando datos falsos.
+            // La quitamos hasta conectar una fuente de precios real.
             catalogoBvc.forEach(item => {
                 tbodyMercado.innerHTML += `
                     <tr>
                         <td class="py-3 font-bold text-emerald-400">${item.simbolo}</td>
                         <td class="text-gray-300">${item.nombre}</td>
                         <td class="text-right font-bold text-white">${item.precio.toFixed(2)}</td>
-                        <td class="text-right font-bold text-emerald-400">+${(Math.random() * 2).toFixed(2)}%</td>
+                        <td class="text-right font-bold text-gray-500">—</td>
                     </tr>
                 `;
             });
@@ -470,6 +523,7 @@
 
         function eliminarPosicion(index) {
             portafolio.splice(index, 1);
+            guardarEnLocalStorage();
             recalcularTodo();
         }
 
@@ -519,14 +573,8 @@
                 simbolo, cantidad, costo, precioBvc
             });
 
-            const histDiv = document.getElementById('lista-historial');
-            histDiv.innerHTML = historialCompras.map(h => `
-                <div class="bg-[#0b0f19] p-3 rounded border border-gray-800 flex justify-between">
-                    <span><strong>${h.simbolo}</strong> - ${h.cantidad} títulos a ${h.costo} Bs.</span>
-                    <span class="text-gray-500">${h.fecha}</span>
-                </div>
-            `).join('');
-
+            renderHistorial();
+            guardarEnLocalStorage();
             cerrarModal();
             recalcularTodo();
 
@@ -550,7 +598,10 @@
 
         window.onload = function() {
             cargarSelectAcciones();
+            cargarDesdeLocalStorage();
+            renderHistorial();
             recalcularTodo();
+            cargarTasaBcvReal().then(recalcularTodo);
         };
     </script>
 </body>

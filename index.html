@@ -1,48 +1,221 @@
-// Cargar datos en vivo desde Finve al abrir la página
-async function actualizarDesdeFinve() {
-  try {
-    console.log("Cargando cotizaciones desde Finve...");
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CF Finanzas & Emprendimiento PRO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b0f19; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; }
+        .bg-card { background-color: #111827; border: 1px solid #1f2937; }
+        .text-pistachio { color: #93E9BE; }
+        .bg-pistachio { background-color: #93E9BE; color: #0b0f19; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
 
-    // 1. Obtener tipo de cambio BCV desde la API de Finve / PyDolar
-    const resBcv = await fetch("https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv");
-    if (resBcv.ok) {
-      const dataBcv = await resBcv.json();
-      const tasa = dataBcv.monedas?.dollar?.price || dataBcv.price;
-      if (tasa) {
-        const inputBcv = document.getElementById("bcvRate");
-        if (inputBcv) {
-          inputBcv.value = parseFloat(tasa).toFixed(2);
+    <!-- CINTILLO EN VIVO BVC (TRADINGVIEW WIDGET) -->
+    <div class="w-full bg-gray-950 border-b border-gray-800">
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+            {
+                "symbols": [
+                    { "proName": "BVCV:BNC", "title": "BNC" },
+                    { "proName": "BVCV:BPV", "title": "BPV" },
+                    { "proName": "BVCV:BVCC", "title": "BVCC" },
+                    { "proName": "BVCV:BVL", "title": "BVL" },
+                    { "proName": "BVCV:DOM", "title": "DOM" },
+                    { "proName": "BVCV:MVZ.A", "title": "MVZ.A" },
+                    { "proName": "BVCV:RST", "title": "RST" },
+                    { "proName": "BVCV:TDV.D", "title": "TDV.D" },
+                    { "proName": "BVCV:ABC.A", "title": "ABC.A" },
+                    { "proName": "BVCV:CCP.A", "title": "CCP.A" },
+                    { "proName": "BVCV:EFE", "title": "EFE" },
+                    { "proName": "BVCV:MPA", "title": "MANPA" }
+                ],
+                "showSymbolLogo": false,
+                "colorTheme": "dark",
+                "isTransparent": true,
+                "displayMode": "adaptive",
+                "locale": "es"
+            }
+            </script>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <header class="border-b border-gray-800 bg-gray-900/50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-pistachio font-bold text-xl flex items-center justify-center">CF</div>
+                <div>
+                    <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                        CF Finanzas & Emprendimiento 
+                        <span class="text-xs bg-gray-800 text-pistachio px-2 py-0.5 rounded border border-gray-700">PRO</span>
+                    </h1>
+                    <p class="text-xs text-gray-400">Portafolio & Mercado BVC en Tiempo Real</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-sm">
+                <div class="bg-gray-800/80 px-3 py-1.5 rounded-lg border border-gray-700 flex items-center gap-2">
+                    <span class="text-gray-400">Dólar BCV:</span>
+                    <input type="number" id="bcvRate" value="68.45" step="0.01" oninput="calcularPortafolio()" class="w-20 bg-gray-900 text-white font-bold px-2 py-0.5 rounded border border-gray-600 text-center">
+                    <span class="text-gray-400">Bs./$</span>
+                </div>
+                <button onclick="mostrarModal()" class="bg-pistachio font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition">+ Añadir Compra</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full space-y-6">
+
+        <!-- RESUMEN DE PORTAFOLIO EN TARJETAS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-card p-5 rounded-xl">
+                <p class="text-xs text-gray-400 font-medium">Valor Actual Total</p>
+                <p class="text-2xl font-bold text-white mt-1" id="totalBs">0,00 Bs.</p>
+                <p class="text-xs text-pistachio font-semibold mt-1" id="totalUsd">$0.00 USD</p>
+            </div>
+
+            <div class="bg-card p-5 rounded-xl">
+                <p class="text-xs text-gray-400 font-medium">Rendimiento Total (Bs.)</p>
+                <p class="text-2xl font-bold text-white mt-1" id="rendimientoBs">0,00 Bs.</p>
+                <p class="text-xs text-gray-400 mt-1" id="rendimientoPct">0.00%</p>
+            </div>
+
+            <div class="bg-card p-5 rounded-xl">
+                <p class="text-xs text-gray-400 font-medium">Rendimiento Real (USD)</p>
+                <p class="text-2xl font-bold text-white mt-1" id="rendimientoUsd">$0.00 USD</p>
+                <p class="text-xs text-gray-400 mt-1">Cálculo según Tasa BCV</p>
+            </div>
+        </div>
+
+        <!-- TABLA DE MI PORTAFOLIO -->
+        <div class="bg-card rounded-xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-800">
+                <h2 class="font-bold text-white">Mis Acciones Compradas</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-gray-300">
+                    <thead class="bg-gray-900/50 text-xs text-gray-400 uppercase border-b border-gray-800">
+                        <tr>
+                            <th class="px-6 py-3">Acción</th>
+                            <th class="px-6 py-3">Cantidad</th>
+                            <th class="px-6 py-3">P. Promedio</th>
+                            <th class="px-6 py-3">P. Actual BVC</th>
+                            <th class="px-6 py-3">Valor Total (Bs)</th>
+                            <th class="px-6 py-3">Rendimiento</th>
+                            <th class="px-6 py-3">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaPortafolio" class="divide-y divide-gray-800">
+                        <!-- Se llena con JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- LOGICA JS -->
+    <script>
+        // Muestra de referencias locales para calculos de la tabla
+        const bvcStocks = [
+            { ticker: "DOM", price: 620.00 },
+            { ticker: "BVCC", price: 825.00 },
+            { ticker: "BNC", price: 680.00 },
+            { ticker: "BPV", price: 1450.00 },
+            { ticker: "BVL", price: 1650.00 },
+            { ticker: "MVZ.A", price: 2150.00 },
+            { ticker: "RST", price: 890.00 },
+            { ticker: "TDV.D", price: 420.00 }
+        ];
+
+        let portafolio = [
+            { ticker: "DOM", cantidad: 1000, pPromedio: 420.00 },
+            { ticker: "BVCC", cantidad: 500, pPromedio: 780.00 }
+        ];
+
+        // Obtener BCV automáticamente en vivo al entrar
+        async function obtenerBCV() {
+            try {
+                const res = await fetch("https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv");
+                const data = await res.json();
+                const tasa = data.monedas?.dollar?.price || data.price;
+                if (tasa) {
+                    document.getElementById("bcvRate").value = parseFloat(tasa).toFixed(2);
+                    calcularPortafolio();
+                }
+            } catch (e) {
+                console.log("Usando tasa por defecto.");
+            }
         }
-      }
-    }
 
-    // 2. Obtener cotizaciones de acciones desde Finve
-    const resFinve = await fetch("https://www.finve.net/api/stocks"); // Endpoint de cotizaciones Finve
-    if (resFinve.ok) {
-      const stocksData = await resFinve.json();
+        function calcularPortafolio() {
+            const bcv = parseFloat(document.getElementById("bcvRate").value) || 1;
+            let totalBs = 0, costoTotalBs = 0;
+            const tbody = document.getElementById("tablaPortafolio");
+            tbody.innerHTML = "";
 
-      if (Array.isArray(stocksData) && stocksData.length > 0) {
-        // Mapear los datos recibidos de Finve al formato de tu app
-        window.bvcStocks = stocksData.map(s => ({
-          ticker: s.symbol || s.ticker,
-          name: s.name || s.symbol,
-          price: parseFloat(s.price || 0),
-          change: parseFloat(s.change || 0),
-          pct: parseFloat(s.pct || s.changePercent || 0)
-        }));
+            portafolio.forEach((item, index) => {
+                const stock = bvcStocks.find(s => s.ticker === item.ticker) || { price: item.pPromedio };
+                const valorActual = item.cantidad * stock.price;
+                const costo = item.cantidad * item.pPromedio;
+                const rendBs = valorActual - costo;
+                const rendPct = costo > 0 ? ((rendBs / costo) * 100).toFixed(2) : 0;
 
-        console.log("Acciones BVC actualizadas desde Finve:", window.bvcStocks.length);
+                totalBs += valorActual;
+                costoTotalBs += costo;
 
-        // Volver a renderizar las tablas y el cintillo en tu interfaz
-        if (typeof renderTicker === "function") renderTicker();
-        if (typeof renderBvcTable === "function") renderBvcTable();
-        if (typeof calcularPortafolio === "function") calcularPortafolio();
-      }
-    }
-  } catch (error) {
-    console.warn("No se pudo obtener datos de Finve en tiempo real, usando datos locales:", error);
-  }
-}
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-800/30">
+                        <td class="px-6 py-4 font-bold text-white">${item.ticker}</td>
+                        <td class="px-6 py-4">${item.cantidad}</td>
+                        <td class="px-6 py-4">Bs. ${item.pPromedio.toFixed(2)}</td>
+                        <td class="px-6 py-4 font-semibold text-white">Bs. ${stock.price.toFixed(2)}</td>
+                        <td class="px-6 py-4">Bs. ${valorActual.toLocaleString('es-VE')}</td>
+                        <td class="px-6 py-4 ${rendBs >= 0 ? 'text-pistachio' : 'text-red-400'} font-semibold">
+                            ${rendBs >= 0 ? '+' : ''}Bs. ${rendBs.toLocaleString('es-VE')} (${rendPct}%)
+                        </td>
+                        <td class="px-6 py-4">
+                            <button onclick="eliminarAccion(${index})" class="text-red-400 hover:text-red-300 text-xs">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+            });
 
-// Ejecutar automáticamente al abrir o recargar la página
-document.addEventListener("DOMContentLoaded", actualizarDesdeFinve); 
+            const rendTotalBs = totalBs - costoTotalBs;
+            const rendTotalPct = costoTotalBs > 0 ? ((rendTotalBs / costoTotalBs) * 100).toFixed(2) : 0;
+
+            document.getElementById("totalBs").innerText = `${totalBs.toLocaleString('es-VE')} Bs.`;
+            document.getElementById("totalUsd").innerText = `$${(totalBs / bcv).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+            document.getElementById("rendimientoBs").innerText = `${rendTotalBs >= 0 ? '+' : ''}${rendTotalBs.toLocaleString('es-VE')} Bs.`;
+            document.getElementById("rendimientoPct").innerText = `${rendTotalPct}%`;
+            document.getElementById("rendimientoUsd").innerText = `$${(rendTotalBs / bcv).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+        }
+
+        function eliminarAccion(index) {
+            portafolio.splice(index, 1);
+            calcularPortafolio();
+        }
+
+        function mostrarModal() {
+            const ticker = prompt("Ticker de la acción (ej: BNC, DOM, BPV):")?.toUpperCase();
+            const cantidad = parseInt(prompt("Cantidad de acciones:"));
+            const pPromedio = parseFloat(prompt("Precio promedio de compra (Bs):"));
+
+            if (ticker && cantidad && pPromedio) {
+                portafolio.push({ ticker, cantidad, pPromedio });
+                calcularPortafolio();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            obtenerBCV();
+            calcularPortafolio();
+        });
+    </script>
+</body>
+</html> 

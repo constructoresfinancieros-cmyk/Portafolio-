@@ -430,6 +430,53 @@
     }
 
     init();
-  </script>
+  </script>// Cargar datos en vivo desde Finve al abrir la página
+async function actualizarDesdeFinve() {
+  try {
+    console.log("Cargando cotizaciones desde Finve...");
+
+    // 1. Obtener tipo de cambio BCV desde la API de Finve / PyDolar
+    const resBcv = await fetch("https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv");
+    if (resBcv.ok) {
+      const dataBcv = await resBcv.json();
+      const tasa = dataBcv.monedas?.dollar?.price || dataBcv.price;
+      if (tasa) {
+        const inputBcv = document.getElementById("bcvRate");
+        if (inputBcv) {
+          inputBcv.value = parseFloat(tasa).toFixed(2);
+        }
+      }
+    }
+
+    // 2. Obtener cotizaciones de acciones desde Finve
+    const resFinve = await fetch("https://www.finve.net/api/stocks"); // Endpoint de cotizaciones Finve
+    if (resFinve.ok) {
+      const stocksData = await resFinve.json();
+
+      if (Array.isArray(stocksData) && stocksData.length > 0) {
+        // Mapear los datos recibidos de Finve al formato de tu app
+        window.bvcStocks = stocksData.map(s => ({
+          ticker: s.symbol || s.ticker,
+          name: s.name || s.symbol,
+          price: parseFloat(s.price || 0),
+          change: parseFloat(s.change || 0),
+          pct: parseFloat(s.pct || s.changePercent || 0)
+        }));
+
+        console.log("Acciones BVC actualizadas desde Finve:", window.bvcStocks.length);
+
+        // Volver a renderizar las tablas y el cintillo en tu interfaz
+        if (typeof renderTicker === "function") renderTicker();
+        if (typeof renderBvcTable === "function") renderBvcTable();
+        if (typeof calcularPortafolio === "function") calcularPortafolio();
+      }
+    }
+  } catch (error) {
+    console.warn("No se pudo obtener datos de Finve en tiempo real, usando datos locales:", error);
+  }
+}
+
+// Ejecutar automáticamente al abrir o recargar la página
+document.addEventListener("DOMContentLoaded", actualizarDesdeFinve);
 </body>
 </html> 

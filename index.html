@@ -6,7 +6,7 @@
     <title>CF Finanzas & Emprendimiento PRO</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js para el gráfico de Dona -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -15,8 +15,12 @@
             background-color: #0b0f19;
             color: #f3f4f6;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
         }
-        /* Ocultar scrollbars molestas manteniendo scroll táctil */
+
+        /* Estilos de barras de desplazamiento suaves */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
@@ -24,47 +28,60 @@
         .text-pistacho { color: #93E9BE; }
         .bg-pistacho { background-color: #93E9BE; }
         .bg-card { background-color: #111827; }
-        
-        /* Ajuste responsivo de tablas para celulares */
+
+        /* Ajuste responsivo del Cintillo BVC para teléfonos */
+        .cintillo-container {
+            display: flex !important;
+            overflow-x: auto !important;
+            white-space: nowrap !important;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
+
+        /* Garantizar visibilidad de elementos en pantallas pequeñas */
         @media (max-width: 768px) {
             .responsive-table-container {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
+            }
+            .ibc-box {
+                display: flex !important;
+                font-size: 11px !important;
             }
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-    <!-- CINTILLO BVC SUPERIOR (DESLIZABLE EN MÓVIL) -->
-    <div class="bg-black/60 border-b border-gray-800 py-2 px-3 text-xs overflow-x-auto no-scrollbar whitespace-nowrap flex items-center gap-6">
-        <div class="flex items-center gap-2"><span class="font-bold text-gray-300">ARC.B</span> <span>1.284,45<sup class="text-gray-400">D</sup></span> <span class="text-gray-400">0,00 (0,00%)</span></div>
-        <div class="flex items-center gap-2"><span class="font-bold text-gray-300">CCP.B</span> <span>410,00<sup class="text-gray-400">D</sup></span> <span class="text-red-400">-4,00 (-0,97%)</span></div>
-        <div class="flex items-center gap-2"><span class="font-bold text-gray-300">CCR</span> <span>7.199,00<sup class="text-gray-400">D</sup></span> <span class="text-red-400">-6,00 (-0,08%)</span></div>
-        <div class="flex items-center gap-2"><span class="font-bold text-gray-300">BNC</span> <span>680,00<sup class="text-gray-400">D</sup></span> <span class="text-gray-400">0,00 (0,00%)</span></div>
-        <div class="flex items-center gap-2"><span class="font-bold text-gray-300">BPV</span> <span>61,45<sup class="text-gray-400">D</sup></span> <span class="text-red-400">-0,73 (-1,17%)</span></div>
-        <div class="flex items-center gap-2"><span class="font-bold text-gray-300">BVCC</span> <span>815,00<sup class="text-gray-400">D</sup></span> <span class="text-red-400">-12,50 (-1,5%)</span></div>
+    <!-- CINTILLO BVC SUPERIOR EN VIVO (MÓVIL Y DESKTOP) -->
+    <div class="cintillo-container bg-black/80 border-b border-gray-800 py-2.5 px-4 text-xs no-scrollbar flex items-center gap-6">
+        <div class="flex items-center gap-2"><span class="font-bold text-gray-200">ARC.B</span> <span class="text-gray-300">1.284,45<sup class="text-gray-500">D</sup></span> <span class="text-gray-400">0,00 (0,00%)</span></div>
+        <div class="flex items-center gap-2"><span class="font-bold text-gray-200">CCP.B</span> <span class="text-gray-300">410,00<sup class="text-gray-500">D</sup></span> <span class="text-red-400">-4,00 (-0,97%)</span></div>
+        <div class="flex items-center gap-2"><span class="font-bold text-gray-200">CCR</span> <span class="text-gray-300">7.199,00<sup class="text-gray-500">D</sup></span> <span class="text-red-400">-6,00 (-0,08%)</span></div>
+        <div class="flex items-center gap-2"><span class="font-bold text-gray-200">BNC</span> <span class="text-gray-300">680,00<sup class="text-gray-500">D</sup></span> <span class="text-gray-400">0,00 (0,00%)</span></div>
+        <div class="flex items-center gap-2"><span class="font-bold text-gray-200">BPV</span> <span class="text-gray-300">61,45<sup class="text-gray-500">D</sup></span> <span class="text-red-400">-0,73 (-1,17%)</span></div>
+        <div class="flex items-center gap-2"><span class="font-bold text-gray-200">BVCC</span> <span class="text-gray-300">815,00<sup class="text-gray-500">D</sup></span> <span class="text-red-400">-12,50 (-1,50%)</span></div>
     </div>
 
-    <!-- HEADER DE LA APP -->
+    <!-- ENCABEZADO DE LA APLICACIÓN -->
     <header class="p-4 border-b border-gray-800 bg-card">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
             
-            <!-- LOGO Y NOMBRE -->
+            <!-- BRANDING / LOGO -->
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-pistacho text-gray-950 font-black flex items-center justify-center text-lg">
+                <div class="w-10 h-10 rounded-full bg-pistacho text-gray-950 font-black flex items-center justify-center text-lg shadow-lg">
                     CF
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="font-bold text-lg leading-tight">CF Finanzas & Emprendimiento</h1>
+                        <h1 class="font-bold text-lg leading-tight text-white">CF Finanzas & Emprendimiento</h1>
                         <span class="bg-emerald-950 text-pistacho border border-pistacho text-[10px] font-bold px-1.5 py-0.5 rounded">PRO</span>
                     </div>
                     <p class="text-xs text-gray-400">Portafolio & Mercado BVC en Tiempo Real</p>
                 </div>
             </div>
 
-            <!-- BLOQUE DE INDICADORES / TASAS -->
+            <!-- INDICADORES CLAVE -->
             <div class="flex flex-wrap items-center gap-2 text-xs">
                 <div class="bg-gray-900 border border-gray-800 rounded px-3 py-1.5 flex items-center gap-2">
                     <span class="text-gray-400">Dólar BCV:</span>
@@ -76,178 +93,130 @@
                     <span id="tasa-paralelo" class="font-bold text-amber-400">894,52</span>
                     <span class="text-xs text-red-400 font-semibold ml-1">Brecha: <span id="porcentaje-brecha">15.37%</span></span>
                 </div>
-                <!-- ÍNDICE IBC (RESPONSIVO MÓVIL) -->
-                <div id="indicador-ibc" class="bg-gray-900 border border-gray-800 rounded px-3 py-1.5 flex items-center gap-1.5">
+                <!-- ÍNDICE IBC MÓVIL GARANTIZADO -->
+                <div id="indicador-ibc" class="ibc-box bg-gray-900 border border-gray-800 rounded px-3 py-1.5 flex items-center gap-1.5">
                     <span class="text-gray-400">Índice IBC:</span>
                     <span class="font-bold text-emerald-400">5.524,15 pts</span>
                     <span class="text-emerald-400 font-semibold">(+2,10%)</span>
                 </div>
                 
-                <button class="bg-pistacho text-gray-950 font-bold px-3 py-1.5 rounded flex items-center gap-1 hover:bg-emerald-300 transition text-xs ml-auto md:ml-0">
+                <button onclick="alert('Función de agregar lote habilitada')" class="bg-pistacho text-gray-950 font-bold px-3 py-1.5 rounded flex items-center gap-1 hover:bg-emerald-300 transition text-xs ml-auto md:ml-0">
                     <i data-lucide="plus" class="w-4 h-4"></i> Añadir Compra
                 </button>
             </div>
         </div>
 
-        <!-- PESTAÑAS / NAVEGACIÓN -->
+        <!-- NAVEGACIÓN PRINCIPAL -->
         <nav class="max-w-7xl mx-auto flex items-center gap-6 mt-4 text-xs font-medium text-gray-400 border-t border-gray-800/60 pt-3 overflow-x-auto no-scrollbar">
-            <a href="#" class="text-pistacho border-b-2 border-pistacho pb-1 flex items-center gap-1.5 font-bold"><i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Mi Portafolio</a>
-            <a href="#" class="hover:text-gray-200 pb-1 flex items-center gap-1.5"><i data-lucide="line-chart" class="w-3.5 h-3.5"></i> Mercado BVC</a>
-            <a href="#" class="hover:text-gray-200 pb-1 flex items-center gap-1.5"><i data-lucide="calculator" class="w-3.5 h-3.5"></i> Calculadora de Brecha</a>
-            <a href="#" class="hover:text-gray-200 pb-1 flex items-center gap-1.5"><i data-lucide="history" class="w-3.5 h-3.5"></i> Historial</a>
+            <button onclick="cambiarPestana('portafolio')" id="btn-portafolio" class="text-pistacho border-b-2 border-pistacho pb-1 flex items-center gap-1.5 font-bold"><i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Mi Portafolio</button>
+            <button onclick="cambiarPestana('mercado')" id="btn-mercado" class="hover:text-gray-200 pb-1 flex items-center gap-1.5"><i data-lucide="line-chart" class="w-3.5 h-3.5"></i> Mercado BVC</button>
+            <button onclick="cambiarPestana('calculadora')" id="btn-calculadora" class="hover:text-gray-200 pb-1 flex items-center gap-1.5"><i data-lucide="calculator" class="w-3.5 h-3.5"></i> Calculadora de Brecha</button>
         </nav>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL DEL PORTAFOLIO -->
+    <!-- PANEL PRINCIPAL -->
     <main class="max-w-7xl mx-auto p-4 flex-grow w-full space-y-6">
 
-        <!-- 4 TARJETAS RESUMEN (GRID ADAPTABLE A MÓVIL) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- VISTA DE PORTAFOLIO -->
+        <div id="seccion-portafolio" class="space-y-6">
             
-            <!-- TARJETA 1 -->
-            <div class="bg-card border border-gray-800 rounded-lg p-4 space-y-3">
-                <span class="text-xs text-gray-400">Valor Actual Total</span>
-                <div>
+            <!-- RESUMEN DE TARJETAS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-card border border-gray-800 rounded-lg p-4 space-y-2">
+                    <span class="text-xs text-gray-400">Valor Actual Total</span>
                     <h2 class="text-2xl font-bold">15.046,00 Bs.</h2>
                     <p class="text-xs text-emerald-400 font-semibold">$19.41 USD (BCV)</p>
                 </div>
-                <div class="flex justify-between items-center text-xs text-gray-400 border-t border-gray-800 pt-2">
-                    <span>Inversión Total:</span>
-                    <span class="font-medium text-gray-200">15.046,00 Bs.</span>
-                </div>
-            </div>
-
-            <!-- TARJETA 2 -->
-            <div class="bg-card border border-gray-800 rounded-lg p-4 space-y-3">
-                <span class="text-xs text-gray-400">Rendimiento Total (Bs.)</span>
-                <div>
+                <div class="bg-card border border-gray-800 rounded-lg p-4 space-y-2">
+                    <span class="text-xs text-gray-400">Rendimiento Total (Bs.)</span>
                     <h2 class="text-2xl font-bold text-emerald-400">+0,00 Bs.</h2>
                     <span class="inline-block bg-emerald-950 text-emerald-400 text-[10px] font-bold px-1.5 py-0.5 rounded border border-emerald-800">+0.00%</span>
                 </div>
-                <div class="flex justify-between items-center text-xs text-gray-400 border-t border-gray-800 pt-2">
-                    <span>Ganancia no realizada:</span>
-                    <span class="font-medium text-gray-200">0,00 Bs.</span>
-                </div>
-            </div>
-
-            <!-- TARJETA 3 -->
-            <div class="bg-card border border-gray-800 rounded-lg p-4 space-y-3">
-                <span class="text-xs text-gray-400">Rendimiento Real (USD BCV)</span>
-                <div>
+                <div class="bg-card border border-gray-800 rounded-lg p-4 space-y-2">
+                    <span class="text-xs text-gray-400">Rendimiento Real (USD BCV)</span>
                     <h2 class="text-2xl font-bold text-emerald-400">+$0.00 USD</h2>
                     <span class="text-xs text-gray-400">0.00%</span>
                 </div>
-                <div class="flex justify-between items-center text-xs text-gray-400 border-t border-gray-800 pt-2">
-                    <span>Tasa Aplicada:</span>
-                    <span class="font-medium text-emerald-400">775.34 Bs./$</span>
-                </div>
-            </div>
-
-            <!-- TARJETA 4 -->
-            <div class="bg-card border border-gray-800 rounded-lg p-4 space-y-3">
-                <span class="text-xs text-gray-400">Impacto por Brecha Cambiaria</span>
-                <div>
+                <div class="bg-card border border-gray-800 rounded-lg p-4 space-y-2">
+                    <span class="text-xs text-gray-400">Impacto por Brecha Cambiaria</span>
                     <h2 class="text-2xl font-bold text-amber-400">$16.82 USD</h2>
                     <p class="text-[11px] text-red-400 font-semibold">Valor a Tasa Mercado</p>
                 </div>
-                <div class="flex justify-between items-center text-xs text-gray-400 border-t border-gray-800 pt-2">
-                    <span>Brecha Cambiaria:</span>
-                    <span class="font-medium text-red-400">15.37%</span>
+            </div>
+
+            <!-- DISTRIBUCIÓN Y GRÁFICO -->
+            <div class="bg-card border border-gray-800 rounded-lg p-5">
+                <h3 class="text-sm font-bold flex items-center gap-2 mb-4">
+                    <i data-lucide="pie-chart" class="w-4 h-4 text-pistacho"></i> Distribución del Portafolio
+                </h3>
+                <div class="flex items-center justify-center py-2">
+                    <div class="w-64 h-64 relative">
+                        <canvas id="portfolioChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POSICIONES EN TABLA -->
+            <div class="bg-card border border-gray-800 rounded-lg p-4">
+                <h3 class="text-sm font-bold mb-4">Posiciones en Portafolio</h3>
+                <div class="responsive-table-container">
+                    <table class="w-full text-left text-xs text-gray-300">
+                        <thead class="bg-gray-900/80 text-gray-400 uppercase text-[10px] border-b border-gray-800">
+                            <tr>
+                                <th class="p-3">Acción</th>
+                                <th class="p-3 text-right">Cantidad</th>
+                                <th class="p-3 text-right">Costo Prom.</th>
+                                <th class="p-3 text-right">Precio BVC</th>
+                                <th class="p-3 text-right">Inversión (Bs)</th>
+                                <th class="p-3 text-right">Valor Actual</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800/50">
+                            <tr><td class="p-3 font-bold text-amber-400">ABC.A</td><td class="p-3 text-right">2.500</td><td class="p-3 text-right">1,29</td><td class="p-3 text-right">1,29</td><td class="p-3 text-right">3.235,00</td><td class="p-3 text-right font-bold">3.235,00</td></tr>
+                            <tr><td class="p-3 font-bold text-emerald-300">BNC</td><td class="p-3 text-right">2.036</td><td class="p-3 text-right">0,68</td><td class="p-3 text-right">0,68</td><td class="p-3 text-right">1.384,48</td><td class="p-3 text-right font-bold">1.384,48</td></tr>
+                            <tr><td class="p-3 font-bold text-blue-400">DOM</td><td class="p-3 text-right">1.000</td><td class="p-3 text-right">1,19</td><td class="p-3 text-right">1,19</td><td class="p-3 text-right">1.190,00</td><td class="p-3 text-right font-bold">1.190,00</td></tr>
+                            <tr><td class="p-3 font-bold text-purple-400">RST</td><td class="p-3 text-right">500</td><td class="p-3 text-right">4,00</td><td class="p-3 text-right">4,00</td><td class="p-3 text-right">2.000,00</td><td class="p-3 text-right font-bold">2.000,00</td></tr>
+                            <tr><td class="p-3 font-bold text-pink-400">RST.B</td><td class="p-3 text-right">300</td><td class="p-3 text-right">2,96</td><td class="p-3 text-right">2,96</td><td class="p-3 text-right">888,00</td><td class="p-3 text-right font-bold">888,00</td></tr>
+                            <tr><td class="p-3 font-bold text-indigo-400">MVZ.A</td><td class="p-3 text-right">100</td><td class="p-3 text-right">63,48</td><td class="p-3 text-right">63,48</td><td class="p-3 text-right">6.348,52</td><td class="p-3 text-right font-bold">6.348,52</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <!-- SECCIÓN DISTRIBUCIÓN DEL PORTAFOLIO (DONUT CHART) -->
-        <div class="bg-card border border-gray-800 rounded-lg p-5">
-            <h3 class="text-sm font-bold flex items-center gap-2 mb-4">
-                <i data-lucide="pie-chart" class="w-4 h-4 text-pistacho"></i> Distribución del Portafolio
-            </h3>
-            <div class="flex flex-col md:flex-row items-center justify-center gap-6 py-2">
-                <div class="w-56 h-56 relative">
-                    <canvas id="portfolioChart"></canvas>
+        <!-- SECCIÓN DE MERCADO / GALERÍA DE IMÁGENES -->
+        <div id="seccion-mercado" class="hidden space-y-6">
+            <div class="bg-card border border-gray-800 rounded-lg p-5">
+                <h3 class="text-sm font-bold flex items-center gap-2 mb-4">
+                    <i data-lucide="image" class="w-4 h-4 text-pistacho"></i> Análisis del Mercado BVC
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="border border-gray-800 rounded overflow-hidden bg-black/40 p-2">
+                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop" class="w-full h-48 object-cover rounded cursor-pointer" alt="Gráficos de Mercado" onclick="window.open(this.src)">
+                        <p class="text-xs text-gray-400 mt-2 text-center">Evolución de Índices y Cotizaciones</p>
+                    </div>
+                    <div class="border border-gray-800 rounded overflow-hidden bg-black/40 p-2">
+                        <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format&fit=crop" class="w-full h-48 object-cover rounded cursor-pointer" alt="Pantalla de Operaciones" onclick="window.open(this.src)">
+                        <p class="text-xs text-gray-400 mt-2 text-center">Panel Bursátil en Tiempo Real</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- SECCIÓN POSICIONES EN PORTAFOLIO (TABLA ADAPTABLE) -->
-        <div class="bg-card border border-gray-800 rounded-lg p-4">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-sm font-bold">Posiciones en Portafolio</h3>
-                <button class="bg-gray-800 hover:bg-gray-700 text-xs px-2.5 py-1 rounded text-gray-300 font-medium flex items-center gap-1">
-                    + Añadir Lote
-                </button>
-            </div>
-
-            <div class="responsive-table-container">
-                <table class="w-full text-left text-xs text-gray-300">
-                    <thead class="bg-gray-900/80 text-gray-400 uppercase text-[10px] border-b border-gray-800">
-                        <tr>
-                            <th class="p-3">Acción / Emisora</th>
-                            <th class="p-3 text-right">Cantidad</th>
-                            <th class="p-3 text-right">Costo Prom. (Bs)</th>
-                            <th class="p-3 text-right">Precio BVC (Bs)</th>
-                            <th class="p-3 text-right">Inversión (Bs)</th>
-                            <th class="p-3 text-right">Valor Actual (Bs)</th>
-                            <th class="p-3 text-right">Rendimiento (Bs)</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-800/50">
-                        <tr class="hover:bg-gray-800/30">
-                            <td class="p-3 font-bold text-amber-400">ABC.A</td>
-                            <td class="p-3 text-right">2.500</td>
-                            <td class="p-3 text-right">1,29</td>
-                            <td class="p-3 text-right font-medium">1,29</td>
-                            <td class="p-3 text-right">3.235,00</td>
-                            <td class="p-3 text-right font-bold">3.235,00</td>
-                            <td class="p-3 text-right text-emerald-400">+0,00</td>
-                        </tr>
-                        <tr class="hover:bg-gray-800/30">
-                            <td class="p-3 font-bold text-emerald-300">BNC</td>
-                            <td class="p-3 text-right">2.036</td>
-                            <td class="p-3 text-right">0,68</td>
-                            <td class="p-3 text-right font-medium">0,68</td>
-                            <td class="p-3 text-right">1.384,48</td>
-                            <td class="p-3 text-right font-bold">1.384,48</td>
-                            <td class="p-3 text-right text-emerald-400">+0,00</td>
-                        </tr>
-                        <tr class="hover:bg-gray-800/30">
-                            <td class="p-3 font-bold text-blue-400">DOM</td>
-                            <td class="p-3 text-right">1.000</td>
-                            <td class="p-3 text-right">1,19</td>
-                            <td class="p-3 text-right font-medium">1,19</td>
-                            <td class="p-3 text-right">1.190,00</td>
-                            <td class="p-3 text-right font-bold">1.190,00</td>
-                            <td class="p-3 text-right text-emerald-400">+0,00</td>
-                        </tr>
-                        <tr class="hover:bg-gray-800/30">
-                            <td class="p-3 font-bold text-purple-400">RST</td>
-                            <td class="p-3 text-right">500</td>
-                            <td class="p-3 text-right">4,00</td>
-                            <td class="p-3 text-right font-medium">4,00</td>
-                            <td class="p-3 text-right">2.000,00</td>
-                            <td class="p-3 text-right font-bold">2.000,00</td>
-                            <td class="p-3 text-right text-emerald-400">+0,00</td>
-                        </tr>
-                        <tr class="hover:bg-gray-800/30">
-                            <td class="p-3 font-bold text-pink-400">RST.B</td>
-                            <td class="p-3 text-right">300</td>
-                            <td class="p-3 text-right">2,96</td>
-                            <td class="p-3 text-right font-medium">2,96</td>
-                            <td class="p-3 text-right">888,00</td>
-                            <td class="p-3 text-right font-bold">888,00</td>
-                            <td class="p-3 text-right text-emerald-400">+0,00</td>
-                        </tr>
-                        <tr class="hover:bg-gray-800/30">
-                            <td class="p-3 font-bold text-indigo-400">MVZ.A</td>
-                            <td class="p-3 text-right">100</td>
-                            <td class="p-3 text-right">63,48</td>
-                            <td class="p-3 text-right font-medium">63,48</td>
-                            <td class="p-3 text-right">6.348,52</td>
-                            <td class="p-3 text-right font-bold">6.348,52</td>
-                            <td class="p-3 text-right text-emerald-400">+0,00</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- SECCIÓN CALCULADORA -->
+        <div id="seccion-calculadora" class="hidden space-y-6">
+            <div class="bg-card border border-gray-800 rounded-lg p-5 max-w-md mx-auto">
+                <h3 class="text-sm font-bold mb-4">Calculadora de Brecha Cambiaria</h3>
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <label class="text-gray-400 block mb-1">Monto en Bolívares (Bs):</label>
+                        <input type="number" id="calc-monto" value="1000" class="w-full bg-gray-900 border border-gray-800 rounded p-2 text-white">
+                    </div>
+                    <button onclick="calcularBrecha()" class="w-full bg-pistacho text-gray-950 font-bold p-2 rounded">Calcular Conversión</button>
+                    <div id="calc-resultado" class="p-3 bg-gray-900 border border-gray-800 rounded text-gray-300">
+                        Presiona calcular para ver el desglose en dólares.
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -258,29 +227,58 @@
         CF Finanzas & Emprendimiento © 2026 - Control de Portafolio BVC
     </footer>
 
-    <!-- INICIALIZACIÓN DE ICONOS Y GRÁFICO -->
+    <!-- LÓGICA JAVASCRIPT INTEGRAL -->
     <script>
-        // Inicializar iconos Lucide
+        // Inicializar Lucide Icons
         lucide.createIcons();
 
-        // Inicializar Gráfico de Dona
+        // NAVEGACIÓN ENTRE PESTAÑAS
+        function cambiarPestana(pestana) {
+            document.getElementById('seccion-portafolio').classList.add('hidden');
+            document.getElementById('seccion-mercado').classList.add('hidden');
+            document.getElementById('seccion-calculadora').classList.add('hidden');
+
+            document.getElementById('btn-portafolio').classList.remove('text-pistacho', 'border-b-2', 'border-pistacho', 'font-bold');
+            document.getElementById('btn-mercado').classList.remove('text-pistacho', 'border-b-2', 'border-pistacho', 'font-bold');
+            document.getElementById('btn-calculadora').classList.remove('text-pistacho', 'border-b-2', 'border-pistacho', 'font-bold');
+
+            if (pestana === 'portafolio') {
+                document.getElementById('seccion-portafolio').classList.remove('hidden');
+                document.getElementById('btn-portafolio').classList.add('text-pistacho', 'border-b-2', 'border-pistacho', 'font-bold');
+            } else if (pestana === 'mercado') {
+                document.getElementById('seccion-mercado').classList.remove('hidden');
+                document.getElementById('btn-mercado').classList.add('text-pistacho', 'border-b-2', 'border-pistacho', 'font-bold');
+            } else if (pestana === 'calculadora') {
+                document.getElementById('seccion-calculadora').classList.remove('hidden');
+                document.getElementById('btn-calculadora').classList.add('text-pistacho', 'border-b-2', 'border-pistacho', 'font-bold');
+            }
+        }
+
+        // CALCULADORA DE BRECHA
+        function calcularBrecha() {
+            const monto = parseFloat(document.getElementById('calc-monto').value) || 0;
+            const bcv = 775.34;
+            const paralelo = 894.52;
+
+            const usdBcv = (monto / bcv).toFixed(2);
+            const usdParalelo = (monto / paralelo).toFixed(2);
+
+            document.getElementById('calc-resultado').innerHTML = `
+                <p>Al Dólar BCV: <strong>$${usdBcv} USD</strong></p>
+                <p>Al Dólar Paralelo: <strong>$${usdParalelo} USD</strong></p>
+            `;
+        }
+
+        // GRÁFICO DE DONA (CHART.JS)
         const ctx = document.getElementById('portfolioChart').getContext('2d');
         new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['ABC.A (21.5%)', 'BNC (9.2%)', 'DOM (7.9%)', 'RST (13.3%)', 'RST.B (5.9%)', 'MVZ.A (42.2%)'],
+                labels: ['ABC.A', 'BNC', 'DOM', 'RST', 'RST.B', 'MVZ.A'],
                 datasets: [{
                     data: [21.5, 9.2, 7.9, 13.3, 5.9, 42.2],
-                    backgroundColor: [
-                        '#f59e0b', // ABC.A - Naranja
-                        '#34d399', // BNC - Verde
-                        '#3b82f6', // DOM - Azul
-                        '#a855f7', // RST - Morado
-                        '#ec4899', // RST.B - Rosa
-                        '#6366f1'  // MVZ.A - Índigo
-                    ],
-                    borderWidth: 0,
-                    hoverOffset: 6
+                    backgroundColor: ['#f59e0b', '#34d399', '#3b82f6', '#a855f7', '#ec4899', '#6366f1'],
+                    borderWidth: 0
                 }]
             },
             options: {
@@ -289,12 +287,7 @@
                 plugins: {
                     legend: {
                         position: 'right',
-                        labels: {
-                            color: '#9ca3af',
-                            font: { size: 11 },
-                            boxWidth: 12,
-                            padding: 10
-                        }
+                        labels: { color: '#9ca3af', font: { size: 10 } }
                     }
                 },
                 cutout: '70%'

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CF Finanzas y Emprendimiento</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bgDark: '#0B132B',
+            cardDark: '#1E293B',
+            accentBlue: '#3B82F6',
+            gainGreen: '#10B981',
+            lossRed: '#EF4444'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-bgDark text-slate-100 font-sans min-h-screen pb-20 md:pb-6">
+
+  <!-- Header / Barra Superior -->
+  <header class="bg-cardDark border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 bg-accentBlue rounded-lg flex items-center justify-center font-bold text-white shadow-lg">CF</div>
+        <h1 class="font-bold text-lg text-white tracking-wide">CF Finanzas & Emprendimiento</h1>
+      </div>
+      <div class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-full border border-slate-700 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-gainGreen animate-pulse"></span> Tasa BCV: <strong class="text-white">36.50 Bs/$</strong>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main class="max-w-7xl mx-auto px-4 pt-6">
+    <!-- Pestañas de Navegación -->
+    <div class="flex border-b border-slate-800 mb-6 gap-4">
+      <button onclick="switchTab('portafolio')" id="tabBtnPortafolio" class="pb-3 text-sm font-semibold border-b-2 border-accentBlue text-accentBlue flex items-center gap-2">
+        📊 Mi Portafolio
+      </button>
+      <button onclick="switchTab('mercado')" id="tabBtnMercado" class="pb-3 text-sm font-semibold text-slate-400 hover:text-white border-b-2 border-transparent flex items-center gap-2">
+        📈 Mercado BVC (Cierre)
+      </button>
+    </div>
+
+    <!-- PESTAÑA: PORTAFOLIO -->
+    <div id="tabPortafolio" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-cardDark p-5 rounded-xl border border-slate-800 shadow-sm">
+          <p class="text-xs text-slate-400 uppercase tracking-wider font-medium">Valor del Portafolio</p>
+          <h3 class="text-2xl font-extrabold text-white mt-1" id="valTotalBs">Bs. 0,00</h3>
+          <p class="text-xs text-slate-400 mt-1" id="valTotalUSD">$0,00 USD</p>
+        </div>
+        <div class="bg-cardDark p-5 rounded-xl border border-slate-800 shadow-sm">
+          <p class="text-xs text-slate-400 uppercase tracking-wider font-medium">Capital Invertido</p>
+          <h3 class="text-2xl font-extrabold text-white mt-1" id="capInvertido">Bs. 0,00</h3>
+          <p class="text-xs text-slate-400 mt-1">Costo Promedio Ponderado</p>
+        </div>
+        <div class="bg-cardDark p-5 rounded-xl border border-slate-800 shadow-sm">
+          <p class="text-xs text-slate-400 uppercase tracking-wider font-medium">Rendimiento Total</p>
+          <h3 class="text-2xl font-extrabold text-gainGreen mt-1" id="pnlTotal">+0,00%</h3>
+          <p class="text-xs text-slate-400 mt-1" id="pnlBs">+Bs. 0,00</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Formulario -->
+        <div class="bg-cardDark p-5 rounded-xl border border-slate-800 shadow-sm h-fit">
+          <h4 class="font-bold text-white mb-4 text-base">➕ Registrar Compra</h4>
+          <form id="tradeForm" onsubmit="addTrade(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Acción (Ticker)</label>
+              <select id="ticker" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-accentBlue" required>
+                <option value="DOM">DOM - Domínguez & Cía.</option>
+                <option value="BVCC">BVCC - Bolsa de Val. Caracas</option>
+                <option value="BNC">BNC - Banco Nac. Crédito</option>
+                <option value="BVL">BVL - Banco de Venezuela</option>
+                <option value="PTN">PTN - Protinal</option>
+                <option value="RST.B">RST.B - Ron Santa Teresa B</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-slate-400 mb-1">Cantidad</label>
+                <input type="number" id="qty" min="1" step="1" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-accentBlue" placeholder="Ej: 500" required>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-400 mb-1">Precio Compra (Bs)</label>
+                <input type="number" id="price" min="0.01" step="0.01" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-accentBlue" placeholder="Ej: 620.00" required>
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-accentBlue hover:bg-blue-600 text-white font-bold py-2.5 rounded-lg text-sm transition">Agregar al Portafolio</button>
+          </form>
+        </div>
+
+        <!-- Posiciones Tabla -->
+        <div class="lg:col-span-2 bg-cardDark p-5 rounded-xl border border-slate-800 shadow-sm overflow-x-auto">
+          <h4 class="font-bold text-white mb-4 text-base">📦 Posiciones Actuales</h4>
+          <table class="w-full text-left text-sm">
+            <thead class="text-xs text-slate-400 bg-slate-900/50 border-b border-slate-800">
+              <tr>
+                <th class="p-3">Símbolo</th>
+                <th class="p-3">Cantidad</th>
+                <th class="p-3">P. Promedio</th>
+                <th class="p-3">P. Actual</th>
+                <th class="p-3">Ganancia/Pérdida</th>
+              </tr>
+            </thead>
+            <tbody id="portfolioTable" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA: MERCADO BVC -->
+    <div id="tabMercado" class="hidden space-y-6">
+      <div class="flex justify-between items-center bg-cardDark p-4 rounded-xl border border-slate-800">
+        <div>
+          <h3 class="font-bold text-white text-lg">Mercado al Cierre (BVC)</h3>
+          <p class="text-xs text-slate-400">Cotizaciones principales de la Bolsa de Valores de Caracas</p>
+        </div>
+      </div>
+
+      <div class="bg-cardDark rounded-xl border border-slate-800 overflow-x-auto shadow-sm">
+        <table class="w-full text-left text-sm">
+          <thead class="text-xs text-slate-400 bg-slate-900/80 border-b border-slate-800">
+            <tr>
+              <th class="p-3.5">Símbolo</th>
+              <th class="p-3.5">Precio (Bs)</th>
+              <th class="p-3.5">Var. (Bs)</th>
+              <th class="p-3.5">Var. (%)</th>
+              <th class="p-3.5">Volumen</th>
+              <th class="p-3.5">Monto (Bs)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800 text-xs font-mono">
+            <tr class="hover:bg-slate-800/40">
+              <td class="p-3.5 font-bold font-sans text-white">DOM <span class="text-slate-400 font-normal text-[10px] block">Domínguez & Cía.</span></td>
+              <td class="p-3.5 font-bold">620,00</td>
+              <td class="p-3.5 text-gainGreen">+68,00</td>
+              <td class="p-3.5 text-gainGreen font-bold">+12,32%</td>
+              <td class="p-3.5 text-slate-300">800</td>
+              <td class="p-3.5 text-slate-300">502,3 mil</td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="p-3.5 font-bold font-sans text-white">BVCC <span class="text-slate-400 font-normal text-[10px] block">Bolsa de Valores de Caracas</span></td>
+              <td class="p-3.5 font-bold">825,00</td>
+              <td class="p-3.5 text-gainGreen">+26,50</td>
+              <td class="p-3.5 text-gainGreen font-bold">+3,32%</td>
+              <td class="p-3.5 text-slate-300">13,2 mil</td>
+              <td class="p-3.5 text-slate-300">10,7 M</td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="p-3.5 font-bold font-sans text-white">PTN <span class="text-slate-400 font-normal text-[10px] block">Protinal C.A.</span></td>
+              <td class="p-3.5 font-bold">490,00</td>
+              <td class="p-3.5 text-gainGreen">+10,00</td>
+              <td class="p-3.5 text-gainGreen font-bold">+2,08%</td>
+              <td class="p-3.5 text-slate-300">1,8 mil</td>
+              <td class="p-3.5 text-slate-300">896 mil</td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="p-3.5 font-bold font-sans text-white">BNC <span class="text-slate-400 font-normal text-[10px] block">Banco Nacional de Crédito</span></td>
+              <td class="p-3.5 font-bold">680,00</td>
+              <td class="p-3.5 text-gainGreen">+6,00</td>
+              <td class="p-3.5 text-gainGreen font-bold">+0,89%</td>
+              <td class="p-3.5 text-slate-300">16,6 mil</td>
+              <td class="p-3.5 text-slate-300">11,5 M</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const marketPrices = { DOM: 620.00, BVCC: 825.00, BNC: 680.00, BVL: 1650.00, PTN: 490.00, "RST.B": 310.00 };
+    let myPortfolio = JSON.parse(localStorage.getItem('cf_portfolio')) || [
+      { ticker: 'DOM', qty: 100, avgPrice: 550.00 },
+      { ticker: 'BVCC', qty: 50, avgPrice: 800.00 }
+    ];
+
+    function renderPortfolio() {
+      const tbody = document.getElementById('portfolioTable');
+      tbody.innerHTML = '';
+      let totalValueBs = 0;
+      let totalCostBs = 0;
+
+      myPortfolio.forEach(item => {
+        const currentPrice = marketPrices[item.ticker] || item.avgPrice;
+        const valBs = currentPrice * item.qty;
+        const costBs = item.avgPrice * item.qty;
+        const pnlBs = valBs - costBs;
+        const pnlPct = costBs > 0 ? ((pnlBs / costBs) * 100).toFixed(2) : '0.00';
+
+        totalValueBs += valBs;
+        totalCostBs += costBs;
+
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-slate-800/30';
+        row.innerHTML = `
+          <td class="p-3 font-bold text-white">${item.ticker}</td>
+          <td class="p-3">${item.qty}</td>
+          <td class="p-3">Bs. ${item.avgPrice.toFixed(2)}</td>
+          <td class="p-3 font-bold">Bs. ${currentPrice.toFixed(2)}</td>
+          <td class="p-3 font-bold ${pnlBs >= 0 ? 'text-gainGreen' : 'text-lossRed'}">
+            ${pnlBs >= 0 ? '+' : ''}${pnlPct}% (Bs. ${pnlBs.toFixed(2)})
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      const totalPnlBs = totalValueBs - totalCostBs;
+      const totalPnlPct = totalCostBs > 0 ? ((totalPnlBs / totalCostBs) * 100).toFixed(2) : '0.00';
+
+      document.getElementById('valTotalBs').innerText = `Bs. ${totalValueBs.toLocaleString('es-VE', {minimumFractionDigits: 2})}`;
+      document.getElementById('valTotalUSD').innerText = `$${(totalValueBs / 36.50).toFixed(2)} USD`;
+      document.getElementById('capInvertido').innerText = `Bs. ${totalCostBs.toLocaleString('es-VE', {minimumFractionDigits: 2})}`;
+      document.getElementById('pnlTotal').innerText = `${totalPnlBs >= 0 ? '+' : ''}${totalPnlPct}%`;
+      document.getElementById('pnlBs').innerText = `${totalPnlBs >= 0 ? '+' : ''}Bs. ${totalPnlBs.toFixed(2)}`;
+      
+      localStorage.setItem('cf_portfolio', JSON.stringify(myPortfolio));
+    }
+
+    function addTrade(e) {
+      e.preventDefault();
+      const ticker = document.getElementById('ticker').value;
+      const qty = parseInt(document.getElementById('qty').value);
+      const price = parseFloat(document.getElementById('price').value);
+
+      const existing = myPortfolio.find(p => p.ticker === ticker);
+      if(existing) {
+        const totalQty = existing.qty + qty;
+        existing.avgPrice = ((existing.qty * existing.avgPrice) + (qty * price)) / totalQty;
+        existing.qty = totalQty;
+      } else {
+        myPortfolio.push({ ticker, qty, avgPrice: price });
+      }
+
+      renderPortfolio();
+      document.getElementById('tradeForm').reset();
+    }
+
+    function switchTab(tab) {
+      document.getElementById('tabPortafolio').classList.toggle('hidden', tab !== 'portafolio');
+      document.getElementById('tabMercado').classList.toggle('hidden', tab !== 'mercado');
+      
+      const btnPort = document.getElementById('tabBtnPortafolio');
+      const btnMerc = document.getElementById('tabBtnMercado');
+
+      if(tab === 'portafolio') {
+        btnPort.className = "pb-3 text-sm font-semibold border-b-2 border-accentBlue text-accentBlue flex items-center gap-2";
+        btnMerc.className = "pb-3 text-sm font-semibold text-slate-400 hover:text-white border-b-2 border-transparent flex items-center gap-2";
+      } else {
+        btnMerc.className = "pb-3 text-sm font-semibold border-b-2 border-accentBlue text-accentBlue flex items-center gap-2";
+        btnPort.className = "pb-3 text-sm font-semibold text-slate-400 hover:text-white border-b-2 border-transparent flex items-center gap-2";
+      }
+    }
+
+    renderPortfolio();
+  </script>
+</body>
+</html>

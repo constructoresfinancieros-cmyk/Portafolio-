@@ -6,9 +6,9 @@
     <title>CF Finanzas & Emprendimiento PRO</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js para el gráfico donut -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- FontAwesome para iconos -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { background-color: #0b0f19; font-family: system-ui, -apple-system, sans-serif; }
@@ -35,33 +35,33 @@
                     </div>
                 </div>
 
-                <!-- METRICAS CABECERA (BCV, PARALELO, IBC, BOTÓN) -->
+                <!-- METRICAS CABECERA -->
                 <div class="flex flex-wrap items-center gap-3 text-xs">
                     <div class="bg-[#131b2e] border border-gray-800 rounded-lg px-3 py-1.5 flex items-center gap-2">
                         <span class="text-gray-400">Dólar BCV:</span>
-                        <input type="number" id="tasa-bcv" value="775.34" step="0.01" class="w-16 bg-transparent text-emerald-400 font-bold outline-none text-right" oninput="actualizarDashboard()">
+                        <input type="number" id="tasa-bcv" value="775.34" step="0.01" class="w-16 bg-transparent text-emerald-400 font-bold outline-none text-right" oninput="recalcularTodo()">
                         <span class="text-gray-500">Bs.</span>
                     </div>
 
                     <div class="bg-[#131b2e] border border-gray-800 rounded-lg px-3 py-1.5 flex items-center gap-2">
                         <span class="text-gray-400">Paralelo:</span>
-                        <input type="number" id="tasa-paralelo" value="894.52" step="0.01" class="w-16 bg-transparent text-amber-400 font-bold outline-none text-right" oninput="actualizarDashboard()">
+                        <input type="number" id="tasa-paralelo" value="894.52" step="0.01" class="w-16 bg-transparent text-amber-400 font-bold outline-none text-right" oninput="recalcularTodo()">
                         <span id="badge-brecha" class="text-red-400 text-[11px] font-semibold bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20">Brecha: 15.37%</span>
                     </div>
 
                     <div class="bg-[#131b2e] border border-gray-800 rounded-lg px-3 py-1.5 flex items-center gap-2">
                         <span class="text-gray-400">Índice IBC:</span>
-                        <span class="text-emerald-400 font-bold">5.524,15 pts</span>
+                        <span class="text-emerald-400 font-bold" id="hdr-ibc">5.524,15 pts</span>
                         <span class="text-emerald-400 text-[11px] font-semibold">(+2,10%)</span>
                     </div>
 
-                    <button class="bg-emerald-400 hover:bg-emerald-500 text-black font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors">
+                    <button onclick="abrirModal()" class="bg-emerald-400 hover:bg-emerald-500 text-black font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors">
                         <i class="fa-solid fa-plus text-xs"></i> Añadir Compra
                     </button>
                 </div>
             </div>
 
-            <!-- NAVEGACIÓN SECUNDARIA PESTAÑAS -->
+            <!-- NAVEGACIÓN PESTAÑAS -->
             <nav class="max-w-7xl mx-auto flex items-center gap-6 mt-6 border-t border-gray-800/60 pt-3 text-sm font-medium text-gray-400">
                 <button id="btn-portafolio" onclick="verTab('portafolio')" class="text-emerald-400 border-b-2 border-emerald-400 pb-2 flex items-center gap-2 font-semibold">
                     <i class="fa-solid fa-briefcase text-xs"></i> Mi Portafolio
@@ -87,58 +87,52 @@
                 <!-- 4 TARJETAS KPIS SUPERIORES -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     
-                    <!-- KPI 1 -->
                     <div class="bg-[#131b2e] border border-gray-800 p-5 rounded-xl space-y-3">
                         <span class="text-xs font-medium text-gray-400">Valor Actual Total</span>
-                        <div class="text-2xl font-black text-white">9.760.140,00 Bs.</div>
-                        <div id="lbl-usd-bcv" class="text-xs font-bold text-emerald-400">$12,588.21 USD (BCV)</div>
+                        <div class="text-2xl font-black text-white" id="kpi-valor-total">0,00 Bs.</div>
+                        <div id="kpi-usd-bcv" class="text-xs font-bold text-emerald-400">$0.00 USD (BCV)</div>
                         <div class="pt-2 border-t border-gray-800/80 flex justify-between text-xs text-gray-400">
                             <span>Inversión Total:</span>
-                            <span class="font-bold text-gray-200">7.610.000,00 Bs.</span>
+                            <span class="font-bold text-gray-200" id="kpi-inversion-total">0,00 Bs.</span>
                         </div>
                     </div>
 
-                    <!-- KPI 2 -->
                     <div class="bg-[#131b2e] border border-gray-800 p-5 rounded-xl space-y-3">
                         <span class="text-xs font-medium text-gray-400">Rendimiento Total (Bs.)</span>
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-2xl font-black text-emerald-400">+2.150.140,00 Bs.</span>
-                        </div>
-                        <span class="inline-block bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold px-2 py-0.5 rounded">
-                            +28.25%
+                        <div class="text-2xl font-black text-emerald-400" id="kpi-rend-bs">+0,00 Bs.</div>
+                        <span id="kpi-rend-pct" class="inline-block bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold px-2 py-0.5 rounded">
+                            +0.00%
                         </span>
                         <div class="pt-2 border-t border-gray-800/80 flex justify-between text-xs text-gray-400">
                             <span>Ganancia no realizada:</span>
-                            <span class="font-bold text-gray-200">2.150.140,00 Bs.</span>
+                            <span class="font-bold text-gray-200" id="kpi-ganancia-bs">0,00 Bs.</span>
                         </div>
                     </div>
 
-                    <!-- KPI 3 -->
                     <div class="bg-[#131b2e] border border-gray-800 p-5 rounded-xl space-y-3">
                         <span class="text-xs font-medium text-gray-400">Rendimiento Real (USD BCV)</span>
-                        <div class="text-2xl font-black text-emerald-400">+$2,773.16 USD</div>
-                        <span class="inline-block bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold px-2 py-0.5 rounded">
-                            28.25%
+                        <div class="text-2xl font-black text-emerald-400" id="kpi-rend-usd">+$0.00 USD</div>
+                        <span id="kpi-rend-usd-pct" class="inline-block bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold px-2 py-0.5 rounded">
+                            0.00%
                         </span>
                         <div class="pt-2 border-t border-gray-800/80 flex justify-between text-xs text-gray-400">
                             <span>Tasa Aplicada:</span>
-                            <span class="font-bold text-emerald-400">775.34 Bs./$</span>
+                            <span class="font-bold text-emerald-400" id="lbl-tasa-aplicada">775.34 Bs./$</span>
                         </div>
                     </div>
 
-                    <!-- KPI 4 -->
                     <div class="bg-[#131b2e] border border-gray-800 p-5 rounded-xl space-y-3">
                         <span class="text-xs font-medium text-gray-400">Impacto por Brecha Cambiaria</span>
-                        <div id="lbl-usd-paralelo" class="text-2xl font-black text-amber-400">$10,911.04 USD</div>
+                        <div id="kpi-usd-paralelo" class="text-2xl font-black text-amber-400">$0.00 USD</div>
                         <div class="text-xs font-semibold text-red-400">Valor a Tasa Mercado</div>
                         <div class="pt-2 border-t border-gray-800/80 flex justify-between text-xs text-gray-400">
                             <span>Brecha Cambiaria:</span>
-                            <span id="lbl-brecha-val" class="font-bold text-red-400">15.37%</span>
+                            <span id="kpi-brecha-val" class="font-bold text-red-400">15.37%</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- GRÁFICO DISTRIBUCIÓN DEL PORTAFOLIO -->
+                <!-- GRÁFICO DONUT -->
                 <div class="bg-[#131b2e] border border-gray-800 p-6 rounded-xl">
                     <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-chart-pie text-emerald-400"></i> Distribución del Portafolio
@@ -148,11 +142,11 @@
                     </div>
                 </div>
 
-                <!-- TABLA POSICIONES EN PORTAFOLIO -->
+                <!-- TABLA POSICIONES -->
                 <div class="bg-[#131b2e] border border-gray-800 p-6 rounded-xl space-y-4">
                     <div class="flex items-center justify-between">
                         <h3 class="text-sm font-bold text-white">Posiciones en Portafolio</h3>
-                        <button class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
+                        <button onclick="abrirModal()" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
                             + Añadir Lote
                         </button>
                     </div>
@@ -171,47 +165,8 @@
                                     <th class="pb-3 text-center">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-800/60 font-medium">
-                                <tr>
-                                    <td class="py-3 font-bold text-amber-400">ABC.A</td>
-                                    <td class="text-right">627.907</td>
-                                    <td class="text-right">1,00</td>
-                                    <td class="text-right text-gray-300">1,29</td>
-                                    <td class="text-right">627.907,00</td>
-                                    <td class="text-right font-bold text-white">810.000,00</td>
-                                    <td class="text-right font-bold text-emerald-400">+182.093,00 (+29,0%)</td>
-                                    <td class="text-center text-gray-500 hover:text-white cursor-pointer"><i class="fa-solid fa-ellipsis-vertical"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="py-3 font-bold text-emerald-400">BVCC</td>
-                                    <td class="text-right">766</td>
-                                    <td class="text-right">635,77</td>
-                                    <td class="text-right text-gray-300">815,00</td>
-                                    <td class="text-right">487.000,00</td>
-                                    <td class="text-right font-bold text-white">624.290,00</td>
-                                    <td class="text-right font-bold text-emerald-400">+137.290,00 (+28,2%)</td>
-                                    <td class="text-center text-gray-500 hover:text-white cursor-pointer"><i class="fa-solid fa-ellipsis-vertical"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="py-3 font-bold text-blue-400">BNC</td>
-                                    <td class="text-right">10.133.088</td>
-                                    <td class="text-right">0,53</td>
-                                    <td class="text-right text-gray-300">0,68</td>
-                                    <td class="text-right">5.370.536,64</td>
-                                    <td class="text-right font-bold text-white">6.890.500,00</td>
-                                    <td class="text-right font-bold text-emerald-400">+1.519.963,36 (+28,3%)</td>
-                                    <td class="text-center text-gray-500 hover:text-white cursor-pointer"><i class="fa-solid fa-ellipsis-vertical"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="py-3 font-bold text-purple-400">CCR</td>
-                                    <td class="text-right">200.743</td>
-                                    <td class="text-right">5,60</td>
-                                    <td class="text-right text-gray-300">7,19</td>
-                                    <td class="text-right">1.124.556,36</td>
-                                    <td class="text-right font-bold text-white">1.435.350,00</td>
-                                    <td class="text-right font-bold text-emerald-400">+310.793,64 (+27,6%)</td>
-                                    <td class="text-center text-gray-500 hover:text-white cursor-pointer"><i class="fa-solid fa-ellipsis-vertical"></i></td>
-                                </tr>
+                            <tbody id="tbody-posiciones" class="divide-y divide-gray-800/60 font-medium">
+                                <!-- JS Dinámico -->
                             </tbody>
                         </table>
                     </div>
@@ -219,87 +174,384 @@
 
             </div>
 
-            <!-- OTRAS PESTAÑAS (OCULTAS INICIALMENTE) -->
-            <div id="sec-mercado" class="hidden">
-                <div class="bg-[#131b2e] border border-gray-800 p-6 rounded-xl">
-                    <h3 class="text-sm font-bold text-white mb-4">Cotizaciones Mercado Renta Variable (BVC)</h3>
-                    <p class="text-xs text-gray-400">Sección Mercado BVC recuperada.</p>
+            <!-- PESTAÑA MERCADO BVC -->
+            <div id="sec-mercado" class="hidden space-y-6">
+                <div class="bg-[#131b2e] border border-gray-800 p-6 rounded-xl flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                        <span class="text-xs text-gray-400">Índice Bursátil Caracas (IBC)</span>
+                        <div class="text-2xl font-black text-white mt-1">5.524,15 <span class="text-emerald-400 text-sm font-bold">+2,10%</span></div>
+                    </div>
+                    <div class="text-right text-xs text-gray-400">
+                        <div>Volumen Total Operado: <strong class="text-white">12.450.300,00 Bs.</strong></div>
+                        <div class="text-emerald-400 font-bold mt-1">Mercado Abierto</div>
+                    </div>
+                </div>
+
+                <div class="bg-[#131b2e] border border-gray-800 p-6 rounded-xl space-y-4">
+                    <h3 class="text-sm font-bold text-white">Cotizaciones Oficiales de la Bolsa de Caracas (BVC)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs min-w-[600px]">
+                            <thead>
+                                <tr class="border-b border-gray-800 text-gray-400 uppercase tracking-wider text-[11px]">
+                                    <th class="pb-3">Símbolo</th>
+                                    <th class="pb-3">Empresa Emisora</th>
+                                    <th class="pb-3 text-right">Precio de Mercado (Bs)</th>
+                                    <th class="pb-3 text-right">Variación (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-800/60 font-medium" id="tbody-mercado">
+                                <!-- Generado por JS -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <div id="sec-calculadora" class="hidden">
-                <div class="bg-[#131b2e] border border-gray-800 p-6 rounded-xl">
-                    <h3 class="text-sm font-bold text-white mb-4">Calculadora de Brecha Cambiaria</h3>
-                    <p class="text-xs text-gray-400">Sección Calculadora recuperada.</p>
+            <!-- PESTAÑA CALCULADORA -->
+            <div id="sec-calculadora" class="hidden space-y-6">
+                <div class="max-w-xl mx-auto bg-[#131b2e] border border-gray-800 p-6 rounded-xl space-y-4">
+                    <h3 class="text-sm font-bold text-white border-b border-gray-800 pb-3">Calculadora Financiera de Brecha</h3>
+                    
+                    <div class="space-y-2">
+                        <label class="text-xs text-gray-400 font-medium">Monto a Convertir en Bolívares (Bs):</label>
+                        <input type="number" id="calc-monto" value="100000" oninput="calcularBrechaApp()" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg p-3 text-white font-bold text-lg outline-none focus:border-emerald-500">
+                    </div>
+
+                    <div class="bg-[#0b0f19] border border-gray-800 p-4 rounded-lg space-y-3 text-xs">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Valor Tasa BCV:</span>
+                            <strong id="calc-res-bcv" class="text-emerald-400 text-sm">$0.00 USD</strong>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Valor Tasa Paralelo (Mercado Real):</span>
+                            <strong id="calc-res-paralelo" class="text-amber-400 text-sm">$0.00 USD</strong>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-gray-800 pt-3">
+                            <span class="text-gray-400">Pérdida por Brecha Cambiaria:</span>
+                            <strong id="calc-res-impacto" class="text-red-400 text-sm">-$0.00 USD</strong>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div id="sec-historial" class="hidden">
-                <div class="bg-[#131b2e] border border-gray-800 p-6 rounded-xl">
-                    <h3 class="text-sm font-bold text-white mb-4">Historial de Operaciones</h3>
-                    <p class="text-xs text-gray-400">Sección Historial recuperada.</p>
+            <!-- PESTAÑA HISTORIAL -->
+            <div id="sec-historial" class="hidden space-y-6">
+                <div class="bg-[#131b2e] border border-gray-800 p-6 rounded-xl space-y-4">
+                    <h3 class="text-sm font-bold text-white">Historial de Transacciones Registradas</h3>
+                    <p class="text-xs text-gray-400">Registro de lotes de compra ingresados al sistema.</p>
+                    <div id="lista-historial" class="space-y-2 text-xs">
+                        <!-- Historial dinámico -->
+                    </div>
                 </div>
             </div>
 
         </main>
     </div>
 
-    <!-- SCRIPT DE INICIALIZACIÓN DE CHART.JS Y LOGICA -->
-    <script>
-        // Inicializar Gráfico Donut estilo Dashboard Original
-        const ctx = document.getElementById('chartPortafolio').getContext('2d');
-        const chartPortafolio = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['ABC.A', 'BVCC', 'BNC', 'CCR'],
-                datasets: [{
-                    data: [8.3, 6.4, 70.6, 14.8],
-                    backgroundColor: ['#f59e0b', '#34d399', '#3b82f6', '#c084fc'],
-                    borderWidth: 0,
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: '#d1d5db',
-                            font: { size: 12, weight: 'bold' },
-                            padding: 16
-                        }
-                    }
-                },
-                cutout: '70%'
-            }
-        });
+    <!-- MODAL AÑADIR COMPRA (CON CATÁLOGO DESPLEGABLE BVC) -->
+    <div id="modal-compra" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-[#131b2e] border border-gray-800 rounded-xl p-6 w-full max-w-md space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 class="text-sm font-bold text-white">+ Registrar Nueva Compra / Lote</h3>
+                <button onclick="cerrarModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
 
-        function verTab(tab) {
-            ['portafolio', 'mercado', 'calculadora', 'historial'].forEach(t => {
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="text-gray-400 block mb-1">Seleccionar Acción de la BVC:</label>
+                    <!-- SELECTOR DESPLEGABLE EN LUGAR DE TEXTO LIBRE -->
+                    <select id="inp-simbolo" onchange="autoCompletarPrecioBvc()" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg p-2.5 text-white font-bold outline-none focus:border-emerald-500">
+                        <!-- Opciones cargadas por JS -->
+                    </select>
+                </div>
+                <div>
+                    <label class="text-gray-400 block mb-1">Cantidad de Títulos Comprados:</label>
+                    <input type="number" id="inp-cantidad" placeholder="Ej: 500" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg p-2.5 text-white font-bold outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="text-gray-400 block mb-1">Costo Promedio de Compra (Bs):</label>
+                    <input type="number" step="0.01" id="inp-costo" placeholder="Ej: 0.50" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg p-2.5 text-white font-bold outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="text-gray-400 block mb-1">Precio Actual BVC (Autocompletado):</label>
+                    <input type="number" step="0.01" id="inp-precio-bvc" readonly class="w-full bg-[#0b0f19]/60 border border-gray-800 rounded-lg p-2.5 text-emerald-400 font-bold outline-none cursor-not-allowed">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-3 border-t border-gray-800 text-xs">
+                <button onclick="cerrarModal()" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold">Cancelar</button>
+                <button onclick="guardarCompra()" class="px-4 py-2 rounded-lg bg-emerald-400 hover:bg-emerald-500 text-black font-bold">Guardar Lote</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT CON CATÁLOGO COMPLETO -->
+    <script>
+        // CATÁLOGO OFICIAL DE ACCIONES BVC
+        const catalogoBvc = [
+            { simbolo: 'ABC.A', nombre: 'C.A. Central Banco Universal', precio: 1.29, color: '#f59e0b' },
+            { simbolo: 'BNC', nombre: 'Banco Nacional de Crédito', precio: 0.68, color: '#3b82f6' },
+            { simbolo: 'BVCC', nombre: 'Bolsa de Valores de Caracas', precio: 815.00, color: '#34d399' },
+            { simbolo: 'CCR', nombre: 'Cerámica Carabobo', precio: 7.19, color: '#c084fc' },
+            { simbolo: 'BVM.A', nombre: 'Banco Mercantil Clase A', precio: 120.00, color: '#f472b6' },
+            { simbolo: 'BVM.B', nombre: 'Banco Mercantil Clase B', precio: 115.50, color: '#fb7185' },
+            { simbolo: 'TDV.D', nombre: 'CANTV Clase D', precio: 3.80, color: '#38bdf8' },
+            { simbolo: 'DOM', nombre: 'Domínguez & Cía', precio: 1.19, color: '#a7f3d0' },
+            { simbolo: 'ENV', nombre: 'Envases Venezolanos', precio: 14.50, color: '#fde047' },
+            { simbolo: 'RST', nombre: 'Ron Santa Teresa', precio: 4.00, color: '#f97316' },
+            { simbolo: 'RST.B', nombre: 'Ron Santa Teresa Clase B', precio: 2.96, color: '#ea580c' },
+            { simbolo: 'MVZ.A', nombre: 'C.A. La Electricidad de Caracas', precio: 63.48, color: '#818cf8' },
+            { simbolo: 'IVP', nombre: 'Inversiones Cremerca', precio: 25.00, color: '#a855f7' }
+        ];
+
+        // ESTADO DEL PORTAFOLIO
+        let portafolio = [
+            { simbolo: 'ABC.A', cantidad: 627907, costoProm: 1.00, precioBvc: 1.29, color: '#f59e0b' },
+            { simbolo: 'BVCC', cantidad: 766, costoProm: 635.77, precioBvc: 815.00, color: '#34d399' },
+            { simbolo: 'BNC', cantidad: 10133088, costoProm: 0.53, precioBvc: 0.68, color: '#3b82f6' },
+            { simbolo: 'CCR', cantidad: 200743, costoProm: 5.60, precioBvc: 7.19, color: '#c084fc' }
+        ];
+
+        let historialCompras = [];
+        let chartInstance = null;
+
+        // CARGAR EL DESPLEGABLE DEL MODAL AL INICIAR
+        function cargarSelectAcciones() {
+            const select = document.getElementById('inp-simbolo');
+            select.innerHTML = catalogoBvc.map(item => `
+                <option value="${item.simbolo}">${item.simbolo} - ${item.nombre}</option>
+            `).join('');
+            autoCompletarPrecioBvc();
+        }
+
+        // AUTOCOMPLETAR PRECIO BVC SEGÚN SELECCIÓN
+        function autoCompletarPrecioBvc() {
+            const simboloSel = document.getElementById('inp-simbolo').value;
+            const accion = catalogoBvc.find(a => a.simbolo === simboloSel);
+            if (accion) {
+                document.getElementById('inp-precio-bvc').value = accion.precio.toFixed(2);
+            }
+        }
+
+        // NAVEGACIÓN ENTRE PESTAÑAS
+        function verTab(tabId) {
+            const tabs = ['portafolio', 'mercado', 'calculadora', 'historial'];
+            tabs.forEach(t => {
                 document.getElementById('sec-' + t).classList.add('hidden');
                 document.getElementById('btn-' + t).className = "hover:text-white pb-2 flex items-center gap-2 transition-colors";
             });
-            document.getElementById('sec-' + tab).classList.remove('hidden');
-            document.getElementById('btn-' + tab).className = "text-emerald-400 border-b-2 border-emerald-400 pb-2 flex items-center gap-2 font-semibold";
+
+            document.getElementById('sec-' + tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).className = "text-emerald-400 border-b-2 border-emerald-400 pb-2 flex items-center gap-2 font-semibold";
         }
 
-        function actualizarDashboard() {
+        // RECALCULAR TODO
+        function recalcularTodo() {
             const bcv = parseFloat(document.getElementById('tasa-bcv').value) || 1;
             const par = parseFloat(document.getElementById('tasa-paralelo').value) || 1;
             const brecha = (((par - bcv) / bcv) * 100).toFixed(2);
 
             document.getElementById('badge-brecha').innerText = `Brecha: ${brecha}%`;
-            document.getElementById('lbl-brecha-val').innerText = `${brecha}%`;
+            document.getElementById('kpi-brecha-val').innerText = `${brecha}%`;
+            document.getElementById('lbl-tasa-aplicada').innerText = `${bcv.toFixed(2)} Bs./$`;
 
-            const totalBs = 9760140.00;
-            const usdBcv = (totalBs / bcv).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            const usdPar = (totalBs / par).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            let inversionTotalBs = 0;
+            let valorActualTotalBs = 0;
 
-            document.getElementById('lbl-usd-bcv').innerText = `$${usdBcv} USD (BCV)`;
-            document.getElementById('lbl-usd-paralelo').innerText = `$${usdPar} USD`;
+            const tbody = document.getElementById('tbody-posiciones');
+            tbody.innerHTML = '';
+
+            const tbodyMercado = document.getElementById('tbody-mercado');
+            tbodyMercado.innerHTML = '';
+
+            const labels = [];
+            const dataChart = [];
+            const colors = [];
+
+            // RENDER MERCADO BVC
+            catalogoBvc.forEach(item => {
+                tbodyMercado.innerHTML += `
+                    <tr>
+                        <td class="py-3 font-bold text-emerald-400">${item.simbolo}</td>
+                        <td class="text-gray-300">${item.nombre}</td>
+                        <td class="text-right font-bold text-white">${item.precio.toFixed(2)}</td>
+                        <td class="text-right font-bold text-emerald-400">+${(Math.random() * 2).toFixed(2)}%</td>
+                    </tr>
+                `;
+            });
+
+            // RENDER POSICIONES PORTAFOLIO
+            portafolio.forEach((item, index) => {
+                const inversionBs = item.cantidad * item.costoProm;
+                const valorActualBs = item.cantidad * item.precioBvc;
+                const rendBs = valorActualBs - inversionBs;
+                const rendPct = inversionBs > 0 ? ((rendBs / inversionBs) * 100).toFixed(1) : 0;
+
+                inversionTotalBs += inversionBs;
+                valorActualTotalBs += valorActualBs;
+
+                labels.push(item.simbolo);
+                dataChart.push(valorActualBs);
+                colors.push(item.color || '#3b82f6');
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="py-3 font-bold text-white">${item.simbolo}</td>
+                        <td class="text-right">${item.cantidad.toLocaleString('es-VE')}</td>
+                        <td class="text-right">${item.costoProm.toFixed(2)}</td>
+                        <td class="text-right text-gray-300">${item.precioBvc.toFixed(2)}</td>
+                        <td class="text-right">${inversionBs.toLocaleString('es-VE', {minimumFractionDigits: 2})}</td>
+                        <td class="text-right font-bold text-white">${valorActualBs.toLocaleString('es-VE', {minimumFractionDigits: 2})}</td>
+                        <td class="text-right font-bold ${rendBs >= 0 ? 'text-emerald-400' : 'text-red-400'}">
+                            ${rendBs >= 0 ? '+' : ''}${rendBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} (${rendPct}%)
+                        </td>
+                        <td class="text-center">
+                            <button onclick="eliminarPosicion(${index})" class="text-gray-500 hover:text-red-400 transition-colors px-2 py-1" title="Borrar">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // TOTALES
+            const rendimientoTotalBs = valorActualTotalBs - inversionTotalBs;
+            const rendimientoPct = inversionTotalBs > 0 ? ((rendimientoTotalBs / inversionTotalBs) * 100).toFixed(2) : 0;
+            const usdBcv = valorActualTotalBs / bcv;
+            const usdPar = valorActualTotalBs / par;
+            const rendUsd = rendimientoTotalBs / bcv;
+
+            document.getElementById('kpi-valor-total').innerText = `${valorActualTotalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
+            document.getElementById('kpi-inversion-total').innerText = `${inversionTotalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
+            document.getElementById('kpi-usd-bcv').innerText = `$${usdBcv.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD (BCV)`;
+            
+            document.getElementById('kpi-rend-bs').innerText = `${rendimientoTotalBs >= 0 ? '+' : ''}${rendimientoTotalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
+            document.getElementById('kpi-ganancia-bs').innerText = `${rendimientoTotalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
+            document.getElementById('kpi-rend-pct').innerText = `${rendimientoPct}%`;
+
+            document.getElementById('kpi-rend-usd').innerText = `${rendUsd >= 0 ? '+' : ''}$${rendUsd.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+            document.getElementById('kpi-rend-usd-pct').innerText = `${rendimientoPct}%`;
+
+            document.getElementById('kpi-usd-paralelo').innerText = `$${usdPar.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+
+            renderChart(labels, dataChart, colors);
+            calcularBrechaApp();
         }
+
+        // RENDER DOUGHNUT CHART
+        function renderChart(labels, data, colors) {
+            const ctx = document.getElementById('chartPortafolio').getContext('2d');
+            if (chartInstance) { chartInstance.destroy(); }
+
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderWidth: 0,
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { color: '#d1d5db', font: { size: 12, weight: 'bold' }, padding: 14 }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        function eliminarPosicion(index) {
+            portafolio.splice(index, 1);
+            recalcularTodo();
+        }
+
+        function abrirModal() {
+            document.getElementById('modal-compra').classList.remove('hidden');
+            document.getElementById('modal-compra').classList.add('flex');
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal-compra').classList.add('hidden');
+            document.getElementById('modal-compra').classList.remove('flex');
+        }
+
+        function guardarCompra() {
+            const simbolo = document.getElementById('inp-simbolo').value;
+            const cantidad = parseFloat(document.getElementById('inp-cantidad').value);
+            const costo = parseFloat(document.getElementById('inp-costo').value);
+            const precioBvc = parseFloat(document.getElementById('inp-precio-bvc').value);
+
+            if (!cantidad || !costo) {
+                alert('Por favor completa la cantidad y el costo de la compra.');
+                return;
+            }
+
+            const accionCat = catalogoBvc.find(a => a.simbolo === simbolo);
+
+            // Buscar si ya existe la posición para promediar costo o agregar nueva
+            const existente = portafolio.find(p => p.simbolo === simbolo);
+            if (existente) {
+                const totalInversionNueva = (existente.cantidad * existente.costoProm) + (cantidad * costo);
+                const totalCantidadNueva = existente.cantidad + cantidad;
+                existente.costoProm = totalInversionNueva / totalCantidadNueva;
+                existente.cantidad = totalCantidadNueva;
+            } else {
+                portafolio.push({
+                    simbolo: simbolo,
+                    cantidad: cantidad,
+                    costoProm: costo,
+                    precioBvc: precioBvc,
+                    color: accionCat ? accionCat.color : '#38bdf8'
+                });
+            }
+
+            // Registrar en Historial
+            historialCompras.push({
+                fecha: new Date().toLocaleTimeString(),
+                simbolo, cantidad, costo, precioBvc
+            });
+
+            const histDiv = document.getElementById('lista-historial');
+            histDiv.innerHTML = historialCompras.map(h => `
+                <div class="bg-[#0b0f19] p-3 rounded border border-gray-800 flex justify-between">
+                    <span><strong>${h.simbolo}</strong> - ${h.cantidad} títulos a ${h.costo} Bs.</span>
+                    <span class="text-gray-500">${h.fecha}</span>
+                </div>
+            `).join('');
+
+            cerrarModal();
+            recalcularTodo();
+
+            document.getElementById('inp-cantidad').value = '';
+            document.getElementById('inp-costo').value = '';
+        }
+
+        function calcularBrechaApp() {
+            const bcv = parseFloat(document.getElementById('tasa-bcv').value) || 1;
+            const par = parseFloat(document.getElementById('tasa-paralelo').value) || 1;
+            const monto = parseFloat(document.getElementById('calc-monto').value) || 0;
+
+            const resBcv = monto / bcv;
+            const resPar = monto / par;
+            const impacto = resBcv - resPar;
+
+            document.getElementById('calc-res-bcv').innerText = `$${resBcv.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+            document.getElementById('calc-res-paralelo').innerText = `$${resPar.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+            document.getElementById('calc-res-impacto').innerText = `-$${impacto.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+        }
+
+        window.onload = function() {
+            cargarSelectAcciones();
+            recalcularTodo();
+        };
     </script>
 </body>
 </html> 

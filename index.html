@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CF Finanzas & Emprendimiento PRO</title>
+    <title>CF Finanzas & Emprendimiento PRO - BVC</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,7 +22,7 @@
             justify-content: space-between;
         }
 
-        /* CINTILLO BVC ANIMADO Y TÁCTIL PARA MÓVIL */
+        /* CINTILLO BVC FLUIDO CON SCROLL Y ANIMACIÓN */
         .cintillo-wrapper {
             background: #000000;
             border-bottom: 1px solid #1f293d;
@@ -33,25 +33,23 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .cintillo-wrapper::-webkit-scrollbar {
-            display: none;
-        }
+        .cintillo-wrapper::-webkit-scrollbar { display: none; }
 
         .cintillo-content {
             display: inline-flex;
             gap: 28px;
-            padding: 0 16px;
-            animation: ticker 25s linear infinite;
+            padding-left: 100%;
+            animation: ticker 30s linear infinite;
         }
 
-        .cintillo-wrapper:active .cintillo-content,
-        .cintillo-wrapper:hover .cintillo-content {
+        .cintillo-wrapper:hover .cintillo-content,
+        .cintillo-wrapper:active .cintillo-content {
             animation-play-state: paused;
         }
 
         @keyframes ticker {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            100% { transform: translateX(-100%); }
         }
 
         .item-ticker {
@@ -66,7 +64,7 @@
         .up { color: #4ade80; font-weight: bold; }
         .down { color: #f87171; font-weight: bold; }
 
-        /* HEADER Y NAVEGACIÓN */
+        /* HEADER Y CONTROLES */
         header {
             background: #111622;
             border-bottom: 1px solid #1f293d;
@@ -125,7 +123,7 @@
             margin-top: 2px;
         }
 
-        /* TASAS EDITABLES EN MÓVIL */
+        /* MONITORES EDITABLES */
         .tasas-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -158,7 +156,7 @@
         }
 
         .tasa-card input {
-            width: 70px;
+            width: 75px;
             background: #111622;
             border: 1px solid #374151;
             color: #4ade80;
@@ -170,11 +168,9 @@
             outline: none;
         }
 
-        .tasa-card input#tasa-paralelo {
-            color: #fbbf24;
-        }
+        .tasa-card input#tasa-paralelo { color: #fbbf24; }
 
-        /* BOTONES DE NAVEGACIÓN PESTAÑAS */
+        /* NAVEGACIÓN */
         nav {
             display: flex;
             gap: 12px;
@@ -205,7 +201,7 @@
             border-bottom: 2px solid #10b981;
         }
 
-        /* CONTENIDO PRINCIPAL */
+        /* LAYOUT GENERAL */
         main {
             max-width: 1200px;
             margin: 0 auto;
@@ -214,7 +210,6 @@
             flex-grow: 1;
         }
 
-        /* CARDS DE RESUMEN */
         .grid-cards {
             display: grid;
             grid-template-columns: 1fr;
@@ -223,9 +218,7 @@
         }
 
         @media (min-width: 640px) {
-            .grid-cards {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            .grid-cards { grid-template-columns: repeat(3, 1fr); }
         }
 
         .card {
@@ -253,13 +246,14 @@
         .text-amber { color: #fbbf24; }
         .text-red { color: #f87171; }
 
-        /* TABLAS ADAPTADAS A MÓVIL */
+        /* CONTENEDOR DE TABLAS */
         .table-box {
             background: #111622;
             border: 1px solid #1f293d;
             border-radius: 12px;
             padding: 16px;
             overflow-x: auto;
+            margin-bottom: 16px;
         }
 
         .table-box h3 {
@@ -273,7 +267,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
-            min-width: 480px;
+            min-width: 600px;
         }
 
         th {
@@ -291,7 +285,22 @@
             border-bottom: 1px solid #1f293d;
         }
 
-        /* CALCULADORA PESTAÑA */
+        /* TARJETA DESTACADA IBC */
+        .ibc-card {
+            background: linear-gradient(135deg, #111622 0%, #0d121d 100%);
+            border: 1px solid #1f293d;
+            border-left: 4px solid #10b981;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* CALCULADORA */
         .calc-container {
             max-width: 500px;
             margin: 0 auto;
@@ -301,9 +310,7 @@
             padding: 20px;
         }
 
-        .field-group {
-            margin-bottom: 16px;
-        }
+        .field-group { margin-bottom: 16px; }
 
         .field-group label {
             display: block;
@@ -323,10 +330,6 @@
             font-size: 16px;
             font-weight: 800;
             outline: none;
-        }
-
-        .field-group input:focus {
-            border-color: #10b981;
         }
 
         .calc-results {
@@ -360,18 +363,9 @@
 </head>
 <body>
 
-    <!-- CINTILLO BVC CON MOVIMIENTO SUAVE -->
+    <!-- CINTILLO SUPERIOR -->
     <div class="cintillo-wrapper">
         <div class="cintillo-content">
-            <div class="item-ticker"><span class="sym">IBC:</span><span class="val">92.485,12</span><span class="up">(+1,24%)</span></div>
-            <div class="item-ticker"><span class="sym">ARC.B:</span><span class="val">1.284,45</span></div>
-            <div class="item-ticker"><span class="sym">CCP.B:</span><span class="val">410,00</span><span class="down">(-0,97%)</span></div>
-            <div class="item-ticker"><span class="sym">CCR:</span><span class="val">7.199,00</span><span class="down">(-0,08%)</span></div>
-            <div class="item-ticker"><span class="sym">BNC:</span><span class="val">680,00</span><span class="up">(+1,49%)</span></div>
-            <div class="item-ticker"><span class="sym">BPV:</span><span class="val">61,45</span><span class="down">(-1,17%)</span></div>
-            <div class="item-ticker"><span class="sym">BVCC:</span><span class="val">815,00</span><span class="down">(-1,50%)</span></div>
-            
-            <!-- Duplicado para ciclo continuo -->
             <div class="item-ticker"><span class="sym">IBC:</span><span class="val">92.485,12</span><span class="up">(+1,24%)</span></div>
             <div class="item-ticker"><span class="sym">ARC.B:</span><span class="val">1.284,45</span></div>
             <div class="item-ticker"><span class="sym">CCP.B:</span><span class="val">410,00</span><span class="down">(-0,97%)</span></div>
@@ -382,7 +376,7 @@
         </div>
     </div>
 
-    <!-- ENCABEZADO -->
+    <!-- HEADER -->
     <header>
         <div class="header-top">
             <div class="brand">
@@ -396,11 +390,11 @@
             <div class="tasas-grid">
                 <div class="tasa-card">
                     <label for="tasa-bcv">BCV:</label>
-                    <input type="number" id="tasa-bcv" value="775.34" step="0.01" oninput="calcular()">
+                    <input type="number" id="tasa-bcv" value="775.34" step="0.01" oninput="calcularTodo()">
                 </div>
                 <div class="tasa-card">
                     <label for="tasa-paralelo">Paralelo:</label>
-                    <input type="number" id="tasa-paralelo" value="894.52" step="0.01" oninput="calcular()">
+                    <input type="number" id="tasa-paralelo" value="894.52" step="0.01" oninput="calcularTodo()">
                 </div>
             </div>
         </div>
@@ -412,9 +406,8 @@
         </nav>
     </header>
 
-    <!-- MAIN -->
     <main>
-        <!-- PESTAÑA PORTAFOLIO -->
+        <!-- PESTAÑA MI PORTAFOLIO CON REGISTRO DE COMPRAS -->
         <div id="sec-portafolio">
             <div class="grid-cards">
                 <div class="card">
@@ -437,50 +430,163 @@
             </div>
 
             <div class="table-box">
-                <h3>Posiciones en Cartera</h3>
+                <h3>Detalle de Compras y Rendimiento de Acciones</h3>
                 <table>
                     <thead>
                         <tr>
                             <th>Acción</th>
                             <th style="text-align:right;">Títulos</th>
-                            <th style="text-align:right;">Precio (Bs)</th>
-                            <th style="text-align:right;">Total (Bs)</th>
+                            <th style="text-align:right;">P. Compra (Bs)</th>
+                            <th style="text-align:right;">P. Actual (Bs)</th>
+                            <th style="text-align:right;">Inversión (Bs)</th>
+                            <th style="text-align:right;">Valor Actual (Bs)</th>
+                            <th style="text-align:right;">Ganancia/Pérdida</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong class="text-amber">ABC.A</strong></td><td style="text-align:right;">2.500</td><td style="text-align:right;">1,29</td><td style="text-align:right;"><strong>3.235,00</strong></td></tr>
-                        <tr><td><strong class="text-green">BNC</strong></td><td style="text-align:right;">2.036</td><td style="text-align:right;">0,68</td><td style="text-align:right;"><strong>1.384,48</strong></td></tr>
-                        <tr><td><strong style="color:#60a5fa;">DOM</strong></td><td style="text-align:right;">1.000</td><td style="text-align:right;">1,19</td><td style="text-align:right;"><strong>1.190,00</strong></td></tr>
-                        <tr><td><strong style="color:#c084fc;">RST</strong></td><td style="text-align:right;">500</td><td style="text-align:right;">4,00</td><td style="text-align:right;"><strong>2.000,00</strong></td></tr>
-                        <tr><td><strong style="color:#f472b6;">RST.B</strong></td><td style="text-align:right;">300</td><td style="text-align:right;">2,96</td><td style="text-align:right;"><strong>888,00</strong></td></tr>
-                        <tr><td><strong style="color:#818cf8;">MVZ.A</strong></td><td style="text-align:right;">100</td><td style="text-align:right;">63,48</td><td style="text-align:right;"><strong>6.348,52</strong></td></tr>
+                        <tr>
+                            <td><strong class="text-amber">ABC.A</strong></td>
+                            <td style="text-align:right;">2.500</td>
+                            <td style="text-align:right;">1,20</td>
+                            <td style="text-align:right;">1,29</td>
+                            <td style="text-align:right;">3.000,00</td>
+                            <td style="text-align:right;"><strong>3.225,00</strong></td>
+                            <td style="text-align:right;" class="text-green">+225,00 (+7,5%)</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-green">BNC</strong></td>
+                            <td style="text-align:right;">2.036</td>
+                            <td style="text-align:right;">0,60</td>
+                            <td style="text-align:right;">0,68</td>
+                            <td style="text-align:right;">1.221,60</td>
+                            <td style="text-align:right;"><strong>1.384,48</strong></td>
+                            <td style="text-align:right;" class="text-green">+162,88 (+13,3%)</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#60a5fa;">DOM</strong></td>
+                            <td style="text-align:right;">1.000</td>
+                            <td style="text-align:right;">1,25</td>
+                            <td style="text-align:right;">1,19</td>
+                            <td style="text-align:right;">1.250,00</td>
+                            <td style="text-align:right;"><strong>1.190,00</strong></td>
+                            <td style="text-align:right;" class="text-red">-60,00 (-4,8%)</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#c084fc;">RST</strong></td>
+                            <td style="text-align:right;">500</td>
+                            <td style="text-align:right;">3,80</td>
+                            <td style="text-align:right;">4,00</td>
+                            <td style="text-align:right;">1.900,00</td>
+                            <td style="text-align:right;"><strong>2.000,00</strong></td>
+                            <td style="text-align:right;" class="text-green">+100,00 (+5,2%)</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#f472b6;">RST.B</strong></td>
+                            <td style="text-align:right;">300</td>
+                            <td style="text-align:right;">2,96</td>
+                            <td style="text-align:right;">2,96</td>
+                            <td style="text-align:right;">888,00</td>
+                            <td style="text-align:right;"><strong>888,00</strong></td>
+                            <td style="text-align:right;" style="color:#9ca3af;">0,00 (0,0%)</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#818cf8;">MVZ.A</strong></td>
+                            <td style="text-align:right;">100</td>
+                            <td style="text-align:right;">60,00</td>
+                            <td style="text-align:right;">63,48</td>
+                            <td style="text-align:right;">6.000,00</td>
+                            <td style="text-align:right;"><strong>6.348,52</strong></td>
+                            <td style="text-align:right;" class="text-green">+348,52 (+5,8%)</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- PESTAÑA MERCADO BVC -->
+        <!-- PESTAÑA MERCADO BVC CON IBC Y COTIZACIONES EDITABLES -->
         <div id="sec-mercado" class="hidden">
+            <div class="ibc-card">
+                <div>
+                    <span class="card-label">Índice Bursátil Caracas (IBC)</span>
+                    <div style="font-size:28px; font-weight:900; color:#fff; margin-top:2px;">
+                        92.485,12 <span class="text-green" style="font-size:14px; font-weight:700;">+1,24%</span>
+                    </div>
+                </div>
+                <div style="text-align:right; font-size:12px; color:#9ca3af;">
+                    <div>Volumen Total Operado: <strong style="color:#fff;">12.450.300,00 Bs.</strong></div>
+                    <div style="margin-top:2px;">Mercado: <span class="text-green">Abierto</span></div>
+                </div>
+            </div>
+
             <div class="table-box">
-                <h3>Cotizaciones de Acciones (BVC)</h3>
+                <h3>Precios y Cotizaciones en Tiempo Real (BVC)</h3>
                 <table>
                     <thead>
                         <tr>
                             <th>Símbolo</th>
                             <th>Empresa</th>
-                            <th style="text-align:right;">Precio (Bs)</th>
-                            <th style="text-align:right;">Var (%)</th>
+                            <th style="text-align:right;">Precio Cierre (Bs)</th>
+                            <th style="text-align:right;">Variación (%)</th>
+                            <th style="text-align:right;">Volumen (Bs)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong class="text-amber">ABC.A</strong></td><td>Telares Palo Grande</td><td style="text-align:right;">1,29</td><td style="text-align:right;" class="text-green">+0,00%</td></tr>
-                        <tr><td><strong class="text-green">BNC</strong></td><td>Banco Nac. Crédito</td><td style="text-align:right;">0,68</td><td style="text-align:right;" class="text-green">+1,49%</td></tr>
-                        <tr><td><strong style="color:#60a5fa;">DOM</strong></td><td>Domínguez & Cía</td><td style="text-align:right;">1,19</td><td style="text-align:right;" class="text-red">-0,83%</td></tr>
-                        <tr><td><strong style="color:#c084fc;">RST</strong></td><td>Electricidad Caracas</td><td style="text-align:right;">4,00</td><td style="text-align:right;" class="text-green">+2,56%</td></tr>
-                        <tr><td><strong style="color:#f472b6;">RST.B</strong></td><td>RST Clase B</td><td style="text-align:right;">2,96</td><td style="text-align:right;">0,00%</td></tr>
-                        <tr><td><strong style="color:#818cf8;">MVZ.A</strong></td><td>Mercantil Serv. A</td><td style="text-align:right;">63,48</td><td style="text-align:right;" class="text-green">+0,76%</td></tr>
-                        <tr><td><strong style="color:#38bdf8;">BPV</strong></td><td>Banco Provincial</td><td style="text-align:right;">61,45</td><td style="text-align:right;" class="text-red">-1,17%</td></tr>
-                        <tr><td><strong style="color:#facc15;">BVCC</strong></td><td>Bolsa Val. Caracas</td><td style="text-align:right;">815,00</td><td style="text-align:right;" class="text-red">-1,50%</td></tr>
+                        <tr>
+                            <td><strong class="text-amber">ABC.A</strong></td>
+                            <td>Telares de Palo Grande</td>
+                            <td style="text-align:right;"><strong>1,29</strong></td>
+                            <td style="text-align:right;" class="text-green">+0,00%</td>
+                            <td style="text-align:right;">15.420,00</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-green">BNC</strong></td>
+                            <td>Banco Nacional de Crédito</td>
+                            <td style="text-align:right;"><strong>0,68</strong></td>
+                            <td style="text-align:right;" class="text-green">+1,49%</td>
+                            <td style="text-align:right;">184.500,00</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#60a5fa;">DOM</strong></td>
+                            <td>Domínguez & Cía</td>
+                            <td style="text-align:right;"><strong>1,19</strong></td>
+                            <td style="text-align:right;" class="text-red">-0,83%</td>
+                            <td style="text-align:right;">42.100,00</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#c084fc;">RST</strong></td>
+                            <td>Electricidad de Caracas</td>
+                            <td style="text-align:right;"><strong>4,00</strong></td>
+                            <td style="text-align:right;" class="text-green">+2,56%</td>
+                            <td style="text-align:right;">98.000,00</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#f472b6;">RST.B</strong></td>
+                            <td>RST Clase B</td>
+                            <td style="text-align:right;"><strong>2,96</strong></td>
+                            <td style="text-align:right;">0,00%</td>
+                            <td style="text-align:right;">12.300,00</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#818cf8;">MVZ.A</strong></td>
+                            <td>Mercantil Serv. Financieros A</td>
+                            <td style="text-align:right;"><strong>63,48</strong></td>
+                            <td style="text-align:right;" class="text-green">+0,76%</td>
+                            <td style="text-align:right;">310.250,00</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#38bdf8;">BPV</strong></td>
+                            <td>Banco Provincial</td>
+                            <td style="text-align:right;"><strong>61,45</strong></td>
+                            <td style="text-align:right;" class="text-red">-1,17%</td>
+                            <td style="text-align:right;">540.100,00</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#facc15;">BVCC</strong></td>
+                            <td>Bolsa de Valores de Caracas</td>
+                            <td style="text-align:right;"><strong>815,00</strong></td>
+                            <td style="text-align:right;" class="text-red">-1,50%</td>
+                            <td style="text-align:right;">85.000,00</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -493,7 +599,7 @@
                 
                 <div class="field-group">
                     <label for="calc-monto">Monto a Convertir (Bs):</label>
-                    <input type="number" id="calc-monto" value="5000" oninput="calcular()">
+                    <input type="number" id="calc-monto" value="5000" oninput="calcularTodo()">
                 </div>
 
                 <div class="calc-results">
@@ -532,13 +638,13 @@
             document.getElementById('btn-' + id).classList.add('active');
         }
 
-        function calcular() {
+        function calcularTodo() {
             const bcv = parseFloat(document.getElementById('tasa-bcv').value) || 1;
             const par = parseFloat(document.getElementById('tasa-paralelo').value) || 1;
             const monto = parseFloat(document.getElementById('calc-monto').value) || 0;
             const totalBs = 15046.00;
 
-            // Totales Portafolio
+            // Cálculos Portafolio
             const usdBcv = (totalBs / bcv).toFixed(2);
             const usdPar = (totalBs / par).toFixed(2);
             const brecha = (((par - bcv) / bcv) * 100).toFixed(2);
@@ -547,7 +653,7 @@
             document.getElementById('lbl-usd-paralelo').innerText = `$${usdPar} USD`;
             document.getElementById('lbl-brecha').innerText = `${brecha}%`;
 
-            // Calculadora
+            // Cálculos Calculadora
             const cBcv = monto / bcv;
             const cPar = monto / par;
             const dif = cBcv - cPar;
@@ -557,7 +663,7 @@
             document.getElementById('calc-impacto').innerText = `-$${dif.toFixed(2)} USD`;
         }
 
-        window.onload = calcular;
+        window.onload = calcularTodo;
     </script>
 </body>
-</html> 
+</html>

@@ -11,12 +11,53 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Escala TODA la app un poco más grande: como los tamaños de Tailwind
+           están en rem, subir el font-size base del html agranda letras,
+           iconos y espaciados de forma proporcional en toda la página. */
+        html { font-size: 120%; }
         body { background-color: #0b0f19; font-family: system-ui, -apple-system, sans-serif; }
+
+        .cintillo-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: #000;
+            border-bottom: 1px solid #1f2937;
+            padding: 10px 0;
+        }
+        .cintillo-track {
+            display: flex;
+            width: max-content;
+            animation: cintillo-scroll 40s linear infinite;
+            will-change: transform;
+        }
+        .cintillo-track:hover { animation-play-state: paused; }
+        @keyframes cintillo-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .cintillo-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0 1.25rem;
+            font-size: 1rem;
+            font-weight: 700;
+            white-space: nowrap;
+            border-right: 1px solid #1f2937;
+        }
     </style>
 </head>
 <body class="text-gray-200 min-h-screen flex flex-col justify-between">
 
     <div>
+        <!-- CINTILLO DE PRECIOS (arriba de todo) -->
+        <div class="cintillo-wrap">
+            <div id="cintillo-track" class="cintillo-track">
+                <!-- Se llena por JS con catalogoBvc, duplicado para loop continuo -->
+            </div>
+        </div>
+
+
         <!-- TOP HEADER NAVBAR -->
         <header class="border-b border-gray-800 bg-[#0d1322] px-6 py-4">
             <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
@@ -188,7 +229,10 @@
                 </div>
 
                 <div class="bg-[#131b2e] border border-gray-800 p-6 rounded-xl space-y-4">
-                    <h3 class="text-sm font-bold text-white">Cotizaciones Oficiales de la Bolsa de Caracas (BVC)</h3>
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h3 class="text-sm font-bold text-white">Cotizaciones Oficiales de la Bolsa de Caracas (BVC)</h3>
+                        <span id="lbl-actualizacion" class="text-[11px] text-gray-500">Cargando última actualización…</span>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs min-w-[600px]">
                             <thead>
@@ -287,22 +331,57 @@
 
     <!-- JAVASCRIPT CON CATÁLOGO COMPLETO -->
     <script>
-        // CATÁLOGO OFICIAL DE ACCIONES BVC
-        const catalogoBvc = [
-            { simbolo: 'ABC.A', nombre: 'C.A. Central Banco Universal', precio: 1.29, color: '#f59e0b' },
-            { simbolo: 'BNC', nombre: 'Banco Nacional de Crédito', precio: 0.68, color: '#3b82f6' },
-            { simbolo: 'BVCC', nombre: 'Bolsa de Valores de Caracas', precio: 815.00, color: '#34d399' },
-            { simbolo: 'CCR', nombre: 'Cerámica Carabobo', precio: 7.19, color: '#c084fc' },
-            { simbolo: 'BVM.A', nombre: 'Banco Mercantil Clase A', precio: 120.00, color: '#f472b6' },
-            { simbolo: 'BVM.B', nombre: 'Banco Mercantil Clase B', precio: 115.50, color: '#fb7185' },
-            { simbolo: 'TDV.D', nombre: 'CANTV Clase D', precio: 3.80, color: '#38bdf8' },
-            { simbolo: 'DOM', nombre: 'Domínguez & Cía', precio: 1.19, color: '#a7f3d0' },
-            { simbolo: 'ENV', nombre: 'Envases Venezolanos', precio: 14.50, color: '#fde047' },
-            { simbolo: 'RST', nombre: 'Ron Santa Teresa', precio: 4.00, color: '#f97316' },
-            { simbolo: 'RST.B', nombre: 'Ron Santa Teresa Clase B', precio: 2.96, color: '#ea580c' },
-            { simbolo: 'MVZ.A', nombre: 'C.A. La Electricidad de Caracas', precio: 63.48, color: '#818cf8' },
-            { simbolo: 'IVP', nombre: 'Inversiones Cremerca', precio: 25.00, color: '#a855f7' }
-        ];
+        // CATÁLOGO REAL DE ACCIONES BVC
+        // Antes: 13 acciones con nombres y precios inventados por Gemini.
+        // Ahora: las 29 acciones activas de la Bolsa de Valores de Caracas,
+        // con tickers y razón social reales. Los precios son la última
+        // referencia disponible (no se actualizan solos en cada carga de
+        // página — para eso hace falta el scraper automático, ver nota abajo).
+        // CATÁLOGO DE ACCIONES BVC
+        // Ya NO tiene precios fijos en el código. Arranca vacío y se llena
+        // en window.onload leyendo data.json, que el scraper.py (corriendo
+        // por GitHub Actions) actualiza automáticamente cada 2 horas con
+        // precios reales tomados del sitio de la BVC.
+        let catalogoBvc = [];
+
+        async function cargarCatalogoBvc() {
+            try {
+                const res = await fetch('./data.json', { cache: 'no-store' });
+                if (!res.ok) throw new Error('No se pudo leer data.json');
+                const data = await res.json();
+
+                if (data.bcv_rate) {
+                    document.getElementById('tasa-bcv').value = parseFloat(data.bcv_rate).toFixed(2);
+                }
+
+                catalogoBvc = (data.stocks || []).map(s => ({
+                    simbolo: s.ticker,
+                    nombre: s.name,
+                    precio: s.price, // puede ser null si aún no hay dato
+                    cambio: s.change_pct,
+                    live: !!s.live,
+                    color: colorParaTicker(s.ticker)
+                }));
+
+                if (data.updated_at) {
+                    const el = document.getElementById('lbl-actualizacion');
+                    if (el) {
+                        el.innerText = `Última actualización: ${new Date(data.updated_at).toLocaleString('es-VE')}`;
+                    }
+                }
+            } catch (e) {
+                console.error('No se pudo cargar data.json. ¿Está el archivo junto a index.html y publicado por GitHub Pages?', e);
+            }
+        }
+
+        // Paleta fija para que cada ticker mantenga siempre el mismo color
+        // en el gráfico y el cintillo, sin depender de un valor hardcodeado.
+        const PALETA = ['#34d399','#10b981','#3b82f6','#60a5fa','#818cf8','#f97316','#fb923c','#a78bfa','#c084fc','#f59e0b','#facc15','#fde047','#4ade80','#86efac','#38bdf8','#22d3ee','#a7f3d0','#fca5a5','#c4b5fd','#fdba74','#5eead4','#94a3b8','#f472b6','#ec4899','#fb7185','#f87171','#e879f9','#d8b4fe','#f0abfc'];
+        function colorParaTicker(ticker) {
+            let hash = 0;
+            for (let i = 0; i < ticker.length; i++) hash = (hash * 31 + ticker.charCodeAt(i)) >>> 0;
+            return PALETA[hash % PALETA.length];
+        }
 
         // ESTADO DEL PORTAFOLIO
         // IMPORTANTE: antes esto traía 4 posiciones falsas hardcodeadas.
@@ -364,6 +443,41 @@
             }
         }
 
+        // CINTILLO SUPERIOR: pinta cada acción del catálogo, duplicado
+        // una vez para que el loop de la animación sea continuo sin salto.
+        function renderCintillo() {
+            const track = document.getElementById('cintillo-track');
+            if (!catalogoBvc.length) {
+                track.innerHTML = '<span class="cintillo-item"><span style="color:#9ca3af">Cargando cotizaciones…</span></span>';
+                return;
+            }
+            const item = (a) => {
+                if (a.precio === null || a.precio === undefined) {
+                    return `<span class="cintillo-item">
+                        <span style="color:#ffffff">${a.simbolo}</span>
+                        <span style="color:#6b7280">Sin dato aún</span>
+                    </span>`;
+                }
+                let colorCambio = '#9ca3af';
+                let flecha = '';
+                let textoCambio = 'S/D';
+                if (a.cambio !== null && a.cambio !== undefined) {
+                    const sube = a.cambio >= 0;
+                    colorCambio = sube ? '#34d399' : '#f87171';
+                    flecha = sube ? '▲' : '▼';
+                    textoCambio = `${sube ? '+' : ''}${a.cambio.toFixed(2)}%`;
+                }
+                return `
+                <span class="cintillo-item">
+                    <span style="color:#ffffff">${a.simbolo}</span>
+                    <span style="color:#d1d5db">Bs. ${a.precio.toLocaleString('es-VE', {minimumFractionDigits: 2})}</span>
+                    <span style="color:${colorCambio}">${flecha} ${textoCambio}</span>
+                </span>`;
+            };
+            const html = catalogoBvc.map(item).join('');
+            track.innerHTML = html + html; // duplicado para el loop continuo
+        }
+
         // CARGAR EL DESPLEGABLE DEL MODAL AL INICIAR
         function cargarSelectAcciones() {
             const select = document.getElementById('inp-simbolo');
@@ -378,7 +492,8 @@
             const simboloSel = document.getElementById('inp-simbolo').value;
             const accion = catalogoBvc.find(a => a.simbolo === simboloSel);
             if (accion) {
-                document.getElementById('inp-precio-bvc').value = accion.precio.toFixed(2);
+                document.getElementById('inp-precio-bvc').value = (accion.precio !== null && accion.precio !== undefined)
+                    ? accion.precio.toFixed(2) : '';
             }
         }
 
@@ -423,12 +538,20 @@
             // (Math.random()) que cambiaba solo, simulando datos falsos.
             // La quitamos hasta conectar una fuente de precios real.
             catalogoBvc.forEach(item => {
+                let celdaCambio = '<span class="text-gray-500">S/D</span>';
+                if (item.cambio !== null && item.cambio !== undefined) {
+                    const sube = item.cambio >= 0;
+                    celdaCambio = `<span class="${sube ? 'text-emerald-400' : 'text-red-400'} font-bold">${sube ? '+' : ''}${item.cambio.toFixed(2)}%</span>`;
+                }
+                const celdaPrecio = (item.precio === null || item.precio === undefined)
+                    ? '<span class="text-gray-500">—</span>'
+                    : item.precio.toFixed(2);
                 tbodyMercado.innerHTML += `
                     <tr>
                         <td class="py-3 font-bold text-emerald-400">${item.simbolo}</td>
                         <td class="text-gray-300">${item.nombre}</td>
-                        <td class="text-right font-bold text-white">${item.precio.toFixed(2)}</td>
-                        <td class="text-right font-bold text-gray-500">—</td>
+                        <td class="text-right font-bold text-white">${celdaPrecio}</td>
+                        <td class="text-right font-bold">${celdaCambio}</td>
                     </tr>
                 `;
             });
@@ -596,12 +719,14 @@
             document.getElementById('calc-res-impacto').innerText = `-$${impacto.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
         }
 
-        window.onload = function() {
+        window.onload = async function() {
+            await cargarCatalogoBvc();   // trae precios reales desde data.json
+            renderCintillo();
             cargarSelectAcciones();
             cargarDesdeLocalStorage();
             renderHistorial();
             recalcularTodo();
-            cargarTasaBcvReal().then(recalcularTodo);
+            cargarTasaBcvReal().then(recalcularTodo); // por si data.json no tenía tasa BCV aún
         };
     </script>
 </body>

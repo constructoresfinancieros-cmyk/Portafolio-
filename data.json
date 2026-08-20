@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-20T03:40:57.145612+00:00",
+  "updated_at": "2026-08-20T03:50:41.204810+00:00",
   "bcv_rate": 775.34,
   "stocks": [
     {
@@ -157,7 +157,7 @@
       "live": false
     },
     {
-      "ticker": "2TPG",
+      "ticker": "TPG",
       "name": "Telares de Palo Grande, C.A.",
       "price": null,
       "change_pct": null,

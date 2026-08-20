@@ -116,6 +116,9 @@
                 <button id="btn-historial" onclick="verTab('historial')" class="hover:text-white pb-2 flex items-center gap-2 transition-colors">
                     <i class="fa-solid fa-receipt text-xs"></i> Historial
                 </button>
+                <button id="btn-mapa" onclick="verTab('mapa')" class="hover:text-white pb-2 flex items-center gap-2 transition-colors">
+                    <i class="fa-solid fa-fire text-xs"></i> Mapa de Calor
+                </button>
             </nav>
         </header>
 
@@ -285,6 +288,31 @@
                     <p class="text-xs text-gray-400">Registro de lotes de compra ingresados al sistema.</p>
                     <div id="lista-historial" class="space-y-2 text-xs">
                         <!-- Historial dinámico -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA MAPA DE CALOR -->
+            <div id="sec-mapa" class="hidden space-y-6">
+                <div class="bg-[#131b2e] border border-gray-800 p-6 rounded-xl space-y-4">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div>
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-fire text-orange-400"></i> Mapa de Calor del Mercado BVC
+                            </h3>
+                            <p class="text-[11px] text-gray-500 mt-1">Verde = sube, rojo = baja. Mientras más intenso el color, mayor la variación del día.</p>
+                        </div>
+                        <span id="lbl-actualizacion-mapa" class="text-[11px] text-gray-500"></span>
+                    </div>
+                    <div id="mapa-calor-grid" class="grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));">
+                        <!-- Generado por JS -->
+                    </div>
+                    <div class="flex items-center justify-center gap-6 pt-3 border-t border-gray-800/60 text-[11px] text-gray-400">
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm inline-block" style="background:#f87171"></span> Baja fuerte</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm inline-block" style="background:#7f1d1d"></span> Baja leve</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm inline-block" style="background:#374151"></span> Sin dato</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm inline-block" style="background:#065f46"></span> Sube leve</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm inline-block" style="background:#34d399"></span> Sube fuerte</span>
                     </div>
                 </div>
             </div>
@@ -519,7 +547,7 @@
 
         // NAVEGACIÓN ENTRE PESTAÑAS
         function verTab(tabId) {
-            const tabs = ['portafolio', 'mercado', 'calculadora', 'historial'];
+            const tabs = ['portafolio', 'mercado', 'calculadora', 'historial', 'mapa'];
             tabs.forEach(t => {
                 document.getElementById('sec-' + t).classList.add('hidden');
                 document.getElementById('btn-' + t).className = "hover:text-white pb-2 flex items-center gap-2 transition-colors";
@@ -673,6 +701,70 @@
             });
         }
 
+        // MAPA DE CALOR
+        // Colorea cada acción según su variación del día: verde más brillante
+        // mientras más sube, rojo más intenso mientras más baja, gris para
+        // las que no tuvieron dato ese día (no negociadas o suspendidas).
+        function colorCalor(cambio) {
+            if (cambio === null || cambio === undefined) return '#374151'; // gris neutro
+            const intensidad = Math.min(Math.abs(cambio) / 10, 1); // tope visual en 10%
+            if (cambio >= 0) {
+                // interpola entre verde oscuro (#065f46) y verde brillante (#34d399)
+                return mezclarColor('#065f46', '#34d399', intensidad);
+            }
+            return mezclarColor('#7f1d1d', '#f87171', intensidad);
+        }
+
+        function mezclarColor(hexA, hexB, t) {
+            const a = hexA.match(/\w\w/g).map(x => parseInt(x, 16));
+            const b = hexB.match(/\w\w/g).map(x => parseInt(x, 16));
+            const r = Math.round(a[0] + (b[0] - a[0]) * t);
+            const g = Math.round(a[1] + (b[1] - a[1]) * t);
+            const bl = Math.round(a[2] + (b[2] - a[2]) * t);
+            return `rgb(${r},${g},${bl})`;
+        }
+
+        function renderMapaCalor() {
+            const grid = document.getElementById('mapa-calor-grid');
+            if (!catalogoBvc.length) {
+                grid.innerHTML = '<p class="text-gray-500 text-xs col-span-full text-center py-8">Cargando datos del mercado…</p>';
+                return;
+            }
+
+            // Las que más se mueven (en valor absoluto) primero, para que
+            // salten a la vista de inmediato al abrir la pestaña.
+            const ordenado = [...catalogoBvc].sort((a, b) => {
+                const ca = a.cambio === null || a.cambio === undefined ? -1 : Math.abs(a.cambio);
+                const cb = b.cambio === null || b.cambio === undefined ? -1 : Math.abs(b.cambio);
+                return cb - ca;
+            });
+
+            grid.innerHTML = ordenado.map(a => {
+                const bg = colorCalor(a.cambio);
+                const sinDato = a.cambio === null || a.cambio === undefined;
+                const flecha = sinDato ? '' : (a.cambio >= 0 ? '▲' : '▼');
+                const textoCambio = sinDato ? 'S/D' : `${a.cambio >= 0 ? '+' : ''}${a.cambio.toFixed(2)}%`;
+                const precioTxt = (a.precio === null || a.precio === undefined)
+                    ? '—' : `Bs. ${a.precio.toLocaleString('es-VE', {minimumFractionDigits: 2})}`;
+                return `
+                    <div class="rounded-lg p-3 flex flex-col justify-between h-24 shadow-md transition-transform hover:scale-105 cursor-default"
+                         style="background:${bg}" title="${a.nombre}">
+                        <div class="font-black text-white text-sm leading-tight drop-shadow">${a.simbolo}</div>
+                        <div>
+                            <div class="text-white/90 text-[11px] font-semibold">${precioTxt}</div>
+                            <div class="text-white text-xs font-bold">${flecha} ${textoCambio}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const lbl = document.getElementById('lbl-actualizacion-mapa');
+            if (lbl) {
+                const lblOrigen = document.getElementById('lbl-actualizacion');
+                lbl.innerText = lblOrigen ? lblOrigen.innerText : '';
+            }
+        }
+
         function eliminarPosicion(index) {
             portafolio.splice(index, 1);
             guardarEnLocalStorage();
@@ -758,6 +850,7 @@
         window.onload = async function() {
             await cargarCatalogoBvc();   // trae precios reales desde data.json
             renderCintillo();
+            renderMapaCalor();
             cargarSelectAcciones();
             cargarDesdeLocalStorage();
             renderHistorial();
@@ -766,4 +859,4 @@
         };
     </script>
 </body>
-</html> 
+</html>

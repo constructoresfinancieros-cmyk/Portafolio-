@@ -1,4 +1,4 @@
- name: Actualizar datos BCV y BVC
+name: Actualizar datos BCV y BVC
 
 on:
   schedule:

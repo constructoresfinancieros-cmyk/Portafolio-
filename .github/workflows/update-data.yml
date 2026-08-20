@@ -1,10 +1,10 @@
-name: Actualizar datos BCV y BVC
+ name: Actualizar datos BCV y BVC
 
 on:
   schedule:
-    # Cada 2 horas, lunes a viernes, 13:00-20:00 UTC
+    # Cada 15 minutos, lunes a viernes, 13:00-20:00 UTC
     # (~9:00am a 4:00pm hora de Venezuela)
-    - cron: "0 13-20/2 * * 1-5"
+    - cron: "*/15 13-20 * * 1-5"
   workflow_dispatch: # permite correrlo a mano desde la pestaña "Actions"
 
 permissions:
@@ -27,6 +27,17 @@ jobs:
 
       - name: Ejecutar scraper
         run: python scraper.py
+
+      - name: Subir captura de depuración
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-bvc
+          path: |
+            debug_screenshot.png
+            debug_page.html
+          if-no-files-found: ignore
+          retention-days: 3
 
       - name: Commitear cambios si hay datos nuevos
         run: |

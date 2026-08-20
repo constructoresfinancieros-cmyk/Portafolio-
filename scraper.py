@@ -53,7 +53,7 @@ EMPRESAS = {
     "PTN":   "Protinal, C.A.",
     "PCP.B": "Fondo Petrolia, C.A. (Clase B)",
     "SVS":   "Siderúrgica Venezolana \"Sivensa\", S.A.",
-    "TPG":  "Telares de Palo Grande, C.A.",
+    "2TPG":  "Telares de Palo Grande, C.A.",
     "BVCC":  "Bolsa de Valores de Caracas, C.A.",
     "ICP.B": "Inversiones Crecepymes, C.A. (Clase B)",
     "CRM.A": "Corimon, C.A.",
@@ -128,6 +128,20 @@ def obtener_acciones_bvc():
                 break
             except Exception:
                 continue
+
+        # --- DEPURACIÓN ---
+        # Guardamos una captura de pantalla y el HTML tal cual quedó el
+        # navegador en este momento. No podemos ver bolsadecaracas.com
+        # desde fuera de GitHub Actions, así que esto es la única forma
+        # de diagnosticar qué está pasando realmente (¿bloqueo anti-bot?,
+        # ¿necesita más tiempo?, ¿la tabla está en otro lugar?).
+        try:
+            page.screenshot(path="debug_screenshot.png", full_page=True)
+            with open("debug_page.html", "w", encoding="utf-8") as f:
+                f.write(page.content())
+            print("[DEBUG] Captura y HTML de depuración guardados")
+        except Exception as e:
+            print(f"[DEBUG] No se pudo guardar la depuración: {e}")
 
         filas = page.query_selector_all("table tr")
         for fila in filas:
@@ -225,4 +239,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main() 
+    main()

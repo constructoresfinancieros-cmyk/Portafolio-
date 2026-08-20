@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-20T13:39:16.829310+00:00",
+  "updated_at": "2026-08-20T14:20:14.828404+00:00",
   "bcv_rate": 777.42,
   "stocks": [
     {
@@ -14,33 +14,33 @@
       "name": "Mercantil Servicios Financieros, C.A. (Clase B)",
       "price": 5200.0,
       "change_pct": null,
-      "live": false
+      "live": true
     },
     {
       "ticker": "BVL",
       "name": "Banco de Venezuela, S.A. Banco Universal",
-      "price": 1650.0,
+      "price": 1640.0,
       "change_pct": null,
       "live": true
     },
     {
       "ticker": "BPV",
       "name": "Banco Provincial, S.A. Banco Universal",
-      "price": 61.24,
+      "price": 61.19,
       "change_pct": null,
       "live": true
     },
     {
       "ticker": "BNC",
       "name": "Banco Nacional de Crédito, C.A., Banco Universal",
-      "price": 239.97,
+      "price": 238.0,
       "change_pct": null,
       "live": true
     },
     {
       "ticker": "RST",
       "name": "C.A. Ron Santa Teresa",
-      "price": 510.0,
+      "price": 526.2,
       "change_pct": null,
       "live": true
     },
@@ -54,7 +54,7 @@
     {
       "ticker": "FNV",
       "name": "C.A. Fábrica Nacional de Vidrio",
-      "price": 57.0,
+      "price": 56.99,
       "change_pct": null,
       "live": true
     },
@@ -82,21 +82,21 @@
     {
       "ticker": "ENV",
       "name": "Envases Venezolanos, S.A.",
-      "price": 670.0,
+      "price": 660.0,
       "change_pct": null,
       "live": true
     },
     {
       "ticker": "EFE",
       "name": "Productos EFE, S.A.",
-      "price": 90.0,
+      "price": 89.99,
       "change_pct": null,
       "live": true
     },
     {
       "ticker": "PGR",
       "name": "Proagro, C.A.",
-      "price": 99.0,
+      "price": 98.0,
       "change_pct": null,
       "live": true
     },
@@ -124,7 +124,7 @@
     {
       "ticker": "MPA",
       "name": "Manufacturas de Papel, C.A.",
-      "price": 102.0,
+      "price": 100.0,
       "change_pct": null,
       "live": true
     },
@@ -138,14 +138,14 @@
     {
       "ticker": "PTN",
       "name": "Protinal, C.A.",
-      "price": 500.0,
+      "price": 490.0,
       "change_pct": null,
       "live": true
     },
     {
       "ticker": "PCP.B",
       "name": "Fondo Petrolia, C.A. (Clase B)",
-      "price": 240.0,
+      "price": 236.0,
       "change_pct": null,
       "live": true
     },
@@ -159,14 +159,14 @@
     {
       "ticker": "TPG",
       "name": "Telares de Palo Grande, C.A.",
-      "price": 10.49,
+      "price": 10.45,
       "change_pct": null,
       "live": true
     },
     {
       "ticker": "BVCC",
       "name": "Bolsa de Valores de Caracas, C.A.",
-      "price": 820.0,
+      "price": 815.0,
       "change_pct": null,
       "live": true
     },

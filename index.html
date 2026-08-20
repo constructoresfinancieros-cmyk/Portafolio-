@@ -317,8 +317,11 @@
                     <input type="number" step="0.01" id="inp-costo" placeholder="Ej: 0.50" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg p-2.5 text-white font-bold outline-none focus:border-emerald-500">
                 </div>
                 <div>
-                    <label class="text-gray-400 block mb-1">Precio Actual BVC (Autocompletado):</label>
-                    <input type="number" step="0.01" id="inp-precio-bvc" readonly class="w-full bg-[#0b0f19]/60 border border-gray-800 rounded-lg p-2.5 text-emerald-400 font-bold outline-none cursor-not-allowed">
+                    <label class="text-gray-400 block mb-1">Precio Actual BVC:</label>
+                    <input type="number" step="0.01" id="inp-precio-bvc" placeholder="Si no hay precio en vivo, escríbelo tú" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg p-2.5 text-emerald-400 font-bold outline-none focus:border-emerald-500">
+                    <p id="aviso-precio-manual" class="hidden text-amber-400 text-[11px] mt-1">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Aún no hay precio en vivo para esta acción — ingrésalo tú manualmente.
+                    </p>
                 </div>
             </div>
 
@@ -412,6 +415,19 @@
             } catch (e) {
                 historialCompras = [];
             }
+
+            // Blindaje: si alguna posición quedó guardada con un precio
+            // inválido (NaN/0/vacío) de una sesión anterior, la corregimos
+            // usando el costo de compra como referencia, en vez de dejar
+            // que rompa toda la app con "NaN Bs." en todos lados.
+            let huboCorreccion = false;
+            portafolio.forEach(item => {
+                if (!isFinite(item.precioBvc) || item.precioBvc <= 0) {
+                    item.precioBvc = item.costoProm;
+                    huboCorreccion = true;
+                }
+            });
+            if (huboCorreccion) guardarEnLocalStorage();
         }
 
         function renderHistorial() {
@@ -491,9 +507,13 @@
         function autoCompletarPrecioBvc() {
             const simboloSel = document.getElementById('inp-simbolo').value;
             const accion = catalogoBvc.find(a => a.simbolo === simboloSel);
-            if (accion) {
-                document.getElementById('inp-precio-bvc').value = (accion.precio !== null && accion.precio !== undefined)
-                    ? accion.precio.toFixed(2) : '';
+            const aviso = document.getElementById('aviso-precio-manual');
+            if (accion && accion.precio !== null && accion.precio !== undefined) {
+                document.getElementById('inp-precio-bvc').value = accion.precio.toFixed(2);
+                aviso.classList.add('hidden');
+            } else {
+                document.getElementById('inp-precio-bvc').value = '';
+                aviso.classList.remove('hidden');
             }
         }
 
@@ -507,6 +527,15 @@
 
             document.getElementById('sec-' + tabId).classList.remove('hidden');
             document.getElementById('btn-' + tabId).className = "text-emerald-400 border-b-2 border-emerald-400 pb-2 flex items-center gap-2 font-semibold";
+        }
+
+        // Nunca dejamos que un cálculo roto muestre "NaN" en pantalla:
+        // si el número no es válido, mostramos 0 en su lugar.
+        function fmtBs(n) {
+            return (isFinite(n) ? n : 0).toLocaleString('es-VE', {minimumFractionDigits: 2});
+        }
+        function fmtUsd(n) {
+            return (isFinite(n) ? n : 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
         }
 
         // RECALCULAR TODO
@@ -573,13 +602,13 @@
                 tbody.innerHTML += `
                     <tr>
                         <td class="py-3 font-bold text-white">${item.simbolo}</td>
-                        <td class="text-right">${item.cantidad.toLocaleString('es-VE')}</td>
-                        <td class="text-right">${item.costoProm.toFixed(2)}</td>
-                        <td class="text-right text-gray-300">${item.precioBvc.toFixed(2)}</td>
-                        <td class="text-right">${inversionBs.toLocaleString('es-VE', {minimumFractionDigits: 2})}</td>
-                        <td class="text-right font-bold text-white">${valorActualBs.toLocaleString('es-VE', {minimumFractionDigits: 2})}</td>
+                        <td class="text-right">${(item.cantidad || 0).toLocaleString('es-VE')}</td>
+                        <td class="text-right">${(item.costoProm || 0).toFixed(2)}</td>
+                        <td class="text-right text-gray-300">${(item.precioBvc || 0).toFixed(2)}</td>
+                        <td class="text-right">${fmtBs(inversionBs)}</td>
+                        <td class="text-right font-bold text-white">${fmtBs(valorActualBs)}</td>
                         <td class="text-right font-bold ${rendBs >= 0 ? 'text-emerald-400' : 'text-red-400'}">
-                            ${rendBs >= 0 ? '+' : ''}${rendBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} (${rendPct}%)
+                            ${rendBs >= 0 ? '+' : ''}${fmtBs(rendBs)} (${isFinite(rendPct) ? rendPct : '0.0'}%)
                         </td>
                         <td class="text-center">
                             <button onclick="eliminarPosicion(${index})" class="text-gray-500 hover:text-red-400 transition-colors px-2 py-1" title="Borrar">
@@ -597,18 +626,18 @@
             const usdPar = valorActualTotalBs / par;
             const rendUsd = rendimientoTotalBs / bcv;
 
-            document.getElementById('kpi-valor-total').innerText = `${valorActualTotalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
-            document.getElementById('kpi-inversion-total').innerText = `${inversionTotalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
-            document.getElementById('kpi-usd-bcv').innerText = `$${usdBcv.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD (BCV)`;
+            document.getElementById('kpi-valor-total').innerText = `${fmtBs(valorActualTotalBs)} Bs.`;
+            document.getElementById('kpi-inversion-total').innerText = `${fmtBs(inversionTotalBs)} Bs.`;
+            document.getElementById('kpi-usd-bcv').innerText = `$${fmtUsd(usdBcv)} USD (BCV)`;
             
-            document.getElementById('kpi-rend-bs').innerText = `${rendimientoTotalBs >= 0 ? '+' : ''}${rendimientoTotalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
-            document.getElementById('kpi-ganancia-bs').innerText = `${rendimientoTotalBs.toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.`;
-            document.getElementById('kpi-rend-pct').innerText = `${rendimientoPct}%`;
+            document.getElementById('kpi-rend-bs').innerText = `${rendimientoTotalBs >= 0 ? '+' : ''}${fmtBs(rendimientoTotalBs)} Bs.`;
+            document.getElementById('kpi-ganancia-bs').innerText = `${fmtBs(rendimientoTotalBs)} Bs.`;
+            document.getElementById('kpi-rend-pct').innerText = `${isFinite(rendimientoPct) ? rendimientoPct : '0.00'}%`;
 
-            document.getElementById('kpi-rend-usd').innerText = `${rendUsd >= 0 ? '+' : ''}$${rendUsd.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
-            document.getElementById('kpi-rend-usd-pct').innerText = `${rendimientoPct}%`;
+            document.getElementById('kpi-rend-usd').innerText = `${rendUsd >= 0 ? '+' : ''}$${fmtUsd(rendUsd)} USD`;
+            document.getElementById('kpi-rend-usd-pct').innerText = `${isFinite(rendimientoPct) ? rendimientoPct : '0.00'}%`;
 
-            document.getElementById('kpi-usd-paralelo').innerText = `$${usdPar.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+            document.getElementById('kpi-usd-paralelo').innerText = `$${fmtUsd(usdPar)} USD`;
 
             renderChart(labels, dataChart, colors);
             calcularBrechaApp();
@@ -664,11 +693,18 @@
             const simbolo = document.getElementById('inp-simbolo').value;
             const cantidad = parseFloat(document.getElementById('inp-cantidad').value);
             const costo = parseFloat(document.getElementById('inp-costo').value);
-            const precioBvc = parseFloat(document.getElementById('inp-precio-bvc').value);
+            let precioBvc = parseFloat(document.getElementById('inp-precio-bvc').value);
 
             if (!cantidad || !costo) {
                 alert('Por favor completa la cantidad y el costo de la compra.');
                 return;
+            }
+
+            // Si no hay precio de mercado (en vivo ni manual), usamos el costo
+            // de compra como referencia temporal. Así el portafolio NUNCA
+            // muestra NaN, aunque el precio real todavía no esté disponible.
+            if (!isFinite(precioBvc) || precioBvc <= 0) {
+                precioBvc = costo;
             }
 
             const accionCat = catalogoBvc.find(a => a.simbolo === simbolo);
@@ -714,9 +750,9 @@
             const resPar = monto / par;
             const impacto = resBcv - resPar;
 
-            document.getElementById('calc-res-bcv').innerText = `$${resBcv.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
-            document.getElementById('calc-res-paralelo').innerText = `$${resPar.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
-            document.getElementById('calc-res-impacto').innerText = `-$${impacto.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+            document.getElementById('calc-res-bcv').innerText = `$${fmtUsd(resBcv)} USD`;
+            document.getElementById('calc-res-paralelo').innerText = `$${fmtUsd(resPar)} USD`;
+            document.getElementById('calc-res-impacto').innerText = `-$${fmtUsd(impacto)} USD`;
         }
 
         window.onload = async function() {

@@ -53,7 +53,7 @@ EMPRESAS = {
     "PTN":   "Protinal, C.A.",
     "PCP.B": "Fondo Petrolia, C.A. (Clase B)",
     "SVS":   "Siderúrgica Venezolana \"Sivensa\", S.A.",
-    "2TPG":  "Telares de Palo Grande, C.A.",
+    "TPG":  "Telares de Palo Grande, C.A.",
     "BVCC":  "Bolsa de Valores de Caracas, C.A.",
     "ICP.B": "Inversiones Crecepymes, C.A. (Clase B)",
     "CRM.A": "Corimon, C.A.",
@@ -93,13 +93,32 @@ def obtener_acciones_bvc():
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
+
+        # IMPORTANTE: NO usar wait_until="networkidle" aquí. La página de
+        # la BVC tiene tráfico de red continuo en segundo plano (polling
+        # de cotizaciones, analítica, etc.), así que "networkidle" nunca
+        # se cumple y siempre agota el timeout. En su lugar, esperamos
+        # solo a que el HTML base cargue, y luego esperamos explícitamente
+        # a que la tabla de precios tenga contenido real.
         page.goto(
             "https://www.bolsadecaracas.com/resumen-mercado/",
-            wait_until="networkidle",
-            timeout=30000,
+            wait_until="domcontentloaded",
+            timeout=60000,
         )
-        # Le damos tiempo extra a los widgets que cargan datos por AJAX
-        page.wait_for_timeout(4000)
+
+        # Esperamos hasta 25s a que desaparezca el texto de carga inicial
+        # ("Cargando Información de símbolo"). Si no desaparece a tiempo,
+        # seguimos igual e intentamos leer lo que haya en ese momento.
+        try:
+            page.wait_for_function(
+                """() => !document.body.innerText.includes('Cargando Información de símbolo')""",
+                timeout=25000,
+            )
+        except Exception:
+            print("[AVISO] La tabla siguió mostrando 'Cargando...' tras 25s, se intenta leer igual")
+
+        # Margen extra para que terminen de pintar los últimos números
+        page.wait_for_timeout(3000)
 
         # Intentamos expandir el listado completo de símbolos si el link existe
         for texto_link in ["Ver todos los símbolos", "Ver más símbolos"]:
@@ -206,4 +225,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()  
+    main() 

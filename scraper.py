@@ -54,7 +54,7 @@ EMPRESAS = {
     "PTN":   "Protinal, C.A.",
     "PCP.B": "Fondo Petrolia, C.A. (Clase B)",
     "SVS":   "Siderúrgica Venezolana \"Sivensa\", S.A.",
-    "2TPG":  "Telares de Palo Grande, C.A.",
+    "TPG":  "Telares de Palo Grande, C.A.",
     "BVCC":  "Bolsa de Valores de Caracas, C.A.",
     "ICP.B": "Inversiones Crecepymes, C.A. (Clase B)",
     "CRM.A": "Corimon, C.A.",

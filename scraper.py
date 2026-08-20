@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 from urllib.request import Request, urlopen
 
 DATA_FILE = "data.json"
+HISTORY_FILE = "data_history.jsonl"
 
 # ----------------------------------------------------------------------
 # Nombres reales verificados de las 29 acciones activas de la BVC.
@@ -146,16 +147,28 @@ def obtener_acciones_bvc():
         filas = page.query_selector_all("table tr")
         for fila in filas:
             celdas = [c.inner_text().strip() for c in fila.query_selector_all("td")]
-            if len(celdas) < 2:
+            if len(celdas) < 3:
                 continue
 
-            ticker = celdas[0].upper()
-            if not TICKER_RE.match(ticker) or ticker not in EMPRESAS:
-                continue  # solo nos interesan tickers que sabemos que existen
+            # En vez de asumir que el símbolo está en una columna fija
+            # (la tabla real tiene NOMBRE primero y SÍMBOLO después, al
+            # revés de lo que se había asumido), buscamos en TODAS las
+            # celdas cuál coincide exactamente con un ticker que ya
+            # conocemos de EMPRESAS.
+            ticker = None
+            ticker_idx = None
+            for idx, celda in enumerate(celdas):
+                candidato = celda.upper().strip()
+                if candidato in EMPRESAS:
+                    ticker = candidato
+                    ticker_idx = idx
+                    break
+            if ticker is None:
+                continue
 
             precio = None
             cambio = None
-            for celda in celdas[1:]:
+            for celda in celdas[ticker_idx + 1:]:
                 if precio is None and PRICE_RE.match(celda):
                     try:
                         precio = _parsear_precio(celda)
@@ -234,6 +247,30 @@ def main():
 
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+
+    # --- Historial ---
+    # Guardamos un renglón por corrida (JSON Lines: un objeto JSON por
+    # línea, fácil de leer sin cargar todo el archivo en memoria). Con
+    # esto se puede armar más adelante un gráfico de la evolución del
+    # precio de cada acción en el tiempo, y un mapa de calor histórico.
+    # Solo se guardan tickers con precio EN VIVO de esta corrida (no se
+    # repite el último precio conocido cuando no hubo dato nuevo), para
+    # no ensuciar el historial con valores repetidos artificialmente.
+    try:
+        renglon = {
+            "timestamp": data["updated_at"],
+            "bcv_rate": data.get("bcv_rate"),
+            "stocks": [
+                {"ticker": s["ticker"], "price": s["price"], "change_pct": s["change_pct"]}
+                for s in nuevos_stocks if s.get("live")
+            ],
+        }
+        if renglon["stocks"]:  # no guardamos corridas sin ningún dato nuevo
+            with open(HISTORY_FILE, "a", encoding="utf-8") as f:
+                f.write(json.dumps(renglon, ensure_ascii=False) + "\n")
+            print(f"[OK] Historial actualizado con {len(renglon['stocks'])} tickers")
+    except Exception as e:
+        print(f"[ERROR] No se pudo escribir el historial: {e}")
 
     print("data.json actualizado")
 

@@ -224,6 +224,36 @@ def cargar_data_actual():
 def main():
     data = cargar_data_actual()
 
+    # ¿Es la primera corrida de un día calendario distinto al de la última
+    # corrida guardada? Si es así, "cerramos" el día anterior: guardamos el
+    # último precio conocido de cada acción como su "cierre anterior", que
+    # es la referencia contra la que vamos a calcular el % de variación de
+    # HOY. Esto reemplaza por completo la necesidad de leer el "%" directo
+    # del sitio de la BVC (que resultó ser poco confiable de extraer) —
+    # ahora lo calculamos nosotros mismos con datos que ya controlamos.
+    hoy = datetime.now(timezone.utc).date().isoformat()
+    ultima_fecha = None
+    if data.get("updated_at"):
+        try:
+            ultima_fecha = data["updated_at"][:10]
+        except Exception:
+            ultima_fecha = None
+
+    cierres_anteriores = {
+        s["ticker"]: s.get("precio_cierre_anterior")
+        for s in data.get("stocks", [])
+    }
+    es_primera_vez_con_este_sistema = not any(cierres_anteriores.values())
+    if ultima_fecha != hoy or es_primera_vez_con_este_sistema:
+        # Nuevo día, o primera corrida desde que agregamos este cálculo
+        # propio de variación: el precio que teníamos hasta ahora pasa a
+        # ser la referencia para calcular el % desde la PRÓXIMA corrida
+        # (no hace falta esperar hasta mañana para empezar a ver colores).
+        for s in data.get("stocks", []):
+            if s.get("price") is not None:
+                cierres_anteriores[s["ticker"]] = s["price"]
+        print(f"[OK] Referencia de variación actualizada ({'nuevo día' if ultima_fecha != hoy else 'primera vez con este sistema'})")
+
     # --- Dólar BCV ---
     try:
         data["bcv_rate"] = obtener_tasa_bcv()
@@ -243,25 +273,31 @@ def main():
 
     nuevos_stocks = []
     for ticker, nombre in EMPRESAS.items():
+        cierre_ref = cierres_anteriores.get(ticker)
+
         if ticker in encontrados:
-            nuevos_stocks.append({
-                "ticker": ticker,
-                "name": nombre,
-                "price": encontrados[ticker]["precio"],
-                "change_pct": encontrados[ticker]["cambio"],
-                "live": True,
-            })
+            precio = encontrados[ticker]["precio"]
         elif ticker in stocks_previos:
-            # No se encontró hoy: mantenemos el último precio conocido
-            anterior = stocks_previos[ticker]
-            anterior["live"] = False
-            nuevos_stocks.append(anterior)
+            precio = stocks_previos[ticker].get("price")
         else:
-            # Nunca se ha obtenido este ticker todavía
-            nuevos_stocks.append({
-                "ticker": ticker, "name": nombre,
-                "price": None, "change_pct": None, "live": False,
-            })
+            precio = None
+
+        # Variación calculada por nosotros: (precio_hoy - cierre_anterior) / cierre_anterior
+        cambio_calculado = None
+        if precio is not None and cierre_ref:
+            try:
+                cambio_calculado = round(((precio - cierre_ref) / cierre_ref) * 100, 2)
+            except ZeroDivisionError:
+                cambio_calculado = None
+
+        nuevos_stocks.append({
+            "ticker": ticker,
+            "name": nombre,
+            "price": precio,
+            "change_pct": cambio_calculado,
+            "precio_cierre_anterior": cierre_ref,
+            "live": ticker in encontrados,
+        })
 
     data["stocks"] = nuevos_stocks
     data["updated_at"] = datetime.now(timezone.utc).isoformat()

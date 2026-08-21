@@ -59,7 +59,11 @@ EMPRESAS = {
     "ICP.B": "Inversiones Crecepymes, C.A. (Clase B)",
     "CRM.A": "Corimon, C.A.",
     "PIV.B": "Pivca Promotora de Inversiones y Valores, C.A. (Clase B)",
-    "CIE":   "Corp. Industrial de Energía, C.A. SACA",
+    # NOTA: "CIE" (Corp. Industrial de Energía) fue removida de este
+    # catálogo a propósito. La SUNAVAL suspendió su cotización desde el
+    # 19 de marzo de 2024 por una situación legal de la empresa, sin
+    # fecha de reactivación. No es un bug del scraper — nunca va a
+    # aparecer con precio mientras siga suspendida.
     "IMP.B": "Impulsa Agronegocios, C.A. (Clase B)",
 }
 
@@ -93,7 +97,10 @@ def obtener_acciones_bvc():
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        page = browser.new_page()
+        page = browser.new_page(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                       "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+        )
 
         # IMPORTANTE: NO usar wait_until="networkidle" aquí. La página de
         # la BVC tiene tráfico de red continuo en segundo plano (polling
@@ -101,22 +108,31 @@ def obtener_acciones_bvc():
         # se cumple y siempre agota el timeout. En su lugar, esperamos
         # solo a que el HTML base cargue, y luego esperamos explícitamente
         # a que la tabla de precios tenga contenido real.
-        page.goto(
-            "https://www.bolsadecaracas.com/resumen-mercado/",
-            wait_until="domcontentloaded",
-            timeout=60000,
-        )
-
-        # Esperamos hasta 25s a que desaparezca el texto de carga inicial
-        # ("Cargando Información de símbolo"). Si no desaparece a tiempo,
-        # seguimos igual e intentamos leer lo que haya en ese momento.
-        try:
-            page.wait_for_function(
-                """() => !document.body.innerText.includes('Cargando Información de símbolo')""",
-                timeout=25000,
+        #
+        # La velocidad de red de los servidores de GitHub Actions hacia
+        # este sitio es variable: a veces carga en 10s, a veces tarda
+        # más de 30s. Por eso reintentamos hasta 2 veces con márgenes
+        # generosos, en vez de rendirnos a la primera.
+        cargo_bien = False
+        for intento in range(1, 3):
+            page.goto(
+                "https://www.bolsadecaracas.com/resumen-mercado/",
+                wait_until="domcontentloaded",
+                timeout=60000,
             )
-        except Exception:
-            print("[AVISO] La tabla siguió mostrando 'Cargando...' tras 25s, se intenta leer igual")
+            try:
+                page.wait_for_function(
+                    """() => !document.body.innerText.includes('Cargando Información de símbolo')""",
+                    timeout=45000,
+                )
+                cargo_bien = True
+                print(f"[OK] Tabla cargada en el intento {intento}")
+                break
+            except Exception:
+                print(f"[AVISO] Intento {intento}: la tabla siguió en 'Cargando...' tras 45s")
+
+        if not cargo_bien:
+            print("[AVISO] Ningún intento logró confirmar la carga completa, se intenta leer igual")
 
         # Margen extra para que terminen de pintar los últimos números
         page.wait_for_timeout(3000)
@@ -183,6 +199,11 @@ def obtener_acciones_bvc():
 
             if precio is not None:
                 encontrados[ticker] = {"precio": precio, "cambio": cambio}
+                # DEBUG temporal: mostramos la fila cruda de las primeras 3
+                # acciones encontradas, para ver por qué el % de variación
+                # no se está capturando.
+                if len(encontrados) <= 3:
+                    print(f"[DEBUG-FILA] {ticker}: celdas={celdas}")
 
         browser.close()
 

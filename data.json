@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-21T13:38:21.819331+00:00",
+  "updated_at": "2026-08-21T14:20:30.815270+00:00",
   "bcv_rate": 779.95,
   "stocks": [
     {
@@ -29,24 +29,24 @@
     {
       "ticker": "BPV",
       "name": "Banco Provincial, S.A. Banco Universal",
-      "price": 61.99,
-      "change_pct": 1.62,
+      "price": 61.8,
+      "change_pct": 1.31,
       "precio_cierre_anterior": 61.0,
       "live": true
     },
     {
       "ticker": "BNC",
       "name": "Banco Nacional de Crédito, C.A., Banco Universal",
-      "price": 245.0,
-      "change_pct": 4.7,
+      "price": 238.0,
+      "change_pct": 1.71,
       "precio_cierre_anterior": 234.0,
       "live": true
     },
     {
       "ticker": "RST",
       "name": "C.A. Ron Santa Teresa",
-      "price": 515.0,
-      "change_pct": 0.0,
+      "price": 530.0,
+      "change_pct": 2.91,
       "precio_cierre_anterior": 515.0,
       "live": true
     },
@@ -61,8 +61,8 @@
     {
       "ticker": "FNV",
       "name": "C.A. Fábrica Nacional de Vidrio",
-      "price": 58.0,
-      "change_pct": 7.41,
+      "price": 57.5,
+      "change_pct": 6.48,
       "precio_cierre_anterior": 54.0,
       "live": true
     },
@@ -125,8 +125,8 @@
     {
       "ticker": "GZL",
       "name": "Grupo Zuliano, C.A.",
-      "price": 780.0,
-      "change_pct": -2.5,
+      "price": 715.0,
+      "change_pct": -10.63,
       "precio_cierre_anterior": 800.01,
       "live": true
     },
@@ -165,7 +165,7 @@
     {
       "ticker": "PCP.B",
       "name": "Fondo Petrolia, C.A. (Clase B)",
-      "price": 240.0,
+      "price": 239.99,
       "change_pct": 1.69,
       "precio_cierre_anterior": 236.0,
       "live": true
@@ -189,8 +189,8 @@
     {
       "ticker": "BVCC",
       "name": "Bolsa de Valores de Caracas, C.A.",
-      "price": 810.0,
-      "change_pct": -0.25,
+      "price": 805.0,
+      "change_pct": -0.86,
       "precio_cierre_anterior": 812.0,
       "live": true
     },

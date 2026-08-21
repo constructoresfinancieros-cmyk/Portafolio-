@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-21T02:43:52.281695+00:00",
+  "updated_at": "2026-08-21T02:59:55.731434+00:00",
   "bcv_rate": 777.42,
   "stocks": [
     {
@@ -190,13 +190,6 @@
       "price": 47998.0,
       "change_pct": null,
       "live": true
-    },
-    {
-      "ticker": "CIE",
-      "name": "Corp. Industrial de Energía, C.A. SACA",
-      "price": null,
-      "change_pct": null,
-      "live": false
     },
     {
       "ticker": "IMP.B",

@@ -15,6 +15,9 @@
            están en rem, subir el font-size base del html agranda letras,
            iconos y espaciados de forma proporcional en toda la página. */
         html { font-size: 120%; }
+        @media (max-width: 640px) {
+            html { font-size: 100%; }
+        }
         body { background-color: #0b0f19; font-family: system-ui, -apple-system, sans-serif; }
 
         .cintillo-wrap {
@@ -60,7 +63,7 @@
 
         <!-- TOP HEADER NAVBAR -->
         <header class="border-b border-gray-800 bg-[#0d1322] px-6 py-4">
-            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 sm:gap-4">
                 
                 <!-- LOGO & BRAND -->
                 <div class="flex items-center gap-3">
@@ -92,8 +95,7 @@
 
                     <div class="bg-[#131b2e] border border-gray-800 rounded-lg px-3 py-1.5 flex items-center gap-2">
                         <span class="text-gray-400">Índice IBC:</span>
-                        <span class="text-emerald-400 font-bold" id="hdr-ibc">5.524,15 pts</span>
-                        <span class="text-emerald-400 text-[11px] font-semibold">(+2,10%)</span>
+                        <span class="text-gray-500 text-[11px]" title="Aún no conectado a datos reales, requiere scraper adicional">No conectado</span>
                     </div>
 
                     <button onclick="abrirModal()" class="bg-emerald-400 hover:bg-emerald-500 text-black font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors">
@@ -103,20 +105,20 @@
             </div>
 
             <!-- NAVEGACIÓN PESTAÑAS -->
-            <nav class="max-w-7xl mx-auto flex items-center gap-6 mt-6 border-t border-gray-800/60 pt-3 text-sm font-medium text-gray-400">
-                <button id="btn-portafolio" onclick="verTab('portafolio')" class="text-emerald-400 border-b-2 border-emerald-400 pb-2 flex items-center gap-2 font-semibold">
+            <nav class="max-w-7xl mx-auto flex items-center gap-6 mt-6 border-t border-gray-800/60 pt-3 text-sm font-medium text-gray-400 overflow-x-auto whitespace-nowrap">
+                <button id="btn-portafolio" onclick="verTab('portafolio')" class="text-emerald-400 border-b-2 border-emerald-400 pb-2 flex items-center gap-2 font-semibold flex-shrink-0">
                     <i class="fa-solid fa-briefcase text-xs"></i> Mi Portafolio
                 </button>
-                <button id="btn-mercado" onclick="verTab('mercado')" class="hover:text-white pb-2 flex items-center gap-2 transition-colors">
+                <button id="btn-mercado" onclick="verTab('mercado')" class="hover:text-white pb-2 flex items-center gap-2 transition-colors flex-shrink-0">
                     <i class="fa-solid fa-chart-line text-xs"></i> Mercado BVC
                 </button>
-                <button id="btn-calculadora" onclick="verTab('calculadora')" class="hover:text-white pb-2 flex items-center gap-2 transition-colors">
+                <button id="btn-calculadora" onclick="verTab('calculadora')" class="hover:text-white pb-2 flex items-center gap-2 transition-colors flex-shrink-0">
                     <i class="fa-solid fa-calculator text-xs"></i> Calculadora de Brecha
                 </button>
-                <button id="btn-historial" onclick="verTab('historial')" class="hover:text-white pb-2 flex items-center gap-2 transition-colors">
+                <button id="btn-historial" onclick="verTab('historial')" class="hover:text-white pb-2 flex items-center gap-2 transition-colors flex-shrink-0">
                     <i class="fa-solid fa-receipt text-xs"></i> Historial
                 </button>
-                <button id="btn-mapa" onclick="verTab('mapa')" class="hover:text-white pb-2 flex items-center gap-2 transition-colors">
+                <button id="btn-mapa" onclick="verTab('mapa')" class="hover:text-white pb-2 flex items-center gap-2 transition-colors flex-shrink-0">
                     <i class="fa-solid fa-fire text-xs"></i> Mapa de Calor
                 </button>
             </nav>
@@ -223,7 +225,7 @@
                 <div class="bg-[#131b2e] border border-gray-800 p-6 rounded-xl flex items-center justify-between flex-wrap gap-4">
                     <div>
                         <span class="text-xs text-gray-400">Índice Bursátil Caracas (IBC)</span>
-                        <div class="text-2xl font-black text-white mt-1">5.524,15 <span class="text-emerald-400 text-sm font-bold">+2,10%</span></div>
+                        <div class="text-lg font-bold text-gray-500 mt-1">Aún no conectado a datos reales</div>
                     </div>
                     <div class="text-right text-xs text-gray-400">
                         <div>Volumen Total Operado: <strong class="text-white">12.450.300,00 Bs.</strong></div>
@@ -472,7 +474,7 @@
             `).join('');
         }
 
-        // TASA BCV EN VIVO (dolarapi.com, fuente pública gratuita)
+        // TASA BCV Y PARALELO EN VIVO (dolarapi.com, fuente pública gratuita)
         async function cargarTasaBcvReal() {
             try {
                 const res = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
@@ -484,6 +486,18 @@
                 }
             } catch (e) {
                 console.warn('No se pudo obtener la tasa BCV en vivo, se mantiene el valor manual.', e);
+            }
+
+            try {
+                const res2 = await fetch('https://ve.dolarapi.com/v1/dolares/paralelo');
+                if (res2.ok) {
+                    const data2 = await res2.json();
+                    if (data2 && data2.promedio) {
+                        document.getElementById('tasa-paralelo').value = parseFloat(data2.promedio).toFixed(2);
+                    }
+                }
+            } catch (e) {
+                console.warn('No se pudo obtener la tasa Paralelo en vivo, se mantiene el valor manual.', e);
             }
         }
 

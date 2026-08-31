@@ -1,53 +1,53 @@
 {
-  "updated_at": "2026-08-28T22:47:33.115692+00:00",
-  "bcv_rate": 791.67,
+  "updated_at": "2026-08-31T19:18:39.189891+00:00",
+  "bcv_rate": 794.99,
   "stocks": [
     {
       "ticker": "MVZ.A",
       "name": "Mercantil Servicios Financieros, C.A. (Clase A)",
       "price": 6501.0,
-      "change_pct": 0.02,
-      "precio_cierre_anterior": 6500.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 6501.0,
       "live": true
     },
     {
       "ticker": "MVZ.B",
       "name": "Mercantil Servicios Financieros, C.A. (Clase B)",
-      "price": 5500.0,
-      "change_pct": -0.9,
-      "precio_cierre_anterior": 5550.0,
+      "price": 5700.0,
+      "change_pct": 3.64,
+      "precio_cierre_anterior": 5500.0,
       "live": true
     },
     {
       "ticker": "BVL",
       "name": "Banco de Venezuela, S.A. Banco Universal",
-      "price": 1678.0,
-      "change_pct": -0.06,
-      "precio_cierre_anterior": 1679.0,
+      "price": 1725.0,
+      "change_pct": 2.8,
+      "precio_cierre_anterior": 1678.0,
       "live": true
     },
     {
       "ticker": "BPV",
       "name": "Banco Provincial, S.A. Banco Universal",
-      "price": 61.15,
-      "change_pct": -2.92,
-      "precio_cierre_anterior": 62.99,
+      "price": 60.0,
+      "change_pct": -1.88,
+      "precio_cierre_anterior": 61.15,
       "live": true
     },
     {
       "ticker": "BNC",
       "name": "Banco Nacional de Crédito, C.A., Banco Universal",
-      "price": 230.02,
-      "change_pct": 3.15,
-      "precio_cierre_anterior": 223.0,
+      "price": 225.0,
+      "change_pct": -2.18,
+      "precio_cierre_anterior": 230.02,
       "live": true
     },
     {
       "ticker": "RST",
       "name": "C.A. Ron Santa Teresa",
-      "price": 500.1,
-      "change_pct": 0.02,
-      "precio_cierre_anterior": 500.0,
+      "price": 492.91,
+      "change_pct": -1.44,
+      "precio_cierre_anterior": 500.1,
       "live": true
     },
     {
@@ -77,9 +77,9 @@
     {
       "ticker": "ABC.A",
       "name": "Banco del Caribe, C.A., Banco Universal",
-      "price": 1750.0,
-      "change_pct": 0.06,
-      "precio_cierre_anterior": 1749.0,
+      "price": 1754.0,
+      "change_pct": 0.23,
+      "precio_cierre_anterior": 1750.0,
       "live": true
     },
     {
@@ -94,8 +94,8 @@
       "ticker": "ENV",
       "name": "Envases Venezolanos, S.A.",
       "price": 600.0,
-      "change_pct": -7.41,
-      "precio_cierre_anterior": 648.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 600.0,
       "live": true
     },
     {
@@ -117,8 +117,8 @@
     {
       "ticker": "TDV.D",
       "name": "C.A. Nacional Teléfonos de Venezuela (CANTV, Clase D)",
-      "price": 797.0,
-      "change_pct": 0.0,
+      "price": 800.0,
+      "change_pct": 0.38,
       "precio_cierre_anterior": 797.0,
       "live": true
     },
@@ -126,16 +126,16 @@
       "ticker": "GZL",
       "name": "Grupo Zuliano, C.A.",
       "price": 750.0,
-      "change_pct": -6.25,
-      "precio_cierre_anterior": 800.01,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 750.0,
       "live": true
     },
     {
       "ticker": "DOM",
       "name": "Domínguez & Cía., S.A.",
-      "price": 650.0,
-      "change_pct": 4.84,
-      "precio_cierre_anterior": 620.0,
+      "price": 670.56,
+      "change_pct": 3.16,
+      "precio_cierre_anterior": 650.0,
       "live": true
     },
     {
@@ -165,9 +165,9 @@
     {
       "ticker": "PCP.B",
       "name": "Fondo Petrolia, C.A. (Clase B)",
-      "price": 225.0,
-      "change_pct": 2.27,
-      "precio_cierre_anterior": 220.0,
+      "price": 240.0,
+      "change_pct": 6.67,
+      "precio_cierre_anterior": 225.0,
       "live": true
     },
     {
@@ -189,9 +189,9 @@
     {
       "ticker": "BVCC",
       "name": "Bolsa de Valores de Caracas, C.A.",
-      "price": 667.0,
-      "change_pct": -1.98,
-      "precio_cierre_anterior": 680.5,
+      "price": 643.5,
+      "change_pct": -3.52,
+      "precio_cierre_anterior": 667.0,
       "live": true
     },
     {
@@ -216,7 +216,7 @@
       "price": 47998.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 47998.0,
-      "live": true
+      "live": false
     },
     {
       "ticker": "IMP.B",

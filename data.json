@@ -1,30 +1,30 @@
 {
-  "updated_at": "2026-09-01T17:02:01.222064+00:00",
+  "updated_at": "2026-09-01T19:56:59.387334+00:00",
   "bcv_rate": 798.33,
   "stocks": [
     {
       "ticker": "MVZ.A",
       "name": "Mercantil Servicios Financieros, C.A. (Clase A)",
-      "price": 6501.0,
-      "change_pct": 0.0,
+      "price": 6851.0,
+      "change_pct": 5.38,
       "precio_cierre_anterior": 6501.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "MVZ.B",
       "name": "Mercantil Servicios Financieros, C.A. (Clase B)",
-      "price": 5700.0,
-      "change_pct": 0.0,
+      "price": 5800.0,
+      "change_pct": 1.75,
       "precio_cierre_anterior": 5700.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "BVL",
       "name": "Banco de Venezuela, S.A. Banco Universal",
-      "price": 1725.0,
-      "change_pct": 0.0,
+      "price": 1678.0,
+      "change_pct": -2.72,
       "precio_cierre_anterior": 1725.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "BPV",
@@ -32,15 +32,15 @@
       "price": 60.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 60.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "BNC",
       "name": "Banco Nacional de Crédito, C.A., Banco Universal",
-      "price": 225.0,
-      "change_pct": 0.0,
+      "price": 221.25,
+      "change_pct": -1.67,
       "precio_cierre_anterior": 225.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "RST",
@@ -48,7 +48,7 @@
       "price": 492.91,
       "change_pct": 0.0,
       "precio_cierre_anterior": 492.91,
-      "live": false
+      "live": true
     },
     {
       "ticker": "RST.B",
@@ -56,7 +56,7 @@
       "price": 344.99,
       "change_pct": 0.0,
       "precio_cierre_anterior": 344.99,
-      "live": false
+      "live": true
     },
     {
       "ticker": "FNV",
@@ -64,7 +64,7 @@
       "price": 54.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 54.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "CGQ",
@@ -72,7 +72,7 @@
       "price": 2670.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 2670.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "ABC.A",
@@ -80,7 +80,7 @@
       "price": 1754.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 1754.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "FNC",
@@ -88,7 +88,7 @@
       "price": 2749.5,
       "change_pct": 0.0,
       "precio_cierre_anterior": 2749.5,
-      "live": false
+      "live": true
     },
     {
       "ticker": "ENV",
@@ -96,7 +96,7 @@
       "price": 600.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 600.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "EFE",
@@ -104,7 +104,7 @@
       "price": 85.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 85.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "PGR",
@@ -112,7 +112,7 @@
       "price": 96.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 96.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "TDV.D",
@@ -120,7 +120,7 @@
       "price": 800.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 800.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "GZL",
@@ -128,7 +128,7 @@
       "price": 750.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 750.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "DOM",
@@ -136,7 +136,7 @@
       "price": 670.56,
       "change_pct": 0.0,
       "precio_cierre_anterior": 670.56,
-      "live": false
+      "live": true
     },
     {
       "ticker": "MPA",
@@ -144,7 +144,7 @@
       "price": 102.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 102.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "CCR",
@@ -152,7 +152,7 @@
       "price": 7199.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 7199.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "PTN",
@@ -160,15 +160,15 @@
       "price": 490.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 490.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "PCP.B",
       "name": "Fondo Petrolia, C.A. (Clase B)",
-      "price": 240.0,
-      "change_pct": 0.0,
+      "price": 235.0,
+      "change_pct": -2.08,
       "precio_cierre_anterior": 240.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "SVS",
@@ -176,23 +176,23 @@
       "price": 759.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 759.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "TPG",
       "name": "Telares de Palo Grande, C.A.",
-      "price": 9.7,
-      "change_pct": 0.0,
+      "price": 9.85,
+      "change_pct": 1.55,
       "precio_cierre_anterior": 9.7,
-      "live": false
+      "live": true
     },
     {
       "ticker": "BVCC",
       "name": "Bolsa de Valores de Caracas, C.A.",
-      "price": 643.5,
-      "change_pct": 0.0,
+      "price": 630.0,
+      "change_pct": -2.1,
       "precio_cierre_anterior": 643.5,
-      "live": false
+      "live": true
     },
     {
       "ticker": "ICP.B",
@@ -200,7 +200,7 @@
       "price": 115.3,
       "change_pct": 0.0,
       "precio_cierre_anterior": 115.3,
-      "live": false
+      "live": true
     },
     {
       "ticker": "CRM.A",
@@ -208,7 +208,7 @@
       "price": 540.0,
       "change_pct": 0.0,
       "precio_cierre_anterior": 540.0,
-      "live": false
+      "live": true
     },
     {
       "ticker": "PIV.B",

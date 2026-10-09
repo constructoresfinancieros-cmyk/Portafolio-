@@ -1,68 +1,68 @@
 {
-  "updated_at": "2026-10-08T23:45:44.119558+00:00",
-  "bcv_rate": 874.73,
+  "updated_at": "2026-10-09T18:35:25.532189+00:00",
+  "bcv_rate": 875.65,
   "stocks": [
     {
       "ticker": "MVZ.A",
       "name": "Mercantil Servicios Financieros, C.A. (Clase A)",
-      "price": 14217.0,
-      "change_pct": 19.98,
-      "precio_cierre_anterior": 11849.0,
+      "price": 18450.0,
+      "change_pct": 29.77,
+      "precio_cierre_anterior": 14217.0,
       "live": true
     },
     {
       "ticker": "MVZ.B",
       "name": "Mercantil Servicios Financieros, C.A. (Clase B)",
-      "price": 10750.0,
-      "change_pct": -1.38,
-      "precio_cierre_anterior": 10900.0,
+      "price": 12800.0,
+      "change_pct": 19.07,
+      "precio_cierre_anterior": 10750.0,
       "live": true
     },
     {
       "ticker": "BVL",
       "name": "Banco de Venezuela, S.A. Banco Universal",
-      "price": 1900.0,
-      "change_pct": 0.0,
+      "price": 1950.0,
+      "change_pct": 2.63,
       "precio_cierre_anterior": 1900.0,
       "live": true
     },
     {
       "ticker": "BPV",
       "name": "Banco Provincial, S.A. Banco Universal",
-      "price": 94.98,
-      "change_pct": 18.73,
-      "precio_cierre_anterior": 80.0,
+      "price": 99.5,
+      "change_pct": 4.76,
+      "precio_cierre_anterior": 94.98,
       "live": true
     },
     {
       "ticker": "BNC",
       "name": "Banco Nacional de Crédito, C.A., Banco Universal",
-      "price": 244.26,
-      "change_pct": 6.2,
-      "precio_cierre_anterior": 230.0,
+      "price": 254.98,
+      "change_pct": 4.39,
+      "precio_cierre_anterior": 244.26,
       "live": true
     },
     {
       "ticker": "RST",
       "name": "C.A. Ron Santa Teresa",
-      "price": 735.0,
-      "change_pct": 8.89,
-      "precio_cierre_anterior": 674.99,
+      "price": 790.0,
+      "change_pct": 7.48,
+      "precio_cierre_anterior": 735.0,
       "live": true
     },
     {
       "ticker": "RST.B",
       "name": "C.A. Ron Santa Teresa (Clase B)",
-      "price": 459.97,
-      "change_pct": 1.31,
-      "precio_cierre_anterior": 454.0,
+      "price": 510.0,
+      "change_pct": 10.88,
+      "precio_cierre_anterior": 459.97,
       "live": true
     },
     {
       "ticker": "FNV",
       "name": "C.A. Fábrica Nacional de Vidrio",
-      "price": 79.99,
-      "change_pct": 0.0,
+      "price": 80.0,
+      "change_pct": 0.01,
       "precio_cierre_anterior": 79.99,
       "live": true
     },
@@ -78,8 +78,8 @@
       "ticker": "ABC.A",
       "name": "Banco del Caribe, C.A., Banco Universal",
       "price": 2745.0,
-      "change_pct": 5.58,
-      "precio_cierre_anterior": 2600.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 2745.0,
       "live": true
     },
     {
@@ -93,33 +93,33 @@
     {
       "ticker": "ENV",
       "name": "Envases Venezolanos, S.A.",
-      "price": 879.0,
-      "change_pct": 0.0,
+      "price": 900.0,
+      "change_pct": 2.39,
       "precio_cierre_anterior": 879.0,
       "live": true
     },
     {
       "ticker": "EFE",
       "name": "Productos EFE, S.A.",
-      "price": 102.0,
-      "change_pct": 0.0,
+      "price": 108.0,
+      "change_pct": 5.88,
       "precio_cierre_anterior": 102.0,
       "live": true
     },
     {
       "ticker": "PGR",
       "name": "Proagro, C.A.",
-      "price": 168.0,
-      "change_pct": 5.0,
-      "precio_cierre_anterior": 160.0,
+      "price": 167.22,
+      "change_pct": -0.46,
+      "precio_cierre_anterior": 168.0,
       "live": true
     },
     {
       "ticker": "TDV.D",
       "name": "C.A. Nacional Teléfonos de Venezuela (CANTV, Clase D)",
-      "price": 985.0,
-      "change_pct": 3.68,
-      "precio_cierre_anterior": 950.0,
+      "price": 1003.0,
+      "change_pct": 1.83,
+      "precio_cierre_anterior": 985.0,
       "live": true
     },
     {
@@ -141,9 +141,9 @@
     {
       "ticker": "MPA",
       "name": "Manufacturas de Papel, C.A.",
-      "price": 150.0,
-      "change_pct": 19.95,
-      "precio_cierre_anterior": 125.05,
+      "price": 173.0,
+      "change_pct": 15.33,
+      "precio_cierre_anterior": 150.0,
       "live": true
     },
     {
@@ -157,41 +157,41 @@
     {
       "ticker": "PTN",
       "name": "Protinal, C.A.",
-      "price": 1100.0,
-      "change_pct": 0.0,
+      "price": 1050.0,
+      "change_pct": -4.55,
       "precio_cierre_anterior": 1100.0,
       "live": true
     },
     {
       "ticker": "PCP.B",
       "name": "Fondo Petrolia, C.A. (Clase B)",
-      "price": 210.0,
-      "change_pct": 1.45,
-      "precio_cierre_anterior": 207.0,
+      "price": 191.0,
+      "change_pct": -9.05,
+      "precio_cierre_anterior": 210.0,
       "live": true
     },
     {
       "ticker": "SVS",
       "name": "Siderúrgica Venezolana \"Sivensa\", S.A.",
-      "price": 1000.0,
-      "change_pct": 0.0,
+      "price": 1050.0,
+      "change_pct": 5.0,
       "precio_cierre_anterior": 1000.0,
       "live": true
     },
     {
       "ticker": "TPG",
       "name": "Telares de Palo Grande, C.A.",
-      "price": 11.0,
-      "change_pct": 3.19,
-      "precio_cierre_anterior": 10.66,
+      "price": 11.9,
+      "change_pct": 8.18,
+      "precio_cierre_anterior": 11.0,
       "live": true
     },
     {
       "ticker": "BVCC",
       "name": "Bolsa de Valores de Caracas, C.A.",
-      "price": 925.0,
-      "change_pct": 2.78,
-      "precio_cierre_anterior": 900.0,
+      "price": 920.0,
+      "change_pct": -0.54,
+      "precio_cierre_anterior": 925.0,
       "live": true
     },
     {
@@ -205,8 +205,8 @@
     {
       "ticker": "CRM.A",
       "name": "Corimon, C.A.",
-      "price": 630.01,
-      "change_pct": 0.0,
+      "price": 750.0,
+      "change_pct": 19.05,
       "precio_cierre_anterior": 630.01,
       "live": true
     },
@@ -214,8 +214,8 @@
       "ticker": "PIV.B",
       "name": "Pivca Promotora de Inversiones y Valores, C.A. (Clase B)",
       "price": 51000.0,
-      "change_pct": 1.03,
-      "precio_cierre_anterior": 50480.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 51000.0,
       "live": true
     },
     {

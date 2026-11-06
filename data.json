@@ -1,61 +1,61 @@
 {
-  "updated_at": "2026-11-05T20:23:14.756561+00:00",
+  "updated_at": "2026-11-06T01:10:55.183663+00:00",
   "bcv_rate": 894.89,
   "stocks": [
     {
       "ticker": "MVZ.A",
       "name": "Mercantil Servicios Financieros, C.A. (Clase A)",
       "price": 15789.0,
-      "change_pct": -1.32,
-      "precio_cierre_anterior": 16000.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 15789.0,
       "live": true
     },
     {
       "ticker": "MVZ.B",
       "name": "Mercantil Servicios Financieros, C.A. (Clase B)",
       "price": 9050.01,
-      "change_pct": -6.7,
-      "precio_cierre_anterior": 9700.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 9050.01,
       "live": true
     },
     {
       "ticker": "BVL",
       "name": "Banco de Venezuela, S.A. Banco Universal",
       "price": 2190.0,
-      "change_pct": -0.45,
-      "precio_cierre_anterior": 2200.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 2190.0,
       "live": true
     },
     {
       "ticker": "BPV",
       "name": "Banco Provincial, S.A. Banco Universal",
       "price": 8100.0,
-      "change_pct": -2.4,
-      "precio_cierre_anterior": 8299.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 8100.0,
       "live": true
     },
     {
       "ticker": "BNC",
       "name": "Banco Nacional de Crédito, C.A., Banco Universal",
       "price": 230.5,
-      "change_pct": -2.33,
-      "precio_cierre_anterior": 236.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 230.5,
       "live": true
     },
     {
       "ticker": "RST",
       "name": "C.A. Ron Santa Teresa",
       "price": 715.0,
-      "change_pct": -0.69,
-      "precio_cierre_anterior": 720.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 715.0,
       "live": true
     },
     {
       "ticker": "RST.B",
       "name": "C.A. Ron Santa Teresa (Clase B)",
       "price": 550.0,
-      "change_pct": -5.98,
-      "precio_cierre_anterior": 585.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 550.0,
       "live": true
     },
     {
@@ -78,16 +78,16 @@
       "ticker": "ABC.A",
       "name": "Banco del Caribe, C.A., Banco Universal",
       "price": 2750.0,
-      "change_pct": -8.33,
-      "precio_cierre_anterior": 3000.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 2750.0,
       "live": true
     },
     {
       "ticker": "FNC",
       "name": "C.A. Fábrica Nacional de Cementos S.A.C.A.",
       "price": 2125.0,
-      "change_pct": -15.03,
-      "precio_cierre_anterior": 2501.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 2125.0,
       "live": true
     },
     {
@@ -102,8 +102,8 @@
       "ticker": "EFE",
       "name": "Productos EFE, S.A.",
       "price": 118.5,
-      "change_pct": -5.2,
-      "precio_cierre_anterior": 125.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 118.5,
       "live": true
     },
     {
@@ -127,7 +127,7 @@
       "name": "Grupo Zuliano, C.A.",
       "price": 1300.01,
       "change_pct": 0.0,
-      "precio_cierre_anterior": 1300.0,
+      "precio_cierre_anterior": 1300.01,
       "live": true
     },
     {
@@ -158,24 +158,24 @@
       "ticker": "PTN",
       "name": "Protinal, C.A.",
       "price": 1400.0,
-      "change_pct": -3.45,
-      "precio_cierre_anterior": 1450.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 1400.0,
       "live": true
     },
     {
       "ticker": "PCP.B",
       "name": "Fondo Petrolia, C.A. (Clase B)",
       "price": 200.02,
-      "change_pct": 2.05,
-      "precio_cierre_anterior": 196.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 200.02,
       "live": true
     },
     {
       "ticker": "SVS",
       "name": "Siderúrgica Venezolana \"Sivensa\", S.A.",
       "price": 1355.0,
-      "change_pct": 3.04,
-      "precio_cierre_anterior": 1315.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 1355.0,
       "live": true
     },
     {
@@ -190,8 +190,8 @@
       "ticker": "BVCC",
       "name": "Bolsa de Valores de Caracas, C.A.",
       "price": 870.0,
-      "change_pct": -1.69,
-      "precio_cierre_anterior": 885.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 870.0,
       "live": true
     },
     {

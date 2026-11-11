@@ -1,13 +1,13 @@
 {
-  "updated_at": "2026-11-10T20:05:43.883218+00:00",
+  "updated_at": "2026-11-11T00:39:13.312241+00:00",
   "bcv_rate": 899.27,
   "stocks": [
     {
       "ticker": "MVZ.A",
       "name": "Mercantil Servicios Financieros, C.A. (Clase A)",
       "price": 13100.0,
-      "change_pct": -14.94,
-      "precio_cierre_anterior": 15400.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 13100.0,
       "live": true
     },
     {
@@ -22,40 +22,40 @@
       "ticker": "BVL",
       "name": "Banco de Venezuela, S.A. Banco Universal",
       "price": 2095.0,
-      "change_pct": -2.47,
-      "precio_cierre_anterior": 2148.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 2095.0,
       "live": true
     },
     {
       "ticker": "BPV",
       "name": "Banco Provincial, S.A. Banco Universal",
       "price": 8395.0,
-      "change_pct": -0.06,
-      "precio_cierre_anterior": 8400.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 8395.0,
       "live": true
     },
     {
       "ticker": "BNC",
       "name": "Banco Nacional de Crédito, C.A., Banco Universal",
       "price": 239.48,
-      "change_pct": -0.22,
-      "precio_cierre_anterior": 240.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 239.48,
       "live": true
     },
     {
       "ticker": "RST",
       "name": "C.A. Ron Santa Teresa",
       "price": 706.0,
-      "change_pct": -8.55,
-      "precio_cierre_anterior": 772.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 706.0,
       "live": true
     },
     {
       "ticker": "RST.B",
       "name": "C.A. Ron Santa Teresa (Clase B)",
       "price": 577.99,
-      "change_pct": -0.69,
-      "precio_cierre_anterior": 582.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 577.99,
       "live": true
     },
     {
@@ -94,32 +94,32 @@
       "ticker": "ENV",
       "name": "Envases Venezolanos, S.A.",
       "price": 1087.0,
-      "change_pct": -3.72,
-      "precio_cierre_anterior": 1129.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 1087.0,
       "live": true
     },
     {
       "ticker": "EFE",
       "name": "Productos EFE, S.A.",
       "price": 129.9,
-      "change_pct": 3.92,
-      "precio_cierre_anterior": 125.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 129.9,
       "live": true
     },
     {
       "ticker": "PGR",
       "name": "Proagro, C.A.",
       "price": 180.5,
-      "change_pct": -1.89,
-      "precio_cierre_anterior": 183.97,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 180.5,
       "live": true
     },
     {
       "ticker": "TDV.D",
       "name": "C.A. Nacional Teléfonos de Venezuela (CANTV, Clase D)",
       "price": 1106.0,
-      "change_pct": 3.85,
-      "precio_cierre_anterior": 1065.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 1106.0,
       "live": true
     },
     {
@@ -134,8 +134,8 @@
       "ticker": "DOM",
       "name": "Domínguez & Cía., S.A.",
       "price": 1061.0,
-      "change_pct": -10.99,
-      "precio_cierre_anterior": 1191.97,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 1061.0,
       "live": true
     },
     {
@@ -158,16 +158,16 @@
       "ticker": "PTN",
       "name": "Protinal, C.A.",
       "price": 1500.0,
-      "change_pct": 4.17,
-      "precio_cierre_anterior": 1440.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 1500.0,
       "live": true
     },
     {
       "ticker": "PCP.B",
       "name": "Fondo Petrolia, C.A. (Clase B)",
       "price": 160.0,
-      "change_pct": -15.79,
-      "precio_cierre_anterior": 189.99,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 160.0,
       "live": true
     },
     {
@@ -182,16 +182,16 @@
       "ticker": "TPG",
       "name": "Telares de Palo Grande, C.A.",
       "price": 10.0,
-      "change_pct": -9.09,
-      "precio_cierre_anterior": 11.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 10.0,
       "live": true
     },
     {
       "ticker": "BVCC",
       "name": "Bolsa de Valores de Caracas, C.A.",
       "price": 869.0,
-      "change_pct": -0.69,
-      "precio_cierre_anterior": 875.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 869.0,
       "live": true
     },
     {

@@ -1,21 +1,21 @@
 {
-  "updated_at": "2026-11-19T21:04:40.076662+00:00",
-  "bcv_rate": 917.78,
+  "updated_at": "2026-11-20T20:50:35.600552+00:00",
+  "bcv_rate": 918.77,
   "stocks": [
     {
       "ticker": "MVZ.A",
       "name": "Mercantil Servicios Financieros, C.A. (Clase A)",
-      "price": 13500.0,
-      "change_pct": 0.0,
+      "price": 14977.99,
+      "change_pct": 10.95,
       "precio_cierre_anterior": 13500.0,
       "live": true
     },
     {
       "ticker": "MVZ.B",
       "name": "Mercantil Servicios Financieros, C.A. (Clase B)",
-      "price": 9660.0,
-      "change_pct": 0.47,
-      "precio_cierre_anterior": 9615.0,
+      "price": 9350.0,
+      "change_pct": -3.21,
+      "precio_cierre_anterior": 9660.0,
       "live": true
     },
     {
@@ -29,40 +29,40 @@
     {
       "ticker": "BPV",
       "name": "Banco Provincial, S.A. Banco Universal",
-      "price": 10750.0,
-      "change_pct": -1.68,
-      "precio_cierre_anterior": 10934.0,
+      "price": 3240.0,
+      "change_pct": -69.86,
+      "precio_cierre_anterior": 10750.0,
       "live": true
     },
     {
       "ticker": "BNC",
       "name": "Banco Nacional de Crédito, C.A., Banco Universal",
-      "price": 252.5,
-      "change_pct": -1.36,
-      "precio_cierre_anterior": 255.99,
+      "price": 245.75,
+      "change_pct": -2.67,
+      "precio_cierre_anterior": 252.5,
       "live": true
     },
     {
       "ticker": "RST",
       "name": "C.A. Ron Santa Teresa",
-      "price": 804.95,
-      "change_pct": -0.01,
-      "precio_cierre_anterior": 805.0,
+      "price": 805.0,
+      "change_pct": 0.01,
+      "precio_cierre_anterior": 804.95,
       "live": true
     },
     {
       "ticker": "RST.B",
       "name": "C.A. Ron Santa Teresa (Clase B)",
-      "price": 589.0,
-      "change_pct": -0.51,
-      "precio_cierre_anterior": 592.0,
+      "price": 583.0,
+      "change_pct": -1.02,
+      "precio_cierre_anterior": 589.0,
       "live": true
     },
     {
       "ticker": "FNV",
       "name": "C.A. Fábrica Nacional de Vidrio",
-      "price": 81.0,
-      "change_pct": 0.0,
+      "price": 82.0,
+      "change_pct": 1.23,
       "precio_cierre_anterior": 81.0,
       "live": true
     },
@@ -70,15 +70,15 @@
       "ticker": "CGQ",
       "name": "Corporación Grupo Químico, C.A.",
       "price": 2271.0,
-      "change_pct": 0.04,
-      "precio_cierre_anterior": 2270.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 2271.0,
       "live": true
     },
     {
       "ticker": "ABC.A",
       "name": "Banco del Caribe, C.A., Banco Universal",
-      "price": 2600.0,
-      "change_pct": 0.0,
+      "price": 2720.0,
+      "change_pct": 4.62,
       "precio_cierre_anterior": 2600.0,
       "live": true
     },
@@ -93,32 +93,32 @@
     {
       "ticker": "ENV",
       "name": "Envases Venezolanos, S.A.",
-      "price": 1143.0,
-      "change_pct": 0.0,
+      "price": 1175.0,
+      "change_pct": 2.8,
       "precio_cierre_anterior": 1143.0,
       "live": true
     },
     {
       "ticker": "EFE",
       "name": "Productos EFE, S.A.",
-      "price": 185.0,
-      "change_pct": -2.63,
-      "precio_cierre_anterior": 190.0,
+      "price": 189.99,
+      "change_pct": 2.7,
+      "precio_cierre_anterior": 185.0,
       "live": true
     },
     {
       "ticker": "PGR",
       "name": "Proagro, C.A.",
       "price": 176.0,
-      "change_pct": 0.01,
-      "precio_cierre_anterior": 175.99,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 176.0,
       "live": true
     },
     {
       "ticker": "TDV.D",
       "name": "C.A. Nacional Teléfonos de Venezuela (CANTV, Clase D)",
-      "price": 1380.0,
-      "change_pct": 0.0,
+      "price": 1396.0,
+      "change_pct": 1.16,
       "precio_cierre_anterior": 1380.0,
       "live": true
     },
@@ -126,15 +126,15 @@
       "ticker": "GZL",
       "name": "Grupo Zuliano, C.A.",
       "price": 1315.0,
-      "change_pct": 0.77,
-      "precio_cierre_anterior": 1305.01,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 1315.0,
       "live": true
     },
     {
       "ticker": "DOM",
       "name": "Domínguez & Cía., S.A.",
-      "price": 1120.0,
-      "change_pct": 0.0,
+      "price": 1085.0,
+      "change_pct": -3.12,
       "precio_cierre_anterior": 1120.0,
       "live": true
     },
@@ -142,8 +142,8 @@
       "ticker": "MPA",
       "name": "Manufacturas de Papel, C.A.",
       "price": 199.7,
-      "change_pct": -0.15,
-      "precio_cierre_anterior": 200.0,
+      "change_pct": 0.0,
+      "precio_cierre_anterior": 199.7,
       "live": true
     },
     {
@@ -157,41 +157,41 @@
     {
       "ticker": "PTN",
       "name": "Protinal, C.A.",
-      "price": 1500.0,
-      "change_pct": -3.1,
-      "precio_cierre_anterior": 1548.0,
+      "price": 1600.0,
+      "change_pct": 6.67,
+      "precio_cierre_anterior": 1500.0,
       "live": true
     },
     {
       "ticker": "PCP.B",
       "name": "Fondo Petrolia, C.A. (Clase B)",
-      "price": 170.0,
-      "change_pct": 0.0,
+      "price": 169.9,
+      "change_pct": -0.06,
       "precio_cierre_anterior": 170.0,
       "live": true
     },
     {
       "ticker": "SVS",
       "name": "Siderúrgica Venezolana \"Sivensa\", S.A.",
-      "price": 1560.0,
-      "change_pct": 0.0,
+      "price": 1520.0,
+      "change_pct": -2.56,
       "precio_cierre_anterior": 1560.0,
       "live": true
     },
     {
       "ticker": "TPG",
       "name": "Telares de Palo Grande, C.A.",
-      "price": 10.35,
-      "change_pct": -0.29,
-      "precio_cierre_anterior": 10.38,
+      "price": 10.79,
+      "change_pct": 4.25,
+      "precio_cierre_anterior": 10.35,
       "live": true
     },
     {
       "ticker": "BVCC",
       "name": "Bolsa de Valores de Caracas, C.A.",
-      "price": 934.98,
-      "change_pct": -1.58,
-      "precio_cierre_anterior": 950.0,
+      "price": 930.0,
+      "change_pct": -0.53,
+      "precio_cierre_anterior": 934.98,
       "live": true
     },
     {
